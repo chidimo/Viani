@@ -1,0 +1,7 @@
+{{ email.subject }}
+
+You have been added as a user on FunnShopp by {{ email.creator }}
+
+Your profile is here {{ email.profile_link }}
+
+Your username is  {{ email.new_user_email }} andy your password is {{ email.password }}.

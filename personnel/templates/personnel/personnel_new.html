@@ -1,0 +1,29 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}New profile{% endblock %}
+{% block content_content %}
+
+<div class="container upload-form">
+
+    <h2>Add new personnel</h2>
+    <hr>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <p>{{ form.email_address }}</p>
+        <p>{{ form.email_address.errors }}</p>
+        <p>{{ form.display_name }}</p>
+        <p>{{ form.display_name.errors }}</p>
+        <p>{{ form.first_name }}</p>
+        <p>{{ form.first_name.errors }}</p>
+        <p>{{ form.last_name }}</p>
+        <p>{{ form.last_name.errors }}</p>
+
+        <button class="btn btn-success btn-sm float-right" type="submit" value="Save">Save</button>
+
+        <p>{{ form.non_field_errors }}</p>
+        <div class="g-recaptcha" data-sitekey="6Lc51UAUAAAAAO_iPM1VgrM18yGP5UDpRL2UVHvp"></div>
+    </form>
+</div>
+{% endblock content_content %}
+{% block footer %}{% endblock footer %}

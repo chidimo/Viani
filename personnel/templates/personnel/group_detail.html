@@ -1,0 +1,29 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}{{ group.name }} group{% endblock title %}
+{% load thumbnail %}
+{% block  content_content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2>{{ group.name }}s ({{ group.user_set.count }})
+            <span class="float-right">
+                <a href="{% url 'personnel:add_personnels_to_group' group.pk %}" class="btn btn-success btn-sm">Add/remove personnels</a>
+            </span>
+        </h2>
+    </div>
+</div>
+<hr>
+
+
+<h4>Members</h4>
+
+<p>
+    {% for each in group.user_set.all %}
+        {{ each.personnel.display_name }}{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
+
+
+{% endblock content_content %}
+

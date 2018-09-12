@@ -1,0 +1,24 @@
+
+{% extends "funnshopp_base.html" %}
+{% block title %}{{ permission.name }} detail{% endblock title %}
+{% load account_tags_and_filters %}
+{% load static %}
+{% load thumbnail %}
+
+{% block content_content %}
+
+    <div class="container">
+        <h2>{{ permission.name }}</h2>
+    </div>
+
+    <div class="container">
+        {% for personnel in permission.personnel.all %}
+            <div class="row">
+                <div class="col-sm-12">
+                    {{ forloop.counter }}. {{ personnel.first_name.title }} {{ personnel.last_name.title }} ({{ personnel.designation }})
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock content_content %}

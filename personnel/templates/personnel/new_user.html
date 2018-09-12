@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FunnShopp | Your one-stop entertainment shop</title>
+        <style>
+            body {background: white}
+            h1, h2, h3 {color:red}
+            p {color:midnightblue;}
+            a:hover {text-decoration: underline; color: #007bff;}
+        </style>
+    </head>
+
+    <body>
+        <h2>Welcome to FunnShopp !!!</h2>
+        <hr>
+        <p>You have been added as a user on <a href="http://www.funnshopp.com">FunnShopp</a> by {{ creator }}</p>
+        <p>Your login name is <strong><em>{{ new_user_email }}</em></strong>, and your password is <strong><em>{{ password }}</em></strong>.</p>
+
+        <p><strong>Please <a href="http://www.funnshopp.com/personnel/password_change/">change</a> your password immediately.</strong></p>
+
+        <p>
+            Follow this link to edit your <a href="{{ profile_link }}">profile</a>.<br>
+            You profile management settings are under the
+            <button class='btn btn-sm btn-success'>Account</button> button in your
+            <a href="http://www.funnshopp.com/personnel/dashboard/" alt="dashboard">dashboard</a>
+            </p>
+            <hr>
+            <p>When asked for authentication to the site, use<br>
+            username: <em>funnshopp</em><br>
+            password: <em>reverse</em>
+        </p>
+        <hr>
+    </body>
+</html>

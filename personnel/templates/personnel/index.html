@@ -1,0 +1,84 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}Personnel index{% endblock title %}
+{% load personnel_custom_tags %}
+{% block content_content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2>Personnel <a href="{% url 'personnel:new' %}"><i class="fas fa-plus h4" style="margin-bottom:0"></i></a></h2>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <caption>Personnel</caption>
+            <tr>
+                <th>Display</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Salary</th>
+                <th>Balance</th>
+                <th>Designation</th>
+                <th>Branch</th>
+                <th>Job status</th>
+                <th>Account status</th>
+                <th>Groups</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Bank</th>
+                <th>Last seen</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for personnel in personnels %}
+            <tr>
+                <td><a href="{% url 'personnel:detail' personnel.pk personnel.slug %}">{{ personnel.display_name }}</a></td>
+                <td>{{ personnel.first_name.title }}</td>
+                <td>{{ personnel.last_name.title }}</td>
+                <td>
+                    {% if request.user == personnel.user %}
+                        {{ personnel.salary }}
+                    {% endif %}
+                </td>
+                <td>{{ personnel.balance }}</td>
+                <td>{{ personnel.designation }}</td>
+                <td>{{ personnel.branchaccesscode.branch }}</td>
+
+                <td>{{ personnel.status }}</td>
+                <td>{% if personnel.user.is_active %}Active{% else %}Inactive{% endif %}</td>
+
+                <td>{% with personnel.user.groups.all as pg %}
+                        {% for each in pg %}
+                            {{ each.name }}{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                    {% endwith %}
+                </td>
+
+                <td><a href="mailto:{{ personnel.user.email }}">{{ personnel.user.email }}</a></td>
+                <td>{{ personnel.phone }}</td>
+                <td>{{ personnel.bank }}</td>
+                <td>{{ personnel.user.last_login }}</td>
+                <td>
+                    {% if user|belongs_to:"ceo" %}
+                        <a href="{% url 'personnel:edit_by_manager' personnel.pk personnel.slug %}"><i class='fas fa-edit'></i></a> |
+                        {% if personnel.user.is_active %}
+                            <a href="{% url 'personnel:activate_deactivate_personnel_account' personnel.pk personnel.slug %}" class='text-primary' title="Deactivate {{ personnel.display_name }}"><i class='fas fa-ban'></i></a></td>
+                        {% else %}
+                            <a href="{% url 'personnel:activate_deactivate_personnel_account' personnel.pk personnel.slug %}" class='text-danger' title="Activate {{ personnel.display_name }}"><i class='fas fa-ban'></i></a></td>
+                        {% endif %}
+                    {% endif %}
+            </tr>
+        {% empty %}
+            <p>No registered personnel</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<span class='float-right'><a class='btn btn-success btn-sm' href='{% url "personnel:report" "html" %}' target="_blank">Report</a></span>
+
+{% endblock content_content %}
+

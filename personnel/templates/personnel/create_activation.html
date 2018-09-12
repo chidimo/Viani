@@ -1,0 +1,31 @@
+{% extends "funnshopp_base.html" %}
+
+{% block title %}Activate {{ screen_name }}{% endblock %}
+
+
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row upload-form-row">
+        <div class="col-sm-12">
+            <div class="card">
+                <h4 class="card-header">Profile activation successful</h4>
+
+                    <div class="card-body">
+
+                        {% if active %}
+                            <p>Thank you but your profile is already active.<br>
+                            Please <a href="{% url 'login' %}">login</a> to continue</p>
+                        {% else %}
+                            <p class="card-title">Thank you for activating your profile.<br>
+                                Please <a href="{% url 'login' %}">login</a> to continue</p>
+                        {% endif %}
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block footer %}{% endblock footer %}

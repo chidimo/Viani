@@ -1,0 +1,41 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}Designations{% endblock title %}
+{% load thumbnail %}
+{% block content_content %}
+
+<div class="row">
+    <div class="col-sm-12">
+        <h2>
+            Designations
+            <span class="float-right"><a href="{% url 'personnel:new_designation' %}" class="btn btn-success btn-sm float-right">Add designation</a></span>
+        </h2>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Designation</caption>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Members</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for designation in designations %}
+            <tr>
+                <td>{{ designation.designation }}</td>
+                <td>{% for each in designation.personnel_set.all %}
+                        {{ each.first_name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% empty %}
+            <p>No registered designation</p>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock content_content %}

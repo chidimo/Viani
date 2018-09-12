@@ -1,0 +1,60 @@
+{% extends "funnshopp_base.html" %}
+
+{% block title %}Today{% endblock title %}
+{% block introBlock %}{% endblock introBlock %}
+
+{% block content_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2>Financial record for {{ personnel.display_name }}</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12"><h3>Incometance <a href="{% url 'bet9ja:new_department_income' %}" class="fa fa-plus"></a></h3></div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <caption>Sales</caption>
+                </thead>
+                <tr>
+                    <th>Income remit</th>
+                    <th>Paid remit</th>
+                    <th>Balance</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                </tr>
+
+                {% if today_income %}
+                <tbody>
+                    {% for income in today_income %}
+                        <tr>
+                            <td>{{ income.actual }} <a class="fa fa-plus" href="{% url 'bet9jaremit_to_department_incom' income.pk %}"></a></td>
+                            <td>{{ income.remitted }}</td>
+                            <td>{{ income.balance }}</td>
+                            <td>{{ income.created|date }}</td>
+                            <td>{{ income.notes }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                {% else %}
+                    <p>No Sales for today</p>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Remit <a href="{% url 'bet9ja:new_remit' %}" class="fa fa-plus"></a></h3>
+        </div>
+    </div>
+
+</div>
+{% endblock content_content %}
+
+

@@ -1,0 +1,68 @@
+
+{% extends "funnshopp_base.html" %}
+{% block title %}CEO Dashboard{% endblock title %}
+{% load account_tags_and_filters %}
+{% load personnel_custom_tags %}
+{% load static %}
+{% load thumbnail %}
+
+{% block content_content %}
+<div class="row">
+    <div class="col-sm-12">
+        <span class="d-none d-sm-block float-right">
+            <div class="avatar">
+                {% thumbnail request.user.personnel.avatar "50x50" crop="center" as im %}
+                    <img alt="" src="{{ im.url }}" width="{{ im.width }}"
+                    height="{{ im.height }}" class="img-fluid card">
+                {% empty %}
+                    <img alt="" src="{% static 'img/funnshopp.png' %}" width="50"
+                    height="50" class="img-fluid card">
+                {% endthumbnail %}
+            </div>
+        </span>
+    </div>
+</div>
+
+<hr>
+
+<div id="accordion">
+    <h3>
+        <a href="#" data-toggle="collapse" data-target="#About" aria-expanded="false" aria-controls="About">
+            About
+        </a>
+    </h3>
+    <div id="About" class="collapse" data-parent="#accordion">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h5 float-left">Designation</span>
+                <span class="h6 float-right">{{ user.personnel.designation }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h5 float-left">Groups</span>
+                <span class="h6 float-right">{{ user.personnel.personnel_groups }}</span>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h5 float-left">Job status</span>
+                <span class="h6 float-right">{{ user.personnel.status }}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h5 float-left">Salary</span>
+                <span class="h6 float-right">{{ user.personnel.salary }}</span>
+            </div>
+        </div>
+
+        <p><a href="{% url 'personnel:detail' user.personnel.pk user.personnel.slug %}">See all</a></p>
+    </div>
+</div>
+
+{% endblock content_content %}

@@ -1,0 +1,40 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}Grant permission{% endblock %}
+{% load personnel_custom_tags %}
+{% block content_content %}
+
+<div class="container upload-form">
+
+    <h2>Grant multiple permissions</h2>
+    <hr>
+
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="container" style="padding:0; width:50rem;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5>{{ form.permissions.label }}</h5>
+                    {{ form.permissions.errors }}
+
+                    {% for permission in form.permissions %}
+                        <p style="word-break:break-all">{{ permission.tag }} {{ permission.choice_label }}</p>
+                    {% endfor %}
+                </div>
+
+                <div class="col-sm-6">
+                    <h5>{{ form.personnels.label }}</h5>
+                    {{ form.personnels.errors }}
+
+                    {% for personnel in form.personnels %}
+                        <p style="word-break:break-all">{{ personnel.tag }} {{ personnel.choice_label }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success btn-sm float-right" type="submit" value="Grant">Grant</button>
+    </form>
+</div>
+
+{% endblock %}
+

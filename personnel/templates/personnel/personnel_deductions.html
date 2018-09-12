@@ -1,0 +1,41 @@
+{% extends "funnshopp_base.html" %}
+{% block title %}My deductions{% endblock title %}
+{% block  content_content %}
+
+<h2>
+    My deductions
+</h2>
+<hr>
+
+<div class="row">
+    <div class="col-sm-12">
+        filter fields
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <caption>{{ personnel.display_name }}'s deductions</caption>
+        </thead>
+        <tr>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Notes</th>
+        </tr>
+
+        {% for deduction in deductions %}
+        <tbody>
+                <tr>
+                    <td>{{ deduction.value }}</td>
+                    <td>{{ deduction.created|date }}</td>
+                    <td>{{ deduction.notes }}</td>
+                </tr>
+        </tbody>
+        {% empty %}
+            <p>No deductions found</p>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock content_content %}

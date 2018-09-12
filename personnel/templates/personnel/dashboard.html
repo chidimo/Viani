@@ -1,0 +1,125 @@
+
+{% extends "funnshopp_base.html" %}
+{% block title %}{{ personnel.display_name }} detail{% endblock title %}
+{% load account_tags_and_filters %}
+{% load personnel_custom_tags %}
+{% load static %}
+{% load thumbnail %}
+
+{% block content_content %}
+
+<div class="row">
+    <div class="col-sm-8">
+        <h2>{{ personnel.display_name }} | {{ personnel.first_name.title }} {{ personnel.last_name.title }}</h2>
+
+        <h2>Balance: 
+            {% if personnel.balance < 0 %}
+                <span class="text-danger" title="You're owing the displayed amount">{{ request.user.personnel.balance }}</span>
+            {% else %}
+                <span class="text-success" title="You have an excess of the displayed amount">{{ request.user.personnel.balance }}</span>
+            {% endif %}
+        </h2>
+    </div>
+
+    <div class="col-sm-4">
+        <span class="d-none d-sm-block float-right">
+            <div class="avatar">
+                {% thumbnail personnel.avatar "100x100" crop="center" as im %}
+                    <img alt="" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" class="img-fluid card">
+                {% empty %}
+                    <img alt="" src="{% static 'img/funnshopp.png' %}" width="100" height="100" class="img-fluid card">
+                {% endthumbnail %}
+            </div>
+        </span>
+    </div>
+</div>
+
+<hr>
+
+<div class="row text-left">
+    <div class="col-md-4 my-2">
+        <div class="row">
+            <div class="col-sm-12">
+                <span class="h5 float-left">Designation</span>
+                <span class="h5 float-right">{{ personnel.designation }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Groups</span>
+                <span class="h5 float-right">{{ personnel.personnel_groups }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Account status</span>
+                <span class="h5 float-right">{% if user.is_active %}<span class="text-success">Active</span>{% else %}<span class="text-danger">Inactive</span>{% endif %}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Job status</span>
+                <span class="h5 float-right">{{ personnel.status }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">First name</span>
+                <span class="h5 float-right">{{ personnel.first_name }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Last name</span>
+                <span class="h5 float-right">{{ personnel.last_name }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Email</span>
+                <span class="h5 float-right"><a href="mailto:{{ personnel.user.email }}">{{ personnel.user.email }}</a></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 my-2">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Salary</span>
+                <span class="h5 float-right">{{ personnel.salary }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Bank</span>
+                <span class="h5 float-right">{{ personnel.bank }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Phone</span>
+                <span class="h5 float-right">{{ personnel.phone }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Address</span>
+                <span class="h5 float-right">{{ personnel.address }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Last login</span>
+                <span class="h5 float-right">{{ personnel.user.last_login }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Joined</span>
+                <span class="h5 float-right">{{ personnel.created|date:"d/M/Y G:i:s" }}</span>
+            </div>
+
+            <div class="col-sm-12">
+                <span class="h5 float-left">Permissions</span>
+                <span class="h5 float-right">
+                    {% for permission in personnel.personnelpermission_set.all %}
+                    {{ forloop.counter }}. {{ permission }}{% if not forloop.last %}<br>{% endif %}
+                    {% endfor %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-4"></div>
+</div>
+{% endblock content_content %}
