@@ -59,6 +59,8 @@ PREREQ_APPS = [
 
 PROJECT_APPS = [
     'account',
+    'personnel',
+    'shop',
 ]
 
 THIRD_PARTY_APPS = [

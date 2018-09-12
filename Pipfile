@@ -4,6 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+python-decouple = "*"
+pygments = "*"
+sorl-thumbnail = "*"
+django-extensions = "*"
+django-addanother = "*"
+rules = "*"
+django = "*"
 
 [dev-packages]
 
