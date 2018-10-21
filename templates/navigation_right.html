@@ -1,0 +1,108 @@
+{% load thumbnail %}
+{% load static %}
+{% load personnel_custom_tags %}
+
+<ul class="nav navbar-nav ml-auto">
+
+    {% if request.user.is_authenticated %}
+        <li class="nav-item logged-in-username d-none d-md-block">
+            <a class="nav-link" href="{% url 'personnel:dashboard' %}">
+                {% thumbnail user.personnel.avatar "35x35" crop="center" as im %}
+                    <div class="profile-image"><img class="card" src="{{ user.personnel.avatar.url }}"></div>
+                {% empty %}
+                    <div class="profile-image"><img class="card" src="{% static 'img/funnshopp.png' %}"></div>
+                {% endthumbnail %}
+                <div class="profile-name">{{ user.personnel.screen_name }}</div>
+            </a>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i></a>
+            <div class="dropdown-menu">
+
+                {% if user|belongs_to:"ceo" %}
+                <a class="nav-link" href="{% url 'establishment:switch_branch' %}">Switch branch</a>
+                {% endif %}
+
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'personnel:edit' request.user.personnel.pk request.user.personnel.slug %}">Edit profile</a>
+
+                {% if request.user.personnel.avatar %}
+                    <a class="nav-link" href="{% url 'personnel:edit_avatar' request.user.personnel.pk %}">Change avatar</a>
+                    <div class="dropdown-divider"></div>
+                {% else %}
+                    <a class="nav-link" href="{% url 'personnel:new_avatar' request.user.personnel.pk %}">Add avatar</a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+                <a class="nav-link" href="{% url 'personnel:password_change' %}">Change password</a>
+                <a class="nav-link" href="{% url 'personnel:password_reset' %}">Reset password</a>
+                <div class="dropdown-divider"></div>
+
+                {% if user|belongs_to:"manager" %}
+                    <a class="nav-link" href="{% url 'personnel:dashboard_manager' %}">Manager dash</a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+                {% if user.is_admin %}
+                    <a class="nav-link" href="/admin/">Admin</a>
+                    <div class="dropdown-divider"></div>
+                {% endif %}
+
+                <a class="nav-link" href="{% url 'personnel:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
+            <div class="dropdown-menu">
+                <a class="nav-link" href="{% url 'bet9ja:new_sale' %}">Bet9ja sale</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'game:gameremit_new' %}">Game remit</a>
+
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'viewcenter:team_new' %}">Team</a>
+                <a class="nav-link" href="{% url 'viewcenter:division_new' %}">Division</a>
+                <a class="nav-link" href="{% url 'viewcenter:viewcenterremit_new' %}">Viewcenter remit</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'account:new_debt' %}">Debt</a>
+                <a class="nav-link" href="{% url 'account:new_expenditure' %}">Expenditure</a>
+            </div>
+        </li>
+
+        {% if user|belongs_to:"ceo, manager" %}
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus text-danger"></i></a>
+            <div class="dropdown-menu">
+                <a class="nav-link" href="{% url 'bet9ja:new_product' %}">Product</a>
+                <a class="nav-link" href="{% url 'bet9ja:new_cashier' %}">Cashier</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'establishment:new_branch' %}">Branch</a>
+                <a class="nav-link" href="{% url 'establishment:new_department' %}">Department</a>
+                <a class="nav-link" href="{% url 'establishment:new_item' %}">Asset</a>
+                <a class="nav-link" href="{% url 'establishment:new_asset_type' %}">Asset type</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'personnel:new_group' %}">Group</a>
+                <a class="nav-link" href="{% url 'service:new' %}">Service</a>
+                <a class="nav-link" href="{% url 'personnel:new' %}">Personnel</a>
+                <a class="nav-link" href="{% url 'personnel:new_designation' %}">Designation</a>
+                <a class="nav-link" href="{% url 'personnel:grant_multiple_permissions' %}">Grant multiple permissions</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'account:new_expendituretype' %}">Expenditure type</a>
+                <div class="dropdown-divider"></div>
+                <a class="nav-link" href="{% url 'account:new_remuneration' %}">Remuneration</a>
+                <a class="nav-link" href="{% url 'account:new_remunerationtype' %}">Remuneration type</a>
+            </div>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+            {% if request.user.personnel.balance < 0 %}
+            <a class="nav-link" href="#"><span class="text-danger" title="You're owing the displayed amount">{{ request.user.personnel.balance }}</span></a>
+            {% else %}
+            <a class="nav-link" href="#"><span class="text-success" title="You have an excess of the displayed amount">{{ request.user.personnel.balance }}</span></a>
+            {% endif %}
+        </li>
+    {% else %}
+        <a class="nav-link" href="{% url 'personnel:login' %}">Login <i class="fas fa-sign-in-alt"></i></a>
+    {% endif %}
+</ul>

@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from django import forms
 
-# Create your views here.
+from .models import Job, JobExpense, JobPayment
+
+class NewJobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ('customer', 'value', 'discount',)
+
+        wdigets = {
+            'customer' : forms.Select(attrs={'class' : 'form-control'}),
+            'value' : forms.NumberInput(attrs={'class' : 'form-control'}),
+            'discount' : forms.NumberInput(attrs={'class' : 'form-control'}),
+        }

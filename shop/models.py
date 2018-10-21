@@ -45,7 +45,7 @@ class Job(Company):
     start = models.DateField(default=timezone.now)
     completion = models.DateField()
     status = models.IntegerField()
-    feedback = models.TextField()
+    feedback = models.CharField(max_length=1000)
 
     def __str__(self):
         return self.name
@@ -54,8 +54,12 @@ class Job(Company):
         return reverse('/')
 
     def total_expense(self):
-        agg = self.jobexpense_set.all.aggregate(sum_exp=Sum('amount'))
-        return agg['sum_exp']
+        agg = self.jobexpense_set.all.aggregate(sum_of_expenses=Sum('amount'))
+        return agg['sum_of_expenses']
+
+    def total_payment(self):
+        agg = self.jobpayment_set.all.aggregate(sum_of_payments=Sum('amount'))
+        return agg['sum_of_payments']
 
     def profit(self):
         return self.value - self.total_expense()
@@ -64,4 +68,9 @@ class JobExpense(TimeStampedModel):
     item_name = models.CharField(max_length=50)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    notes = models.TextField()
+    notes = models.CharField(max_length=500)
+
+class JobPayment(TimeStampedModel):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    notes = models.CharField(max_length=500)

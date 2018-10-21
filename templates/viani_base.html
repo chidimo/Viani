@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>{% block title %}{% endblock title %} - Viani</title>
+        <title>{% block title %}Home{% endblock title %} - Viani</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Viani. Fashion design is our passion">
@@ -13,41 +13,51 @@
         {% load static %}
 
         <link rel="stylesheet" href="{% static 'css/viani.css' %}">
-
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary">
-
-            <a class="navbar-brand" href="/">Viani</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarColor02">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'shop:gallery' %}">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Instagram</a></li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="tel:+2349036650603"><i class="fas fa-mobile"></i> +2349036650603</a></li>
-                            <li><a class="dropdown-item" href="mailto:orjichidi95@gmail.com">Email: orjichidi95@gmail.com</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Social <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-                            <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-github"></i> Instagram</a></li>
-                        </ul>
-                    </li>
-                </ul>
+        {% block navigation %}
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary" role="navigation">
+            <div class="container">
+    
+                <a class="navbar-brand" href="/">Viani</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="sr-only">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+    
+                <div class="collapse navbar-collapse navcontent" id="navbarColor02">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:gallery' %}">Gallery</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Instagram</a></li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="tel:+2349036650603"><i class="fas fa-mobile"></i> +2349036650603</a></li>
+                                <li><a class="dropdown-item" href="mailto:orjichidi95@gmail.com">Email: orjichidi95@gmail.com</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Social <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                                <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-github"></i> Instagram</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse navcontent">
+                    {% block navigation_left_right %}
+                        {% include "navigation_right.html" %}
+                    {% endblock navigation_left_right %}
+                </div>
             </div>
         </nav>
+
+        {% endblock navigation %}
 
         <div class="container-fluid">
             <div class="row">

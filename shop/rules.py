@@ -1,3 +1,4 @@
-from django.shortcuts import render
+import rules
+from . import predicates
 
-# Create your views here.
+rules.add_rule('create_new_job', predicates.create_new_job)
