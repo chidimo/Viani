@@ -47,6 +47,11 @@ LOGOUT_REDIRECT_URL = reverse_lazy('personnel:login')
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
+SHELL_PLUS_POST_IMPORTS = [
+    ('fixtures', '*'),
+    ('fixtures')
+]
+
 PREREQ_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

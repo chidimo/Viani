@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Job, JobExpense, JobPayment
+
+admin.site.register(Job)
+admin.site.register(JobExpense)
+admin.site.register(JobPayment)
