@@ -10,7 +10,6 @@ from django.urls import reverse_lazy
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.messages import constants as messages
 
-import raven
 from decouple import config, Csv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -65,7 +64,6 @@ PROJECT_APPS = [
 
 THIRD_PARTY_APPS = [
     'rules.apps.AutodiscoverRulesConfig',
-    'coverage',
     'django_extensions',
     'pure_pagination',
     'sorl.thumbnail',
@@ -90,7 +88,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

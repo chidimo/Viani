@@ -18,8 +18,8 @@ class GroupAdmin(admin.ModelAdmin):
         return ", ".join([p.name for p in obj.permissions.all()])
 
 class PersonnelAdmin(admin.ModelAdmin):
-    list_display = ("__str__", 'balance', "personnel_groups", "personnel_permissions", "display_name", "first_name", "last_name", "bank", "status", "designation",
-        "salary", "address", 'avatar' )
+    list_display = ("__str__",  "personnel_groups", "personnel_permissions", "display_name", "first_name", "last_name", "status", "designation",
+        "address", 'avatar' )
     search_fields = ("display_name", "first_name", "last_name")
     list_select_related = True
     # list_editable = ('status', 'designation', 'balance')

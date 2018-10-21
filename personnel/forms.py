@@ -15,20 +15,9 @@ from django.forms.fields import DateField
 
 from django_addanother.widgets import AddAnotherWidgetWrapper
 
-from bet9ja.models import Product
-
 from .models import Personnel, PersonnelPermission, Designation
-from universal.utils import get_model_list
 
 Person = get_user_model()
-
-class LoginForm(forms.Form):
-    username = forms.CharField(
-        required=True,
-        widget=forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter username'}))
-    password = forms.CharField(
-        required=True,
-        widget=forms.PasswordInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter password'}))
 
 class PersonCreationForm(forms.ModelForm):
     """Custom UCF. Takes the standard
@@ -64,18 +53,6 @@ class PersonChangeForm(forms.ModelForm):
 
     def clean_password(self):
         return self.initial["password"]
-
-class NewDesignationForm(forms.ModelForm):
-    class Meta:
-        model = Designation
-        fields = ('designation',  'description')
-        widgets = {
-            "designation" : forms.TextInput(
-                attrs={'class':'form-control', 'placeholder' : 'Enter designation'}),
-
-            "description" : forms.Textarea(
-                attrs={'class':'form-control', 'placeholder' : 'Description'}),
-            }
 
 class PersonnelMixin(forms.ModelForm):
     class Meta:
@@ -130,7 +107,7 @@ class PersonnelRegistrationForm(forms.Form):
 class PersonnelEditForm(forms.ModelForm):
     class Meta:
         model = Personnel
-        fields = ("first_name", "last_name", "address", "phone", "bank", "avatar")
+        fields = ("first_name", "last_name", "address", "phone", "avatar")
 
         widgets = {
 
@@ -139,10 +116,6 @@ class PersonnelEditForm(forms.ModelForm):
             "last_name" : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Last name'}),
 
             "address" : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Address'}),
-
-            "bank" : AddAnotherWidgetWrapper(
-                forms.Select(attrs={'class' : 'form-control'}),
-                reverse_lazy("service:new")),
 
             "phone" : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Phone'}),
 
@@ -157,55 +130,6 @@ class PersonnelAvatarAddForm(forms.ModelForm):
             'avatar' : ClearableFileInput(attrs={'class' : 'form-control'})
             }
 
-class PersonnelEditByManagerForm(forms.ModelForm):
-    class Meta:
-        model = Personnel
-        fields = ("status", "designation", "bank", "salary")
-
-        widgets = {
-
-            "status" : forms.Select(attrs={'class' : 'form-control'}),
-
-            "designation" : AddAnotherWidgetWrapper(
-                forms.Select(attrs={'class' : 'form-control'}),
-                reverse_lazy("personnel:new_designation")),
-
-            "bank" : AddAnotherWidgetWrapper(
-                forms.Select(attrs={'class' : 'form-control'}),
-                reverse_lazy("service:new")),
-
-            "salary" : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Base pay'}),
-            }
-
-class SelectDateRangeForm(forms.Form):
-    from_date = DateField(
-        initial=timezone.now,
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
-    to_date = DateField(
-        initial=timezone.now() + datetime.timedelta(days=7),
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
-
-# class NewPermissionForm(forms.Form):
-#     name = forms.CharField(widget=forms.TextInput(
-#         attrs={'class' : 'form-control', 'placeholder' : 'Permission name'}))
-#     codename = forms.CharField(required=False, widget=forms.TextInput(
-#         attrs={'class' : 'form-control', 'placeholder' : 'Permission Code name - Optional'}))
-#     app_name_model_name = forms.ChoiceField(choices=get_model_list(),
-#         widget=forms.Select(attrs={"class" : "form-control"}))
-
-class NewGroupForm(forms.Form):
-    name = forms.CharField(widget=forms.TextInput(
-        attrs={'class' : 'form-control', 'placeholder' : 'Group name'}))
-
-class AddPersonnelToGroupForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        group_name = kwargs.pop('group_name', None)
-        super(AddPersonnelToGroupForm, self).__init__(*args, **kwargs)
-        self.fields['personnels'].queryset = Personnel.objects.exclude(user__groups__name__in=[group_name])
-
-    personnels = forms.ModelMultipleChoiceField(
-        queryset=Personnel.objects.all(),
-        widget=forms.CheckboxSelectMultiple())
 
 class RemovePersonnelFromGroupForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -248,26 +172,9 @@ class GrantMultiplePermissionsForm(forms.Form):
         required=True,
         queryset=PersonnelPermission.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        error_messages=custom_error_messages,
-        )
+        error_messages=custom_error_messages,)
     personnels = forms.ModelMultipleChoiceField(
         required=True,
         queryset=Personnel.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
-        error_messages=custom_error_messages,
-        )
-
-class PersonnelSaleFilterForm(forms.Form):
-    product = forms.ModelChoiceField(
-        required=False,
-        queryset=Product.objects.all(),
-        widget=forms.Select(attrs={"class" : "form-control"}))
-    from_date = DateField(
-        required=True,
-        initial=timezone.now,
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
-
-    to_date = DateField(
-        required=True,
-        initial=timezone.now() + datetime.timedelta(days=7),
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
+        error_messages=custom_error_messages,)

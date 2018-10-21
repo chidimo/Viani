@@ -23,21 +23,11 @@ import rules
 
 from pure_pagination import PaginationMixin
 from django_addanother.views import CreatePopupMixin
-# from rules.contrib.views import PermissionRequiredMixin
-# from rules.contrib.views import permission_required
 
-from bet9ja.models import Sale, Remit
-from game.models import GameRemit
-from account.models import Debt, Remuneration, Expenditure
-from viewcenter.models import ViewCenterRemit
-from establishment.models import BranchAccessCode
-from establishment.views import get_branch
+from .utils.view_decorators import personnel_is_ceo, personnel_is_ceo_or_manager, personnel_belongs_to_it, personnel_is_self_ceo_or_manager
+from .utils import context_messages as cm
 
-from .view_decorators import personnel_is_ceo, personnel_is_ceo_or_manager, personnel_belongs_to_it, personnel_is_self_ceo_or_manager
-from universal.utils import report_view
-from universal import context_messages as cm
-
-from .utils import check_recaptcha
+from .utils.utils import check_recaptcha
 from .models import Personnel, PersonnelPermission, Designation
 from .forms import (
     LoginForm, GrantPersonnelPermissionForm, RevokePersonnelPermissionForm,
@@ -49,39 +39,6 @@ from .forms import (
 )
 
 Person = get_user_model()
-
-def login_view(request):
-    template = 'registration/login.html'
-
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-
-        if form.is_valid():
-            data = form.cleaned_data
-            username = data['username']
-            password = data['password']
-            user = authenticate(request, username=username, password=password)
-
-            if user is not None:
-                return redirect(reverse("establishment:login_user", args=[user.pk]))
-            else:
-                form.add_error('username', "username and password mismatch")
-                return render(request, template, {'form' : form})
-    else:
-        form = LoginForm()
-        return render(request, template, {'form' : form})
-
-class NewDesignation(LoginRequiredMixin, SuccessMessageMixin, CreatePopupMixin, generic.CreateView):
-    model = Designation
-    form_class = NewDesignationForm
-    template_name = 'personnel/designation_new.html'
-    success_message = "Designation successfully created"
-
-class DesignationIndex(PaginationMixin, LoginRequiredMixin, generic.ListView):
-    model = Designation
-    context_object_name = 'designations'
-    template_name = "personnel/designations.html"
-    paginate_by = 25
 
 class PersonnelIndex(PaginationMixin, LoginRequiredMixin, generic.ListView):
     model = Personnel
@@ -198,36 +155,6 @@ class PersonnelPublicIndex(PaginationMixin, LoginRequiredMixin, generic.ListView
     context_object_name = 'personnels'
     template_name = "personnel/staffers.html"
     paginate_by = 25
-
-@login_required
-def dashboard(request):
-    context = {}
-    context['personnel'] = request.user.personnel
-    template = 'personnel/dashboard.html'
-    return render(request, template, context)
-
-@personnel_is_ceo_or_manager
-def dashboard_manager(request):
-    context = {}
-    template = 'personnel/dashboard_manager.html'
-    # user = request.user
-    return render(request, template, context)
-
-@personnel_is_ceo
-def dashboard_ceo(request):
-    context = {}
-    template = 'personnel/dashboard_ceo.html'
-    # user = request.user
-    return render(request, template, context)
-
-class BranchPersonnel(LoginRequiredMixin, PaginationMixin, generic.ListView):
-    model = Personnel
-    context_object_name = 'branch_staff'
-    template_name = "personnel/branch_personnel.html"
-    paginate_by = 25
-
-    def get_queryset(self):
-        return [each.personnel for each in BranchAccessCode.objects.filter(branch=get_branch(self.request))]
 
 class GroupIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Group

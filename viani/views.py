@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def gallery(request):
-    template = 'shop/gallery.html'
+def home(request):
+    template = "home.html"
     context = {}
     return render(request, template, context)

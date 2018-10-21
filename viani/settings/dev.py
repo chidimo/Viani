@@ -1,6 +1,5 @@
 from .base import *
 DEBUG = True
-ENVIRONMENT_NAME, _ = os.path.splitext(os.path.basename(os.path.abspath(__file__)))
 
 DATABASES = {
     'default': {

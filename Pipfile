@@ -11,6 +11,13 @@ django-extensions = "*"
 django-addanother = "*"
 rules = "*"
 django = "*"
+django-pure-pagination = "*"
+django-debug-toolbar = "*"
+"psycopg2" = "==2.7.3.2"
+"sorl.thumbnail" = "*"
+requests = "*"
+pylint = "*"
+pillow = "*"
 
 [dev-packages]
 

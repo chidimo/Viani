@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 
 from personnel.models import Personnel
 
-from utils.models import TimeStampedModel
+from .utils.models import TimeStampedModel
 
 class Company(TimeStampedModel):
     company = models.CharField(max_length=60, default="viani", editable=False)
@@ -44,7 +44,7 @@ class Job(Company):
     discount = models.DecimalField(max_digits=10, decimal_places=2)
     start = models.DateField(default=timezone.now)
     completion = models.DateField()
-    status = models.DecimalField()
+    status = models.IntegerField()
     feedback = models.TextField()
 
     def __str__(self):

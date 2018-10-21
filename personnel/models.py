@@ -12,9 +12,9 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, Permis
 
 from sorl.thumbnail import ImageField
 
-from utils.models import TimeStampedModel
-from utils.fields import AutoMultipleSlugField
-from utils.media_handlers import upload_avatar
+from .utils.models import TimeStampedModel
+from .utils.fields import AutoMultipleSlugField
+from .utils.media_handlers import upload_avatar
 
 class PersonManager(BaseUserManager):
     def create_user(self, email, password=None):
