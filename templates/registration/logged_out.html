@@ -3,11 +3,14 @@
 
 {% block body %}
 
-<div class="container">
-    <h2>Logged out!</h2>
+    <h1 class='text-center'><a href="/" title='Return to homepage' style='text-decoration: none'>Viani</a></h1>
     <hr>
 
-    <p>You're logged out, <a href="{% url 'personnel:login' %}">Click to login again.</a></p>
-</div>
+    <div class="container login-form text-center">
+        <h2>You're logged out.</h2>
+        <hr>
+
+        <h4><a href="{% url 'personnel:login' %}" style='text-decoration: none' title='Return to login page'>Login</a></h4>
+    </div>
 
 {% endblock body %}

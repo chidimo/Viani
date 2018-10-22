@@ -17,6 +17,10 @@ urlpatterns += [
     path('personnel/', include('personnel.urls')),
 ]
 
+urlpatterns += [
+    path('social/', include('social_django.urls', namespace='social')),
+]
+
 if settings.DEBUG:
     import debug_toolbar
 

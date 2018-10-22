@@ -7,7 +7,7 @@ class NewJobForm(forms.ModelForm):
         model = Job
         fields = ('customer', 'value', 'discount',)
 
-        wdigets = {
+        widgets = {
             'customer' : forms.Select(attrs={'class' : 'form-control'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control'}),

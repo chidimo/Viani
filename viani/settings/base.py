@@ -44,6 +44,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 LOGIN_URL = reverse_lazy('personnel:login')
 LOGOUT_URL = reverse_lazy('personnel:logout')
 LOGOUT_REDIRECT_URL = reverse_lazy('personnel:login')
+LOGIN_REDIRECT_URL = reverse_lazy('shop:gallery')
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 
@@ -73,7 +74,16 @@ THIRD_PARTY_APPS = [
     'pure_pagination',
     'sorl.thumbnail',
     'django_addanother',
+    'social_django',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    )
 
 INSTALLED_APPS = PREREQ_APPS +  PROJECT_APPS + THIRD_PARTY_APPS
 

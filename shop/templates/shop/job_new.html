@@ -1,6 +1,8 @@
 {% extends "viani_base.html" %}
 {% block title %}New job{% endblock %}
-{% block content_content %}
+
+
+{% block content %}
 
 
 <h1>New job</h1>
@@ -9,7 +11,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><a href="#">Shop</a></li>
-        <li class="breadcrumb-item">New job</li>
+        <li class="breadcrumb-item active">New job</li>
     </ol>
 </nav>
 
@@ -23,5 +25,5 @@
     </form>
 </div>
 
-{% endblock %}
+{% endblock content %}
 {% block footer %}{% endblock footer %}
