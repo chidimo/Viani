@@ -1,4 +1,5 @@
 {% extends "viani_base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -12,4 +13,54 @@
     </ol>
 </nav>
 
+<div id="content"></div>
+<div id="showModal"></div>
+
+{% verbatim %}
+<script id="pictures_template" type="text/x-handlebars-template">
+    {{#each collections}}
+    <div class="container">
+        <h2 style="text-transform:capitalize">{{ collection_name }}</h2>
+        <div class="row">
+            {{#each pictures}}
+            <div class="col-lg-3 col-md-4 col-xs-6 col-sm-6 py-2 my-2">
+                <img class="album-pictures rounded img-thumbnail img-fluid" data-id="{{ @index }}" style="width:100%;height:200px" src="{{ src }}" alt="{{ name }}"/>
+                {{> cloth_color}}
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{/each}}
+</script>
+{% endverbatim %}
+
+{% verbatim %}
+<script id="color_template" type="text/x-handlebars-template">
+    <div class="row">
+        <h5 style="background-color:{{ color }};color:black;">{{ color }}</h5>
+    </div>
+</script>
+{% endverbatim %}
+
 {% endblock content %}
+
+
+{% block page_js %}
+<script src="{% static 'js/gallery.js' %}"></script>
+
+<script>
+    Handlebars.registerPartial('cloth_color', $('#color_template').html());
+
+    var source = $('#pictures_template').html();
+    var pix_template = Handlebars.compile(source)
+    var html = pix_template(album)
+
+    $('#content').html(html)
+
+    $('.album-pictures').click( function (event) {
+        var id = $(event.target).data('id')
+        alert('Picture ' + id + ' has been clicked')
+    })
+</script>
+
+{% endblock page_js %}
