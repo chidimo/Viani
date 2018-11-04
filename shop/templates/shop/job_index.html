@@ -33,7 +33,7 @@
         </thead>
         <tr>
             <th>S/N</th>
-            <th>Date</th>
+            <th>Description</th>
             <th>Customer</th>
             <th>Status</th>
             <th>Value</th>
@@ -43,7 +43,10 @@
             <th>Profit</th>
             <th>Start</th>
             <th>Completed</th>
+            <th>Date</th>
             <th>Feedback</th>
+            <th>Detail</th>
+            <th>Action</th>
         </tr>
 
         {% if jobs %}
@@ -51,8 +54,8 @@
             {% for job in jobs %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
-                    <td>{{ job.customer.first_name }} {{ job.customer.last_name }}</td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.short_description.title }}</a></td>
+                    <td>{{ job.customer }}</td>
                     <td>{{ job.status }}</td>
                     <td>{{ job.value }}</td>
                     <td>{{ job.discount }}</td>
@@ -61,10 +64,16 @@
                     <td>{{ job.profit }}</td>
                     <td>{{ job.start}}</td>
                     <td>{{ job.completion }}</td>
+                    <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
                     <td>{{ job.feedback }}</td>
+                    <td>{{ job.long_description }}</td>
+                    <td><a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a></td>
                 </tr>
             {% endfor %}
             <tr>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

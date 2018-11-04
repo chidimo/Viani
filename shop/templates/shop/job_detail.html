@@ -1,0 +1,61 @@
+{% extends "viani_base.html" %}
+{% block title %}{{ job }}{% endblock %}
+
+
+{% block content %}
+
+
+<h1>{{ job }}</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item"><a href="#">Jobs</a></li>
+        <li class="breadcrumb-item active">{{ job }}</li>
+    </ol>
+</nav>
+
+<div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <caption>{{ job }}</caption>
+            </thead>
+            <tr>
+                <th>Customer</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Value</th>
+                <th>Discount</th>
+                <th>Expense</th>
+                <th>Payment</th>
+                <th>Profit</th>
+                <th>Start</th>
+                <th>Completed</th>
+                <th>Date</th>
+                <th>Feedback</th>
+                <th>Detail</th>
+            </tr>
+
+            <tbody>
+                <tr>
+                    <td>{{ job.customer }}</td>
+                    <td>{{ job.short_description.title }}</td>
+                    <td>{{ job.status }}</td>
+                    <td>{{ job.value }}</td>
+                    <td>{{ job.discount }}</td>
+                    <td>{{ job.total_expense }}</td>
+                    <td>{{ job.total_payment }}</td>
+                    <td>{{ job.profit }}</td>
+                    <td>{{ job.start}}</td>
+                    <td>{{ job.completion }}</td>
+                    <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
+                    <td>{{ job.feedback }}</td>
+                    <td>{{ job.long_description }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+{% endblock content %}
+{% block footer %}{% endblock footer %}

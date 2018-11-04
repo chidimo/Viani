@@ -11,7 +11,7 @@ import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
-from .forms import NewCustomerForm, NewJobForm, NewCashFlowForm, NewCashFlowTypeForm
+from .forms import NewCustomerForm, NewJobForm, NewCashFlowForm, AddCashFlowToJobForm, NewCashFlowTypeForm
 
 def gallery(request):
     template = 'shop/gallery.html'
@@ -54,6 +54,42 @@ class NewJob(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
+
+class JobDetail(LoginRequiredMixin, generic.DetailView):
+    model = Job
+    template_name = 'shop/job_detail.html'
+    context_object_name = 'job'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["job_payments"] = "k"
+        context["job_expenses"] = "k"
+        context["job_profit"] = "k"
+        return context
+
+def job_add_cashflow(request, pk):
+    job = Job.objects.get(pk=pk)
+    template = 'shop/job_add_cashflow.html'
+    form = AddCashFlowToJobForm()
+
+    context = {}
+    context['form'] = form
+    context['job'] = job
+
+    if request.method == 'POST':
+        form = AddCashFlowToJobForm(request.POST)
+        if form.is_valid():
+            form = form.cleaned_data
+            category = form['category']
+            name = form['name']
+            amount = form['amount']
+            notes = form['notes']
+            cashflow = CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
+            return redirect(cashflow.get_absolute_url())
+        else:
+            return render(request, template, {'form' : form})
+
+    return render(request, template, context)
 
 class CashFlowTypeIndex(LoginRequiredMixin, generic.ListView):
     model = CashFlowType

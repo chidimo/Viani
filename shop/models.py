@@ -45,10 +45,12 @@ class Job(Company):
     start = models.DateField(default=timezone.now)
     completion = models.DateField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
+    short_description = models.CharField(max_length=30)
+    long_description = models.CharField(max_length=500, blank=True)
     feedback = models.CharField(max_length=1000)
 
     def __str__(self):
-        return "{}: {}".format(self.customer, self.value)
+        return "Job: {}".format(self.short_description.title())
 
     def get_absolute_url(self):
         return reverse('shop:job_index')
@@ -63,9 +65,9 @@ class Job(Company):
 
     def profit(self):
         try:
-            return self.value - self.total_expense()
+            return self.total_payment() - self.total_expense()
         except TypeError:
-            return self.value - 0
+            return 0
 
 class CashFlowType(TimeStampedModel):
     """expense, payment"""

@@ -38,6 +38,7 @@
             <th>Customer</th>
             <th>Category</th>
             <th>Amount</th>
+            <th>Item</th>
             <th>Banked</th>
             <th>Notes</th>
         </tr>
@@ -49,9 +50,10 @@
                     <td>{{ forloop.counter }}</td>
                     <td><a href="">{{ cashflow.job }}</a></td>
                     <td>{{ cashflow.created|date:"d/M/Y G:i:s" }}</td>
-                    <td>{{ cashflow.job.customer.first_name }} {{ cashflow.job.customer.last_name }}</td>
+                    <td>{{ cashflow.job.customer }}</td>
                     <td>{{ cashflow.category }}</td>
                     <td>{{ cashflow.amount }}</td>
+                    <td>{{ cashflow.name.title }}</td>
                     
                     {% if cashflow.banked %}
                         <td><a href="{% url 'shop:bank_cashflow' cashflow.pk %}"><i class="fas fa-check-circle text-success"></i></a></td>
