@@ -1,0 +1,57 @@
+{% extends "viani_base.html" %}
+{% block title %}Cashflowtypes{% endblock title %}
+{% block content %}
+
+<h1>Cashflowtypes</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Cashflowtypes</li>
+    </ol>
+</nav>
+
+<!--
+
+    <form action="" method="get" enctype="multipart/form-data">
+        <section class="text-center">
+            {% for field in cashflowtype_filter_form %}
+            <span class="btn btn-filter">{{ field }}</span>
+            {% endfor %}
+            <span class='btn btn-filter'>
+                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
+            </span>
+        </section>
+    </form>
+-->
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Cashflowtypes</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+
+        {% if cashflowtypes %}
+        <tbody>
+            {% for cashflowtype in cashflowtypes %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ cashflowtype.name.title }}</td>
+                    <td>{{ cashflowtype.description }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        {% else %}
+            <p>No cashflowtypes to show</p>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock content %}
+

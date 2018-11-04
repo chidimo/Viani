@@ -7,10 +7,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Viani. Fashion design is our passion">
         <meta name="keywords" content="viani, fasion designers, clothes, events">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/darkly/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/slate/bootstrap.min.css">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         {% load staticfiles %}
         {% load static %}
+
+        <script src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+        {{ form.media }}
 
         <link rel="stylesheet" href="{% static 'css/viani.css' %}">
     </head>
@@ -46,6 +49,15 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
                                 <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-github"></i> Instagram</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'shop:job_index' %}">Jobs</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:customer_index' %}">Customers</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:cashflow_index' %}">Cashflows</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:cashflowtype_index' %}">Cashflow types</a></li>
                             </ul>
                         </li>
                     </ul>

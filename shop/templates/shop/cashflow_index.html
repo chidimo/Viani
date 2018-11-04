@@ -1,0 +1,83 @@
+{% extends "viani_base.html" %}
+{% block title %}Cashflows{% endblock title %}
+{% block content %}
+
+<h1>Cashflows</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Cashflows</li>
+    </ol>
+</nav>
+
+<!--
+
+    <form action="" method="get" enctype="multipart/form-data">
+        <section class="text-center">
+            {% for field in cashflow_filter_form %}
+            <span class="btn btn-filter">{{ field }}</span>
+            {% endfor %}
+            <span class='btn btn-filter'>
+                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
+            </span>
+        </section>
+    </form>
+-->
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Cashflows</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>Job</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Banked</th>
+            <th>Notes</th>
+        </tr>
+
+        {% if cashflows %}
+        <tbody>
+            {% for cashflow in cashflows %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="">{{ cashflow.job }}</a></td>
+                    <td>{{ cashflow.created|date:"d/M/Y G:i:s" }}</td>
+                    <td>{{ cashflow.job.customer.first_name }} {{ cashflow.job.customer.last_name }}</td>
+                    <td>{{ cashflow.category }}</td>
+                    <td>{{ cashflow.amount }}</td>
+                    
+                    {% if cashflow.banked %}
+                        <td><a href="{% url 'shop:bank_cashflow' cashflow.pk %}"><i class="fas fa-check-circle text-success"></i></a></td>
+                    {% else %}
+                        <td><a href="{% url 'shop:bank_cashflow' cashflow.pk %}" class="text-danger"><i class="fas fa-check-circle text-danger"></i></a></td>
+                    {% endif %}
+
+                    <td>{{ cashflow.notes }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        {% else %}
+            <p>No cashflows to show</p>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock content %}
+

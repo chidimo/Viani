@@ -1,0 +1,77 @@
+{% extends "viani_base.html" %}
+{% block title %}Customers{% endblock title %}
+{% block content %}
+
+<h1>Customers</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Customers</li>
+    </ol>
+</nav>
+
+<!--
+
+    <form action="" method="get" enctype="multipart/form-data">
+        <section class="text-center">
+            {% for field in customer_filter_form %}
+            <span class="btn btn-filter">{{ field }}</span>
+            {% endfor %}
+            <span class='btn btn-filter'>
+                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
+            </span>
+        </section>
+    </form>
+-->
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Customers</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Value</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Sex</th>
+            <th>Date</th>
+        </tr>
+
+        {% if customers %}
+        <tbody>
+            {% for customer in customers %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ customer.first_name }}</td>
+                    <td>{{ customer.last_name }}</td>
+                    <td>{{ customer.total_value }}</td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.address }}</td>
+                    <td>{{ customer.sex }}</td>
+                    <td>{{ customer.created|date:"d/M/Y G:i:s" }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        {% else %}
+            <p>No customers to show</p>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock content %}
+

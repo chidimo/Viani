@@ -20,57 +20,77 @@ class Company(TimeStampedModel):
         abstract = True
 
 class Customer(TimeStampedModel):
-    ML = "MALE"
-    FM = 'FEMALE'
-    sex_choices = ((ML, 'male'), (FM, 'female'))
+    ML = "male"
+    FM = 'female'
+    sex_choices = ((ML, 'Male'), (FM, 'Female'))
 
     msg = "Please enter a valid phone number in the format '+234**********'"
     validate_contact = RegexValidator(regex=r'^\+[0-9]{1,13}$', message=msg, code='Not set')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact])
+    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact], default="+2341234567890")
     address = models.CharField(max_length=50, blank=True, null=True)
     sex = models.CharField(max_length=10, choices=sex_choices, default='female')
 
     def __str__(self):
-        return 'Customer: {} {}'.format(self.first_name, self.last_name)
+        return 'C: {} {}'.format(self.first_name.title(), self.last_name.title())
 
     def get_absolute_url(self):
-        return reverse('/')
+        return reverse('shop:customer_index')
 
 class Job(Company):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2)
     start = models.DateField(default=timezone.now)
-    completion = models.DateField()
-    status = models.IntegerField()
+    completion = models.DateField(blank=True, null=True)
+    status = models.IntegerField(blank=True, null=True)
     feedback = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return "{}: {}".format(self.customer, self.value)
+
+    def get_absolute_url(self):
+        return reverse('shop:job_index')
+
+    def total_expense(self):
+        agg = self.cashflow_set.filter(category__name='expense').aggregate(sum_of_expenses=Sum('amount'))
+        return agg['sum_of_expenses']
+
+    def total_payment(self):
+        agg = self.cashflow_set.filter(category__name='payment').aggregate(sum_of_payments=Sum('amount'))
+        return agg['sum_of_payments']
+
+    def profit(self):
+        try:
+            return self.value - self.total_expense()
+        except TypeError:
+            return self.value - 0
+
+class CashFlowType(TimeStampedModel):
+    """expense, payment"""
+    name = models.CharField(max_length=50, unique=True)
+    description = models.CharField(max_length=500, blank=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('/')
+        return reverse('shop:cashflowtype_index')
 
-    def total_expense(self):
-        agg = self.jobexpense_set.all.aggregate(sum_of_expenses=Sum('amount'))
-        return agg['sum_of_expenses']
-
-    def total_payment(self):
-        agg = self.jobpayment_set.all.aggregate(sum_of_payments=Sum('amount'))
-        return agg['sum_of_payments']
-
-    def profit(self):
-        return self.value - self.total_expense()
-
-class JobExpense(TimeStampedModel):
-    item_name = models.CharField(max_length=50)
+class CashFlow(TimeStampedModel):
+    category = models.ForeignKey(CashFlowType, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    notes = models.CharField(max_length=500)
+    banked = models.BooleanField(default=False)
+    notes = models.CharField(max_length=500, blank=True)
 
-class JobPayment(TimeStampedModel):
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    notes = models.CharField(max_length=500)
+    class Meta:
+        ordering = ('banked', 'category')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('shop:cashflow_index')

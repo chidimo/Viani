@@ -130,3 +130,11 @@ input#id_password {
     margin-bottom: 35rem;
     border: .5px solid #375a7f;
 }
+
+.errorlist {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    color: yellow;
+    font-size: 18px;
+  }

@@ -1,0 +1,89 @@
+{% extends "viani_base.html" %}
+{% block title %}Jobs{% endblock title %}
+{% block content %}
+
+<h1>Jobs</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Jobs</li>
+    </ol>
+</nav>
+
+<!--
+
+    <form action="" method="get" enctype="multipart/form-data">
+        <section class="text-center">
+            {% for field in job_filter_form %}
+            <span class="btn btn-filter">{{ field }}</span>
+            {% endfor %}
+            <span class='btn btn-filter'>
+                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
+            </span>
+        </section>
+    </form>
+-->
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Jobs</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Value</th>
+            <th>Discount</th>
+            <th>Expense</th>
+            <th>Payment</th>
+            <th>Profit</th>
+            <th>Start</th>
+            <th>Completed</th>
+            <th>Feedback</th>
+        </tr>
+
+        {% if jobs %}
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
+                    <td>{{ job.customer.first_name }} {{ job.customer.last_name }}</td>
+                    <td>{{ job.status }}</td>
+                    <td>{{ job.value }}</td>
+                    <td>{{ job.discount }}</td>
+                    <td>{{ job.total_expense }}</td>
+                    <td>{{ job.total_payment }}</td>
+                    <td>{{ job.profit }}</td>
+                    <td>{{ job.start}}</td>
+                    <td>{{ job.completion }}</td>
+                    <td>{{ job.feedback }}</td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+        {% else %}
+            <p>No jobs to show</p>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock content %}
+
