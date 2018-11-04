@@ -5,9 +5,6 @@ ENVIRONMENT_NAME, _ = os.path.splitext(os.path.basename(os.path.abspath(__file__
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-INSTALLED_APPS += [
-    'raven.contrib.django.raven_compat',
-]
 
 # RAVEN_CONFIG = {
 #     'dsn': 'https://4496c0aab78046699ed016c80bcf1ab9:9064062e615443d1bf24ce1748cd87b7@sentry.io/1236089',
