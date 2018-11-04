@@ -23,16 +23,10 @@ MIDDLEWARE += [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'parousia',
-        'NAME': 'parousia$viani',
+        'USER': 'vianifashion',
+        'NAME': 'vianifashion$viani',
         'PASSWORD': config('PROD_DB_PASSWORD'),
-        'HOST': 'parousia.mysql.pythonanywhere-services.com',
-        'TEST':{
-            # 'ENGINE': 'django.db.backends.sqlite3', # for sqlite3
-            # 'NAME':'test.db',
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME':'parousia$test_db'
-            },
+        'HOST': 'vianifashion.mysql.pythonanywhere-services.com',
         'OPTIONS' : {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
         },
     }
