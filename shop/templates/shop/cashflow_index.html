@@ -55,8 +55,6 @@
                     <td>{{ cashflow.amount }}</td>
                     <td>{{ cashflow.name.title }}</td>
 
-                    {{ cashflow.category.name }}
-
                     {% if cashflow.category.name == 'payment' %}
                         {% if cashflow.banked %}
                             <td><a href="{% url 'shop:bank_cashflow' cashflow.pk %}"><i class="fas fa-check-circle text-success"></i></a></td>

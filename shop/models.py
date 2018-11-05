@@ -47,7 +47,11 @@ class Job(Company):
     status = models.IntegerField(blank=True, null=True)
     short_description = models.CharField(max_length=30)
     long_description = models.CharField(max_length=500, blank=True)
-    feedback = models.CharField(max_length=1000)
+    notes = models.CharField(max_length=500)
+
+    total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return "Job: {}".format(self.short_description.title())
@@ -55,25 +59,40 @@ class Job(Company):
     def get_absolute_url(self):
         return reverse('shop:job_index')
 
-    def total_expense(self):
-        agg = self.cashflow_set.filter(category__name='expense').aggregate(sum_of_expenses=Sum('amount'))['sum_of_expenses']
-        if agg is None:
-            return 0
-        else:
-            return agg
+    # def total_expense(self):
+    #     exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']
+    #     if exp is None:
+    #         return 0
+    #     else:
+    #         return exp
 
-    def total_payment(self):
-        agg = self.cashflow_set.filter(category__name='payment').aggregate(sum_of_payments=Sum('amount'))['sum_of_payments']
-        if agg is None:
-            return 0
-        else:
-            return agg
+    # def total_payment(self):
+    #     pay = self.cashflow_set.filter(category__name='payment').aggregate(sum_pay=Sum('amount'))['sum_pay']
+    #     if pay is None:
+    #         return 0
+    #     else:
+    #         return pay
 
-    def profit(self):
-        try:
-            return self.total_payment() - self.total_expense()
-        except TypeError:
-            return 0
+    # def profit(self):
+    #     try:
+    #         return self.total_payment() - self.total_expense()
+    #     except TypeError:
+    #         return 0
+
+    def save(self, *args, **kwargs):
+        exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']
+        pay = self.cashflow_set.filter(category__name='payment').aggregate(sum_pay=Sum('amount'))['sum_pay']
+
+        if exp == None:
+            exp = 0
+        if pay == None:
+            pay = 0
+
+        self.total_expense = exp
+        self.total_payment = pay
+        self.profit = pay - exp - self.discount
+
+        return super().save(*args, **kwargs)
 
 class CashFlowType(TimeStampedModel):
     """expense, payment"""

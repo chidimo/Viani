@@ -11,7 +11,7 @@
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item"><a href="#">Shop</a></li>
-        <li class="breadcrumb-item"><a href="#">Jobs</a></li>
+        <li class="breadcrumb-item"><a href="/shop/job-index/">Jobs</a></li>
         <li class="breadcrumb-item active">{{ job }}</li>
     </ol>
 </nav>
@@ -50,7 +50,7 @@
                     <td>{{ job.start}}</td>
                     <td>{{ job.completion }}</td>
                     <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
-                    <td>{{ job.feedback }}</td>
+                    <td>{{ job.notes }}</td>
                     <td>{{ job.long_description }}</td>
                 </tr>
             </tbody>

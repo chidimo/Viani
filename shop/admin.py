@@ -6,7 +6,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'phone', 'address', 'sex')
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('customer', 'value', 'discount', 'total_expense', 'total_payment', 'start', 'completion', 'status', 'feedback')
+    list_display = ('customer', 'value', 'discount', 'total_expense', 'total_payment', 'start', 'completion', 'status', 'notes')
 
 class CashFlowTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')
@@ -18,8 +18,3 @@ admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Job, JobAdmin)
 admin.site.register(CashFlowType, CashFlowTypeAdmin)
 admin.site.register(CashFlow, CashFlowAdmin)
-
-# python manage.py makemigrations
-# python manage.py migrate
-# python manage.py runserver
-

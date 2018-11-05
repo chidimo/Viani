@@ -1,5 +1,8 @@
 {% extends "viani_base.html" %}
 {% block title %}Jobs{% endblock title %}
+
+{% load shop_tags_and_filters %}
+
 {% block content %}
 
 <h1>Jobs</h1>
@@ -65,7 +68,7 @@
                     <td>{{ job.start}}</td>
                     <td>{{ job.completion }}</td>
                     <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
-                    <td>{{ job.feedback }}</td>
+                    <td>{{ job.notes }}</td>
                     <td>{{ job.long_description }}</td>
                     <td><a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a></td>
                 </tr>
@@ -75,11 +78,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ jobs|summ_values }}</td>
+                <td>{{ jobs|summ_discounts }}</td>
+                <td>{{ jobs|summ_total_expenses }}</td>
+                <td>{{ jobs|summ_total_payments }}</td>
+                <td>{{ jobs|summ_profits }}</td>
                 <td></td>
                 <td></td>
                 <td></td>
