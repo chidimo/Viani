@@ -75,7 +75,7 @@ class AddCashFlowToJobForm(forms.ModelForm):
 class UpdateJobStatusForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('completion_status', 'status', 'notes')
+        fields = ('status', 'notes')
 
         widgets = {
             'status' : forms.Select(attrs={'class' : 'form-control'}),
