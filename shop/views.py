@@ -18,7 +18,7 @@ def gallery(request):
     context = {}
     return render(request, template, context)
 
-class CustomerIndex(LoginRequiredMixin, generic.ListView):
+class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     model = Customer
     template_name = 'shop/customer_index.html'
     context_object_name = 'customers'
@@ -37,7 +37,7 @@ class NewCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
 
-class JobIndex(LoginRequiredMixin, generic.ListView):
+class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
@@ -84,7 +84,7 @@ def job_add_cashflow(request, pk):
 
     return render(request, template, context)
 
-class CashFlowTypeIndex(LoginRequiredMixin, generic.ListView):
+class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlowType
     template_name = 'shop/cashflowtype_index.html'
     context_object_name = 'cashflowtypes'
@@ -102,16 +102,17 @@ class NewCashFlowType(LoginRequiredMixin, generic.CreateView):
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
 
-class CashFlowIndex(LoginRequiredMixin, generic.ListView):
+class CashFlowIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlow
     template_name = 'shop/cashflow_index.html'
     context_object_name = 'cashflows'
     paginate_by = 100
 
-class NewCashFlow(LoginRequiredMixin, generic.CreateView):
+class NewCashFlow(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = CashFlow
     form_class = NewCashFlowForm
     template_name = 'shop/cashflow_new.html'
+    success_message = 'Cashflow added successfully'
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
@@ -121,7 +122,6 @@ class NewCashFlow(LoginRequiredMixin, generic.CreateView):
         return redirect('/')
 
 def bank_cashflow(request, pk):
-
     if rules.test_rule('bank_cashflow', request.user) is False:
         messages.error(request, cm.OPERATION_FAILED)
     

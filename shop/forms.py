@@ -51,7 +51,10 @@ class NewCashFlowForm(forms.ModelForm):
 
         widgets = {
             'name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter name of item (if applicable)'}),
-            'category' : forms.Select(attrs={'class' : 'form-control'}),
+            'category' : AddAnotherWidgetWrapper(
+                forms.Select(attrs={'class' : 'form-control'}),
+                reverse_lazy('shop:cashflowtype_new')
+            ),
             'job' : forms.Select(attrs={'class' : 'form-control'}),
             'amount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter amount'}),
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
