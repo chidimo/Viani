@@ -44,7 +44,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 LOGIN_URL = reverse_lazy('personnel:login')
 LOGOUT_URL = reverse_lazy('personnel:logout')
 LOGOUT_REDIRECT_URL = reverse_lazy('personnel:login')
-LOGIN_REDIRECT_URL = reverse_lazy('shop:gallery')
+LOGIN_REDIRECT_URL = reverse_lazy('shop:job_index')
 
 PASSWORD_RESET_TIMEOUT_DAYS = 1
 

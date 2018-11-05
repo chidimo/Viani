@@ -3,10 +3,6 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[dev-packages]
-pylint = "*"
-django-debug-toolbar = "*"
-
 [packages]
 python-decouple = "*"
 pygments = "*"
@@ -16,12 +12,15 @@ django-extensions = "*"
 django-addanother = "*"
 django = "*"
 django-pure-pagination = "*"
-psycopg2 = "*"
+"psycopg2" = "*"
 requests = "*"
 pillow = "*"
-mysqlclient = "*"
 whitenoise = "*"
 social-auth-app-django = "*"
+
+[dev-packages]
+django-debug-toolbar = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.6"
