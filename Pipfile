@@ -18,6 +18,9 @@ django-debug-toolbar = "*"
 requests = "*"
 pylint = "*"
 pillow = "*"
+social-auth-app-django = "*"
+mysqlclient = "*"
+whitenoise = "*"
 
 [dev-packages]
 
