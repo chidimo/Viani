@@ -60,13 +60,6 @@ class JobDetail(LoginRequiredMixin, generic.DetailView):
     template_name = 'shop/job_detail.html'
     context_object_name = 'job'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["job_payments"] = "k"
-        context["job_expenses"] = "k"
-        context["job_profit"] = "k"
-        return context
-
 def job_add_cashflow(request, pk):
     job = Job.objects.get(pk=pk)
     template = 'shop/job_add_cashflow.html'
