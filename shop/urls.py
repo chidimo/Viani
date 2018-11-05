@@ -19,6 +19,7 @@ urlpatterns += [
     path('new-job/', views.NewJob.as_view(), name='job_new'),
     path('job/<int:pk>/', views.JobDetail.as_view(), name='job_detail'),
     path('add-cashflow/<int:pk>/', views.job_add_cashflow, name='job_add_cashflow'),
+    path('update-status/<int:pk>/', views.UpdateJobStatus.as_view(), name='job_update_status'),
 ]
 
 urlpatterns += [

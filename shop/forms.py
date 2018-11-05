@@ -71,3 +71,13 @@ class AddCashFlowToJobForm(forms.ModelForm):
             'amount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter amount'}),
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
         }
+
+class UpdateJobStatusForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ('status', 'notes')
+
+        widgets = {
+            'status' : forms.Select(attrs={'class' : 'form-control'}),
+            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
+        }

@@ -39,14 +39,7 @@ class Customer(TimeStampedModel):
         return reverse('shop:customer_index')
 
 class Job(Company):
-
-    NOT_STARTED = 'not started'
-    QUARTER = 'quarter'
-    HALF = 'halfway done'
-    SEMI = 'almost done'
-    DONE = 'completed'
-
-    status_choices = ((NOT_STARTED, 'Not started'), (QUARTER, 'Starting'), (HALF,  'Halfway done'), (SEMI, 'Almost done'), (DONE, 'Done'))
+    status_choices = (('new job', 'New job'), ('started', "25%/ done"), ('halfway',  '50%/ done'), ('almost', '75%/ done'), ('completed', '100%/ done'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -66,26 +59,6 @@ class Job(Company):
 
     def get_absolute_url(self):
         return reverse('shop:job_index')
-
-    # def total_expense(self):
-    #     exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']
-    #     if exp is None:
-    #         return 0
-    #     else:
-    #         return exp
-
-    # def total_payment(self):
-    #     pay = self.cashflow_set.filter(category__name='payment').aggregate(sum_pay=Sum('amount'))['sum_pay']
-    #     if pay is None:
-    #         return 0
-    #     else:
-    #         return pay
-
-    # def profit(self):
-    #     try:
-    #         return self.total_payment() - self.total_expense()
-    #     except TypeError:
-    #         return 0
 
     def save(self, *args, **kwargs):
         exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']

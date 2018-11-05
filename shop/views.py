@@ -11,7 +11,7 @@ import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
-from .forms import NewCustomerForm, NewJobForm, NewCashFlowForm, AddCashFlowToJobForm, NewCashFlowTypeForm
+from .forms import NewCustomerForm, NewJobForm, NewCashFlowForm, AddCashFlowToJobForm, UpdateJobStatusForm, NewCashFlowTypeForm
 
 def gallery(request):
     template = 'shop/gallery.html'
@@ -65,8 +65,9 @@ def job_add_cashflow(request, pk):
     template = 'shop/job_add_cashflow.html'
     form = AddCashFlowToJobForm()
 
-    # if job.value == job.total_payment:
-    #     messages.error(request, "You can't add further ")
+    if job.status == 'completed':
+        messages.error(request, "This job is done. You can no longer add a cashflow")
+        return redirect(reverse('shop:job_index'))
 
     context = {}
     context['form'] = form
@@ -85,8 +86,18 @@ def job_add_cashflow(request, pk):
             return redirect(reverse('shop:job_index'))
         else:
             return render(request, template, {'form' : form})
-
     return render(request, template, context)
+
+class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateView):
+    model = Job
+    template_name = 'shop/job_update_status.html'
+    form_class = UpdateJobStatusForm
+    success_message = "Job status updated successfully."
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['job'] = Job.objects.get(pk=self.kwargs['pk'])
+        return context
 
 class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlowType

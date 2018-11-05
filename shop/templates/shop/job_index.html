@@ -36,7 +36,7 @@
         </thead>
         <tr>
             <th>S/N</th>
-            <th>Description</th>
+            <th>Title</th>
             <th>Customer</th>
             <th>Status</th>
             <th>Value</th>
@@ -75,7 +75,10 @@
                         <td>{{ job.created|date:"d/M/Y" }}</td>
                         <td>{{ job.notes }}</td>
                         <td>{{ job.long_description }}</td>
-                        <td><a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a></td>
+                        <td>
+                            <a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a> |
+                            <a href="{% url 'shop:job_update_status' job.pk %}" title="Update status"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
                     </tr>
             {% endfor %}
             <tr>
