@@ -39,7 +39,7 @@ class Customer(TimeStampedModel):
         return reverse('shop:customer_index')
 
 class Job(Company):
-    status_choices = (('new job', 'New job'), ('started', "25%/ done"), ('halfway',  '50%/ done'), ('almost', '75%/ done'), ('completed', '100%/ done'))
+    status_choices = (('new job', 'New job'), ('started', "25% done"), ('halfway',  '50% done'), ('almost', '75% done'), ('completed', '100% done'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -48,9 +48,14 @@ class Job(Company):
     long_description = models.CharField(max_length=500, blank=True)
     notes = models.CharField(max_length=500, blank=True, null=True)
 
+    completion_status = models.BooleanField(default=False)
+
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    class Meta:
+        ordering = ('completion_status', 'customer', '-created')
 
     def __str__(self):
         return "Job: {}".format(self.short_description.title())
