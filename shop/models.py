@@ -41,7 +41,7 @@ class Customer(TimeStampedModel):
 class Job(Company):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
-    discount = models.DecimalField(max_digits=10, decimal_places=2)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     start = models.DateField(default=timezone.now)
     completion = models.DateField(blank=True, null=True)
     status = models.IntegerField(blank=True, null=True)
@@ -56,12 +56,18 @@ class Job(Company):
         return reverse('shop:job_index')
 
     def total_expense(self):
-        agg = self.cashflow_set.filter(category__name='expense').aggregate(sum_of_expenses=Sum('amount'))
-        return agg['sum_of_expenses']
+        agg = self.cashflow_set.filter(category__name='expense').aggregate(sum_of_expenses=Sum('amount'))['sum_of_expenses']
+        if agg is None:
+            return 0
+        else:
+            return agg
 
     def total_payment(self):
-        agg = self.cashflow_set.filter(category__name='payment').aggregate(sum_of_payments=Sum('amount'))
-        return agg['sum_of_payments']
+        agg = self.cashflow_set.filter(category__name='payment').aggregate(sum_of_payments=Sum('amount'))['sum_of_payments']
+        if agg is None:
+            return 0
+        else:
+            return agg
 
     def profit(self):
         try:
@@ -89,7 +95,7 @@ class CashFlow(TimeStampedModel):
     notes = models.CharField(max_length=500, blank=True)
 
     class Meta:
-        ordering = ('banked', 'category')
+        ordering = ('job', 'category', 'banked')
 
     def __str__(self):
         return self.name

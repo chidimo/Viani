@@ -63,7 +63,7 @@ class NewCashFlowForm(forms.ModelForm):
 class AddCashFlowToJobForm(forms.ModelForm):
     class Meta:
         model = CashFlow
-        fields = ('category', 'name', 'amount', 'notes')
+        fields = ('category', 'amount', 'name', 'notes')
 
         widgets = {
             'name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter name of item (if applicable)'}),
