@@ -43,8 +43,6 @@ class Job(Company):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    start = models.DateField(default=timezone.now)
-    completion = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=15, choices=status_choices, default='not started')
     short_description = models.CharField(max_length=30)
     long_description = models.CharField(max_length=500, blank=True)

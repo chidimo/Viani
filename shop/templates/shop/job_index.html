@@ -70,8 +70,8 @@
                         <td>{{ job.total_expense }}</td>
                         <td>{{ job.total_payment }}</td>
                         <td>{{ job.profit }}</td>
-                        <td>{{ job.start}}</td>
-                        <td>{{ job.completion }}</td>
+                        <td>{{ job.created|date:"d/M/Y" }}</td>
+                        <td>{{ job.modified|date:"d/M/Y" }}</td>
                         <td>{{ job.created|date:"d/M/Y" }}</td>
                         <td>{{ job.notes }}</td>
                         <td>{{ job.long_description }}</td>
