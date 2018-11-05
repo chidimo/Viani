@@ -39,15 +39,23 @@ class Customer(TimeStampedModel):
         return reverse('shop:customer_index')
 
 class Job(Company):
+
+    NOT_STARTED = 'not started'
+    QUARTER = 'quarter'
+    HALF = 'halfway done'
+    SEMI = 'almost done'
+    DONE = 'completed'
+
+    status_choices = ((NOT_STARTED, 'Not started'), (QUARTER, 'Starting'), (HALF,  'Halfway done'), (SEMI, 'Almost done'), (DONE, 'Done'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     start = models.DateField(default=timezone.now)
     completion = models.DateField(blank=True, null=True)
-    status = models.IntegerField(blank=True, null=True)
+    status = models.CharField(max_length=15, choices=status_choices, default='not started')
     short_description = models.CharField(max_length=30)
     long_description = models.CharField(max_length=500, blank=True)
-    notes = models.CharField(max_length=500)
+    notes = models.CharField(max_length=500, blank=True, null=True)
 
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)

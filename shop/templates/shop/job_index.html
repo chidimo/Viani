@@ -47,31 +47,36 @@
             <th>Start</th>
             <th>Completed</th>
             <th>Date</th>
-            <th>Feedback</th>
-            <th>Detail</th>
+            <th>Notes</th>
+            <th>Detailed description</th>
             <th>Action</th>
         </tr>
 
         {% if jobs %}
         <tbody>
             {% for job in jobs %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.short_description.title }}</a></td>
-                    <td>{{ job.customer }}</td>
-                    <td>{{ job.status }}</td>
-                    <td>{{ job.value }}</td>
-                    <td>{{ job.discount }}</td>
-                    <td>{{ job.total_expense }}</td>
-                    <td>{{ job.total_payment }}</td>
-                    <td>{{ job.profit }}</td>
-                    <td>{{ job.start}}</td>
-                    <td>{{ job.completion }}</td>
-                    <td>{{ job.created|date:"d/M/Y G:i:s" }}</td>
-                    <td>{{ job.notes }}</td>
-                    <td>{{ job.long_description }}</td>
-                    <td><a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a></td>
-                </tr>
+
+                {% if job.value == job.total_payment %}
+                    <tr style="background:green;">
+                {% else %}
+                    <tr>
+                {% endif %}
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.short_description.title }}</a></td>
+                        <td>{{ job.customer }}</td>
+                        <td>{{ job.status.title }}</td>
+                        <td>{{ job.value }}</td>
+                        <td>{{ job.discount }}</td>
+                        <td>{{ job.total_expense }}</td>
+                        <td>{{ job.total_payment }}</td>
+                        <td>{{ job.profit }}</td>
+                        <td>{{ job.start}}</td>
+                        <td>{{ job.completion }}</td>
+                        <td>{{ job.created|date:"d/M/Y" }}</td>
+                        <td>{{ job.notes }}</td>
+                        <td>{{ job.long_description }}</td>
+                        <td><a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a></td>
+                    </tr>
             {% endfor %}
             <tr>
                 <td></td>

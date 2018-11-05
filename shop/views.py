@@ -65,6 +65,9 @@ def job_add_cashflow(request, pk):
     template = 'shop/job_add_cashflow.html'
     form = AddCashFlowToJobForm()
 
+    # if job.value == job.total_payment:
+    #     messages.error(request, "You can't add further ")
+
     context = {}
     context['form'] = form
     context['job'] = job
@@ -78,6 +81,7 @@ def job_add_cashflow(request, pk):
             amount = form['amount']
             notes = form['notes']
             cashflow = CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
+            job.save()
             return redirect(reverse('shop:job_index'))
         else:
             return render(request, template, {'form' : form})

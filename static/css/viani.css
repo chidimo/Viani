@@ -20,7 +20,11 @@
 }
 
 table td {
-    white-space: nowrap;;
+    white-space: nowrap;
+}
+
+table th {
+    color: orange;
 }
 
 .login-form {
