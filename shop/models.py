@@ -33,7 +33,7 @@ class Customer(TimeStampedModel):
     sex = models.CharField(max_length=10, choices=sex_choices, default='female')
 
     def __str__(self):
-        return 'C: {} {}'.format(self.first_name.title(), self.last_name.title())
+        return '{} {}'.format(self.first_name.title(), self.last_name.title())
 
     def get_absolute_url(self):
         return reverse('shop:customer_index')
