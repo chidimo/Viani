@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
@@ -78,7 +78,7 @@ def job_add_cashflow(request, pk):
             amount = form['amount']
             notes = form['notes']
             cashflow = CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
-            return redirect(cashflow.get_absolute_url())
+            return redirect(reverse('shop:job_index'))
         else:
             return render(request, template, {'form' : form})
 
