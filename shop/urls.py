@@ -10,13 +10,16 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('customer-index', views.CustomerIndex.as_view(), name='customer_index'),
-    path('new-customer', views.NewCustomer.as_view(), name='customer_new')
+    path('customer-index/', views.CustomerIndex.as_view(), name='customer_index'),
+    path('new-customer', views.NewCustomer.as_view(), name='customer_new'),
+    path('customer/<int:pk>/', views.customer_details, name='customer_details'),
+    path('edit-customer/<int:pk>/', views.EditCustomer.as_view(), name='edit_customer'),
 ]
 
 urlpatterns += [
     path('job-index/', views.JobIndex.as_view(), name='job_index'),
-    path('new-job/', views.NewJob.as_view(), name='job_new'),
+    path('job-new/', views.NewJob.as_view(), name='job_new'),
+    path('job-edit/<int:pk>/', views.EditJob.as_view(), name='job_edit'),
     path('job/<int:pk>/', views.JobDetail.as_view(), name='job_detail'),
     path('add-cashflow/<int:pk>/', views.job_add_cashflow, name='job_add_cashflow'),
     path('update-status/<int:pk>/', views.UpdateJobStatus.as_view(), name='job_update_status'),

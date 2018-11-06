@@ -11,7 +11,7 @@ import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
-from .forms import NewCustomerForm, NewJobForm, NewCashFlowForm, AddCashFlowToJobForm, UpdateJobStatusForm, NewCashFlowTypeForm
+from .forms import NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm, NewCashFlowForm, AddCashFlowToJobForm, UpdateJobStatusForm, NewCashFlowTypeForm
 
 def gallery(request):
     template = 'shop/gallery.html'
@@ -37,11 +37,36 @@ class NewCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
 
+class EditCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
+    model = Customer
+    template_name = 'shop/customer_edit.html'
+    form_class = EditCustomerForm
+    success_message = 'Customer updated successfully !'
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if rules.test_rule('edit_customer', user):
+            return super().dispatch(request, *args, **kwargs)
+        messages.error(self.request, cm.OPERATION_FAILED)
+        return redirect('/')
+
+def customer_details(request, pk):
+    template = 'shop/customer_details.html'
+    context = {}
+    context['customer'] = Customer.objects.get(pk=pk)
+    context['customer_jobs'] = Job.objects.filter(customer__pk=pk)
+    return render(request, template, context)
+
 class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
     paginate_by = 100
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['completed_job_count'] = Job.objects.filter(status=5).count()
+        return context
 
 class NewJob(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Job
@@ -54,6 +79,18 @@ class NewJob(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
+
+class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
+    model = Job
+    form_class = EditJobForm
+    template_name = 'shop/job_edit.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        if rules.test_rule('edit_job', user):
+            return super().dispatch(request, *args, **kwargs)
+        messages.error(self.request, cm.OPERATION_FAILED)
+        return redirect(reverse('shop:job_index'))
 
 class JobDetail(LoginRequiredMixin, generic.DetailView):
     model = Job
@@ -81,7 +118,7 @@ def job_add_cashflow(request, pk):
             name = form['name']
             amount = form['amount']
             notes = form['notes']
-            cashflow = CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
+            CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
             job.save()
             return redirect(reverse('shop:job_index'))
         else:
@@ -139,7 +176,7 @@ class NewCashFlow(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, gen
 def bank_cashflow(request, pk):
     if rules.test_rule('bank_cashflow', request.user) is False:
         messages.error(request, cm.OPERATION_FAILED)
-    
+
     cashflow = CashFlow.objects.get(pk=pk)
 
     if cashflow.category.name == 'expense':

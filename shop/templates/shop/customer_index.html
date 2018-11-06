@@ -37,7 +37,8 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Sex</th>
-            <th>Date</th>
+            <th>Jobs</th>
+            <th>Action</th>
         </tr>
 
         {% if customers %}
@@ -45,14 +46,16 @@
             {% for customer in customers %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td><a href="">{{ customer.first_name.title }} {{ customer.last_name.title }}</a></td>
-                    <td>{{ customer.phone }}</td>
-                    <td>{{ customer.address }}</td>
-                    <td>{{ customer.sex }}</td>
-                    <td>{{ customer.created|date:"d/M/Y G:i:s" }}</td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.first_name.title }} {{ customer.last_name.title }}</a></td>
+                    <td><a class="text-success" href="tel:{{ customer.phone }}">{{ customer.phone }}</a></td>
+                    <td>{{ customer.address.title }}</td>
+                    <td>{{ customer.sex.title }}</td>
+                    <td>{{ customer.job_set.count }}</td>
+                    <td><a href="{% url 'shop:edit_customer' customer.pk %}"><i class="fas fa-edit"></i></a></td>
                 </tr>
             {% endfor %}
             <tr>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

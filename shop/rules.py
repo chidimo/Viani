@@ -3,9 +3,11 @@ from . import predicates
 
 # customer
 rules.add_rule('create_customer', predicates.create_customer)
+rules.add_rule('edit_customer', predicates.edit_customer)
 
 # job
 rules.add_rule('create_job', predicates.create_job)
+rules.add_rule('edit_job', predicates.edit_job)
 
 # cashflow
 rules.add_rule('create_cashflow', predicates.create_cashflow)

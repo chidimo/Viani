@@ -1,0 +1,32 @@
+{% extends "viani_base.html" %}
+{% block title %}{{ customer }}{% endblock title %}
+{% block content %}
+
+<h1>{{ customer }}</h1>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item"><a href="/shop/customer-index/">Customers</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ customer }}</li>
+    </ol>
+</nav>
+
+<h2>Jobs belonging to {{ customer }}</h2>
+<p>Completed jobs are coloured <span class="text-success">green</span></p>
+<hr>
+
+{% for job in customer_jobs%}
+
+    {% if job.status == 5%}
+        <h3>{{ forloop.counter }} - <a class="text-success" href="{% url 'shop:job_detail' job.pk %}">{{ job }}</a></h3>
+    {% else %}
+        <h3>{{ forloop.counter }} - <a href="{% url 'shop:job_detail' job.pk %}">{{ job }}</a></h3>
+    {% endif %}
+
+
+{% endfor %}
+
+{% endblock content %}
+

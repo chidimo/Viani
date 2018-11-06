@@ -18,10 +18,23 @@ class NewCustomerForm(forms.ModelForm):
             'sex' : forms.Select(attrs={'class' : 'form-control'}),
         }
 
+class EditCustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ('first_name', 'last_name', 'phone', 'address', 'sex')
+
+        widgets = {
+            'first_name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' :'Enter first name'}),
+            'last_name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' :'Enter last name'}),
+            'address' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' :'Enter address name'}),
+            'phone' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' :'Enter phone number'}),
+            'sex' : forms.Select(attrs={'class' : 'form-control'}),
+        }
+
 class NewJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('customer', 'short_description', 'value', 'discount', 'long_description')
+        fields = ('customer', 'short_description', 'value', 'discount', 'notes')
 
         widgets = {
             'customer' : AddAnotherWidgetWrapper(
@@ -31,7 +44,23 @@ class NewJobForm(forms.ModelForm):
             'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
-            'long_description' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Longer description'}),
+            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Any notes or longer description'}),
+        }
+
+class EditJobForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ('customer', 'short_description', 'value', 'discount', 'notes')
+
+        widgets = {
+            'customer' : AddAnotherWidgetWrapper(
+                forms.Select(attrs={'class' : 'form-control'}),
+                reverse_lazy('shop:customer_new')
+            ),
+            'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
+            'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
+            'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
+            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Any notes or longer description'}),
         }
 
 class NewCashFlowTypeForm(forms.ModelForm):

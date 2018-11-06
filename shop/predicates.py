@@ -8,10 +8,18 @@ def user_permissions(user):
 def create_customer(user):
     return 'create_customer' in user_permissions(user)
 
+@predicate
+def edit_customer(user):
+    return 'edit_customer' in user_permissions(user)
+
 # job
 @predicate
 def create_job(user):
     return 'create_job' in user_permissions(user)
+
+@predicate
+def edit_job(user):
+    return 'edit_job' in user_permissions(user)
 
 # cashflow
 @predicate

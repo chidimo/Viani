@@ -5,8 +5,6 @@ from django.db.models import Sum
 from django.shortcuts import reverse
 from django.core.validators import RegexValidator
 
-from personnel.models import Personnel
-
 from .utils.models import TimeStampedModel
 
 class Company(TimeStampedModel):
@@ -38,6 +36,15 @@ class Customer(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('shop:customer_index')
 
+# class DressType(TimeStampedModel):
+#     name = models.CharField(max_length=30, unique=True)
+
+#     def __str__(self):
+#         return "DT: {}".format(self.name)
+
+#     def get_absolute_url(self):
+#         return reverse('shop:dresstype_index')
+
 class Job(Company):
     status_choices = ((1, 'Level 1'), (2, "Level 2"), (3,  'Level 3'), (4, 'Level 4'), (5, 'Level 5'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
@@ -45,7 +52,6 @@ class Job(Company):
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.IntegerField(choices=status_choices, default=1)
     short_description = models.CharField(max_length=30)
-    long_description = models.CharField(max_length=500, blank=True)
     notes = models.CharField(max_length=500, blank=True, null=True)
 
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)

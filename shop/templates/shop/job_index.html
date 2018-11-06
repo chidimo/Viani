@@ -6,6 +6,7 @@
 {% block content %}
 
 <h1>Jobs</h1>
+<h2 class="text-success">{{ completed_job_count }} jobs completed till date.</h2>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -46,8 +47,7 @@
             <th>Profit</th>
             <th>Start</th>
             <th>Completed</th>
-            <th>Notes</th>
-            <th>Detailed description</th>
+            <th>Notes/Description</th>
             <th>Action</th>
         </tr>
 
@@ -55,8 +55,8 @@
         <tbody>
             {% for job in jobs %}
 
-                {% if job.value == job.total_payment %}
-                    <tr style="background:green;">
+                {% if job.status == 5 %}
+                    <tr style="background: #024602; color:white;">
                 {% else %}
                     <tr>
                 {% endif %}
@@ -66,16 +66,16 @@
                         <td>Level {{ job.status }}</td>
                         <td>{{ job.value }}</td>
                         <td>{{ job.discount }}</td>
-                        <td>{{ job.total_expense }}</td>
+                        <td class="text-danger">{{ job.total_expense }}</td>
                         <td>{{ job.total_payment }}</td>
-                        <td>{{ job.profit }}</td>
+                        <td class="text-success">{{ job.profit }}</td>
                         <td>{{ job.created|date:"d/M/Y" }}</td>
                         <td>{{ job.modified|date:"d/M/Y" }}</td>
                         <td>{{ job.notes }}</td>
-                        <td>{{ job.long_description }}</td>
                         <td>
-                            <a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a> |
-                            <a href="{% url 'shop:job_update_status' job.pk %}" title="Update status"><i class="fas fa-pencil-alt"></i></a>
+                            <a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a>&nbsp;
+                            <a href="{% url 'shop:job_update_status' job.pk %}" title="Update status"><i class="fas fa-pencil-alt"></i></a>&nbsp;
+                            <a href="{% url 'shop:job_edit' job.pk %}" title="Update status"><i class="fas fa-edit"></i></a>
                         </td>
                     </tr>
             {% endfor %}
@@ -89,7 +89,6 @@
                 <td>{{ jobs|summ_total_expenses }}</td>
                 <td>{{ jobs|summ_total_payments }}</td>
                 <td>{{ jobs|summ_profits }}</td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>

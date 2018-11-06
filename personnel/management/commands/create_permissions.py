@@ -8,9 +8,11 @@ perms['activate_deactivate_personnel_account'] = 'Can activate or deactivate a u
 
 # customer
 perms['create_customer'] = 'Can create customer'
+perms['edit_customer'] = 'Can edit customer'
 
 # job
 perms['create_job'] = 'Can create job'
+perms['edit_job'] = 'Can edit job'
 
 # cashflow
 perms['create_cashflow'] = 'Can create cashflow'
