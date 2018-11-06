@@ -19,6 +19,14 @@
     margin: .2rem;
 }
 
+table td {
+    white-space: nowrap;
+}
+
+table th {
+    color: orange;
+}
+
 .login-form {
     max-width:350px;
     margin:auto;

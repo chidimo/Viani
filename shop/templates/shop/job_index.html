@@ -63,7 +63,7 @@
                         <td>{{ forloop.counter }}</td>
                         <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.short_description.title }}</a></td>
                         <td>{{ job.customer }}</td>
-                        <td>{{ job.status.title }}</td>
+                        <td>Level {{ job.status }}</td>
                         <td>{{ job.value }}</td>
                         <td>{{ job.discount }}</td>
                         <td>{{ job.total_expense }}</td>

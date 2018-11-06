@@ -12,11 +12,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='job',
-            options={'ordering': ('completion_status', 'customer', '-created')},
+            options={'ordering': ('customer', '-created')},
         ),
-        migrations.AddField(
-            model_name='job',
-            name='completion_status',
-            field=models.BooleanField(default=False),
-        ),
+        # migrations.AddField(
+        #     model_name='job',
+        #     name='completion_status',
+        #     field=models.BooleanField(default=False),
+        # ),
     ]
