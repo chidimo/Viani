@@ -63,10 +63,10 @@ class Job(Company):
     profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        ordering = ('status', 'customer', '-created')
+        ordering = ('status', 'customer', '-start_date')
 
     def __str__(self):
-        return "Job: {}".format(self.short_description.title())
+        return self.short_description.title()
 
     def get_absolute_url(self):
         return reverse('shop:job_index')

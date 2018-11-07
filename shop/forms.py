@@ -1,4 +1,7 @@
+import datetime
+
 from django import forms
+from django.utils import timezone
 from django.urls import reverse_lazy
 from django.forms.fields import DateField
 
@@ -66,6 +69,50 @@ class EditJobForm(forms.ModelForm):
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Any notes or longer description'}),
         }
 
+class UpdateJobStatusForm(forms.ModelForm):
+    class Meta:
+        model = Job
+        fields = ('status', 'completed', 'notes')
+
+        widgets = {
+            'completed' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
+            'status' : forms.Select(attrs={'class' : 'form-control'}),
+            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
+        }
+
+class JobFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['start_date'].label = 'Job start date'
+        self.fields['completed'].label = 'Job completion date'
+        self.fields['to_date'].label = 'Find to date'
+
+    phase = forms.ChoiceField(
+        required=False,
+        choices = (('', 'Select phase'), (1, 'Phase 1'), (2, 'Phase 2'), (3, 'Phase 3'), (4, 'Phase 4'), (5, 'Phase 5')),
+        widget=forms.Select(attrs={"class" : "form-control"})
+        )
+    customer = forms.ModelChoiceField(
+        required=False,
+        empty_label = 'Select customer',
+        queryset=Customer.objects.all(),
+        widget=forms.Select(attrs={"class" : "form-control"}))
+
+    start_date = DateField(
+        required=False,
+        # initial=timezone.now,
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
+
+    completed= DateField(
+        required=False,
+        # initial=timezone.now,
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
+
+    to_date = DateField(
+        required=True,
+        initial=timezone.now() + datetime.timedelta(days=30),
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
+
 class NewCashFlowTypeForm(forms.ModelForm):
     class Meta:
         model = CashFlowType
@@ -104,13 +151,35 @@ class AddCashFlowToJobForm(forms.ModelForm):
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
         }
 
-class UpdateJobStatusForm(forms.ModelForm):
-    class Meta:
-        model = Job
-        fields = ('status', 'completed', 'notes')
+class CashFlowFilterForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['payment_date'].label = 'Payment date'
 
-        widgets = {
-            'completed' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
-            'status' : forms.Select(attrs={'class' : 'form-control'}),
-            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
-        }
+    job = forms.ModelChoiceField(
+        required=False,
+        empty_label = 'Select job',
+        queryset=Job.objects.all(),
+        widget=forms.Select(attrs={"class" : "form-control"}))
+
+    customer = forms.ModelChoiceField(
+        required=False,
+        empty_label = 'Select customer',
+        queryset=Customer.objects.all(),
+        widget=forms.Select(attrs={"class" : "form-control"}))
+
+    category = forms.ModelChoiceField(
+        required=False,
+        empty_label = 'Select cashflowype',
+        queryset=CashFlowType.objects.all(),
+        widget=forms.Select(attrs={"class" : "form-control"}))
+
+    payment_date = DateField(
+        required=False,
+        initial=timezone.now,
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
+
+    to_date = DateField(
+        required=True,
+        initial=timezone.now() + datetime.timedelta(days=30),
+        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))

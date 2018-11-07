@@ -1,6 +1,6 @@
 """Urls"""
 
-from django.urls import reverse_lazy, path, re_path
+from django.urls import reverse_lazy, path
 from django.contrib.auth import views as auth_views
 
 from . import views
@@ -10,7 +10,7 @@ app_name = 'personnel'
 urlpatterns = []
 
 urlpatterns += [
-    path('', views.PersonnelIndex.as_view(), name='index'),
+    path('index/', views.PersonnelIndex.as_view(), name='index'),
 ]
 
 urlpatterns += [

@@ -1,5 +1,8 @@
 import datetime
+import operator
+from functools import reduce
 
+from django.db.models import Q
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from django.contrib import messages
@@ -13,7 +16,7 @@ import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
-from .forms import NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm, NewCashFlowForm, AddCashFlowToJobForm, UpdateJobStatusForm, NewCashFlowTypeForm
+from .forms import NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm, UpdateJobStatusForm, JobFilterForm, NewCashFlowForm, NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
 
 def gallery(request):
     template = 'shop/gallery.html'
@@ -68,6 +71,8 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['completed_job_count'] = Job.objects.filter(status=5).count()
+        context['job_filter_form'] = JobFilterForm()
+        context['filter_view'] = False
         return context
 
 class NewJob(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
@@ -138,6 +143,67 @@ class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateVi
         context['job'] = Job.objects.get(pk=self.kwargs['pk'])
         return context
 
+class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
+    model = Job
+    template_name = 'shop/job_index.html'
+    context_object_name = "jobs"
+    paginate_by = 100
+
+    def get_context_data(self, **kwargs):
+        context = super(JobFilterView, self).get_context_data(**kwargs)
+        context['job_filter_form'] = JobFilterForm()
+        context['filter_view'] = True
+        return context
+
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            form = JobFilterForm(self.request.GET)
+
+            if form.is_valid():
+                form = form.cleaned_data
+
+                customer = form['customer']
+                phase = form['phase']
+                start_date = form['start_date']
+                completed = form['completed']
+                to_date = form['to_date']
+
+                # build queries
+                queries = []
+                msg = []
+                if customer:
+                    queries.append(Q(customer=customer))
+                    msg.append('{}'.format(customer))
+                if phase:
+                    queries.append(Q(status=phase))
+                    msg.append('Phase {}'.format(phase))
+
+                if completed:
+                    if not to_date:
+                        to_date = start_date + datetime.timedelta(days=30)
+                    queries.append(Q(start_date__range=[start_date, to_date]))
+                    msg.append('Completed between {} and {}'.format(start_date, to_date))
+
+                if start_date:
+                    if not to_date:
+                        to_date = start_date + datetime.timedelta(days=30)
+                    queries.append(Q(start_date__range=[start_date, to_date]))
+                    msg.append('Started between {} and {}'.format(start_date, to_date))
+
+                # combine queries
+                try:
+                    query = reduce(operator.and_, queries)
+                    query_str = " AND ".join(msg)
+                except TypeError:
+                    query = []
+                    query_str = ""
+                    messages.success(self.request, "You did not make any selection")
+                    return Job.objects.all().order_by('status', 'customer', '-start_date')
+
+                # execute query
+                messages.success(self.request, "Search results for {}".format(query_str))
+                return Job.objects.filter(query).order_by('status', 'customer', '-start_date')
+
 class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlowType
     template_name = 'shop/cashflowtype_index.html'
@@ -161,6 +227,11 @@ class CashFlowIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     template_name = 'shop/cashflow_index.html'
     context_object_name = 'cashflows'
     paginate_by = 100
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['cashflow_filter_form'] = CashFlowFilterForm()
+        return context
 
 class NewCashFlow(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = CashFlow
@@ -188,3 +259,58 @@ def bank_cashflow(request, pk):
         cashflow.save(update_fields=['banked'])
 
     return redirect('shop:cashflow_index')
+
+class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
+    model = CashFlow
+    template_name = 'shop/cashflow_index.html'
+    context_object_name = "cashflows"
+    paginate_by = 100
+
+    def get_context_data(self, **kwargs):
+        context = super(CashFlowFilterView, self).get_context_data(**kwargs)
+        context['cashflow_filter_form'] = CashFlowFilterForm()
+        return context
+
+    def get_queryset(self):
+        if self.request.method == 'GET':
+            form = CashFlowFilterForm(self.request.GET)
+
+            if form.is_valid():
+                form = form.cleaned_data
+
+                customer = form['customer']
+                job = form['job']
+                category = form['category']
+                payment_date = form['payment_date']
+                to_date = form['to_date']
+
+                # build queries
+                queries = []
+                msg = []
+                if job:
+                    queries.append(Q(job=job))
+                    msg.append('Phase {}'.format(job))
+                if customer:
+                    queries.append(Q(job__customer=customer))
+                    msg.append('{}'.format(customer))
+                if category:
+                    queries.append(Q(category=category))
+                    msg.append('Phase {}'.format(category))
+
+                if payment_date:
+                    if not to_date:
+                        to_date = payment_date + datetime.timedelta(days=30)
+                    queries.append(Q(created__range=[payment_date, to_date]))
+                    msg.append('Paid between {} and {}'.format(payment_date, to_date))
+
+                # combine queries
+                try:
+                    query = reduce(operator.and_, queries)
+                    query_str = " AND ".join(msg)
+                except TypeError:
+                    query = []
+                    query_str = ""
+
+                # execute query
+                messages.success(self.request, "Search results for {}".format(query_str))
+                return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')

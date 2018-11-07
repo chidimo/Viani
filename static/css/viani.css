@@ -38,23 +38,23 @@ table th {
   .form-group {
     position: relative;
   }
-  
+
   .login-logo {
     margin:auto;
   }
-  
+
   input#id_username {
     text-indent: 30px;
     position: relative;
     box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
   }
-  
+
   input#id_password {
     text-indent: 30px;
     position: relative;
     box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
   }
-  
+
   .fa-user {
     position: absolute;
     top: 5px;
@@ -64,7 +64,7 @@ table th {
     border-right: 1px solid #ccc;
     padding-right: 5px;
   }
-  
+
   .fa-unlock-alt {
     position: absolute;
     top: 5px;
@@ -114,6 +114,16 @@ input#id_email {
 input#id_password {
     text-indent: 2rem;
     position: relative;
+}
+
+select.form-control:not([size]):not([multiple]), .btn-filter > input {
+  height: calc(2rem + 2px);
+  padding: 2px;
+}
+
+.btn-filter {
+    padding:0;
+        margin: 5px 5px;
 }
 
 .social-logins {

@@ -3,6 +3,7 @@ from personnel.models import PersonnelPermission
 
 perms = {}
 
+perms['view_personnel_index'] = 'Can view personnel index'
 perms['create_new_user'] = 'Can create a new user'
 perms['activate_deactivate_personnel_account'] = 'Can activate or deactivate a user'
 

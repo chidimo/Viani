@@ -6,7 +6,11 @@
 {% block content %}
 
 <h1>Jobs</h1>
-<h2 class="text-success">{{ completed_job_count }} jobs completed till date.</h2>
+
+{% if filter_view %}
+{% else %}
+    <h2 class="text-success">{{ completed_job_count }} jobs completed till date.</h2>
+{% endif %}
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -16,19 +20,16 @@
     </ol>
 </nav>
 
-<!--
-
-    <form action="" method="get" enctype="multipart/form-data">
+    <form action="{% url 'shop:job_filter' %}" method="get" enctype="multipart/form-data">
         <section class="text-center">
             {% for field in job_filter_form %}
-            <span class="btn btn-filter">{{ field }}</span>
+            <span class="btn btn-filter">{{ field.label }}{{ field }}</span>
             {% endfor %}
             <span class='btn btn-filter'>
                 <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
             </span>
         </section>
     </form>
--->
 
 <div class="table-responsive">
     <table class="table table-striped">
@@ -86,9 +87,9 @@
                 <td></td>
                 <td><strong>{{ jobs|summ_values }}</strong></td>
                 <td><strong>{{ jobs|summ_discounts }}</strong></td>
-                <td><strong>{{ jobs|summ_total_expenses }}</strong></td>
-                <td><strong>{{ jobs|summ_total_payments }}</strong></td>
-                <td><strong>{{ jobs|summ_profits }}</strong></td>
+                <td class="text-danger"><strong>{{ jobs|summ_total_expenses }}</strong></td>
+                <td style="color:white"><strong>{{ jobs|summ_total_payments }}</strong></td>
+                <td class="text-success"><strong>{{ jobs|summ_profits }}</strong></td>
                 <td></td>
                 <td></td>
                 <td></td>

@@ -27,3 +27,13 @@ def summ_total_payments(query_set):
 def summ_profits(query_set):
     summ = query_set.aggregate(sum_profits=Sum('profit'))
     return summ['sum_profits']
+
+@register.filter()
+def summ_payment_amount(query_set):
+    summ = 0
+    for item in query_set:
+        if item.category.name == 'expense':
+            summ -= item.amount
+        else:
+            summ += item.amount
+    return summ
