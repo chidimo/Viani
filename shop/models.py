@@ -1,3 +1,4 @@
+import datetime
 
 from django.utils import timezone
 from django.db import models
@@ -53,6 +54,9 @@ class Job(Company):
     status = models.IntegerField(choices=status_choices, default=1)
     short_description = models.CharField(max_length=30)
     notes = models.CharField(max_length=500, blank=True, null=True)
+
+    start_date = models.DateField(default=datetime.date.today)
+    completed = models.DateField(default=datetime.date.today)
 
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)

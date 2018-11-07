@@ -69,8 +69,8 @@
                         <td class="text-danger">{{ job.total_expense }}</td>
                         <td>{{ job.total_payment }}</td>
                         <td class="text-success">{{ job.profit }}</td>
-                        <td>{{ job.created|date:"d/M/Y" }}</td>
-                        <td>{{ job.modified|date:"d/M/Y" }}</td>
+                        <td>{{ job.start_date|date:"d/M/Y" }}</td>
+                        <td>{{ job.completed|date:"d/M/Y" }}</td>
                         <td>{{ job.notes }}</td>
                         <td>
                             <a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a>&nbsp;
@@ -84,11 +84,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ jobs|summ_values }}</td>
-                <td>{{ jobs|summ_discounts }}</td>
-                <td>{{ jobs|summ_total_expenses }}</td>
-                <td>{{ jobs|summ_total_payments }}</td>
-                <td>{{ jobs|summ_profits }}</td>
+                <td><strong>{{ jobs|summ_values }}</strong></td>
+                <td><strong>{{ jobs|summ_discounts }}</strong></td>
+                <td><strong>{{ jobs|summ_total_expenses }}</strong></td>
+                <td><strong>{{ jobs|summ_total_payments }}</strong></td>
+                <td><strong>{{ jobs|summ_profits }}</strong></td>
                 <td></td>
                 <td></td>
                 <td></td>

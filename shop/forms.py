@@ -1,5 +1,6 @@
 from django import forms
 from django.urls import reverse_lazy
+from django.forms.fields import DateField
 
 from .models import Customer, Job, CashFlow, CashFlowType
 
@@ -34,13 +35,14 @@ class EditCustomerForm(forms.ModelForm):
 class NewJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('customer', 'short_description', 'value', 'discount', 'notes')
+        fields = ('start_date', 'customer', 'short_description', 'value', 'discount', 'notes')
 
         widgets = {
             'customer' : AddAnotherWidgetWrapper(
                 forms.Select(attrs={'class' : 'form-control'}),
                 reverse_lazy('shop:customer_new')
             ),
+            'start_date' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
             'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
@@ -50,13 +52,14 @@ class NewJobForm(forms.ModelForm):
 class EditJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('customer', 'short_description', 'value', 'discount', 'notes')
+        fields = ('start_date', 'customer', 'short_description', 'value', 'discount', 'notes')
 
         widgets = {
             'customer' : AddAnotherWidgetWrapper(
                 forms.Select(attrs={'class' : 'form-control'}),
                 reverse_lazy('shop:customer_new')
             ),
+            'start_date' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
             'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
@@ -104,9 +107,10 @@ class AddCashFlowToJobForm(forms.ModelForm):
 class UpdateJobStatusForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('status', 'notes')
+        fields = ('status', 'completed', 'notes')
 
         widgets = {
+            'completed' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
             'status' : forms.Select(attrs={'class' : 'form-control'}),
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
         }
