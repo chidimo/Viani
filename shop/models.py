@@ -31,6 +31,9 @@ class Customer(TimeStampedModel):
     address = models.CharField(max_length=50, blank=True, null=True)
     sex = models.CharField(max_length=10, choices=sex_choices, default='female')
 
+    class Meta:
+        ordering = ('sex', 'first_name', 'last_name')
+
     def __str__(self):
         return '{} {}'.format(self.first_name.title(), self.last_name.title())
 
@@ -63,7 +66,7 @@ class Job(Company):
     profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        ordering = ('status', 'customer', '-start_date')
+        ordering = ('-start_date', 'status', 'customer')
 
     def __str__(self):
         return self.short_description.title()
@@ -83,7 +86,6 @@ class Job(Company):
         self.total_expense = exp
         self.total_payment = pay
         self.profit = pay - exp - self.discount
-
         return super().save(*args, **kwargs)
 
 class CashFlowType(TimeStampedModel):
