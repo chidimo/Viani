@@ -5,28 +5,28 @@ register = template.Library()
 
 @register.filter()
 def summ_values(query_set):
-    summ = query_set.aggregate(sum_values=Sum('value'))
-    return summ['sum_values']
+    summ = query_set.aggregate(total=Sum('value'))
+    return summ['total']
 
 @register.filter()
 def summ_discounts(query_set):
-    summ = query_set.aggregate(sum_discounts=Sum('discount'))
-    return summ['sum_discounts']
+    summ = query_set.aggregate(total=Sum('discount'))
+    return summ['total']
 
 @register.filter()
 def summ_total_expenses(query_set):
-    summ = query_set.aggregate(sum_total_expenses=Sum('total_expense'))
-    return summ['sum_total_expenses']
+    summ = query_set.aggregate(total=Sum('total_expense'))
+    return summ['total']
 
 @register.filter()
 def summ_total_payments(query_set):
-    summ = query_set.aggregate(sum_total_payments=Sum('total_payment'))
-    return summ['sum_total_payments']
+    summ = query_set.aggregate(total=Sum('total_payment'))
+    return summ['total']
 
 @register.filter()
 def summ_profits(query_set):
-    summ = query_set.aggregate(sum_profits=Sum('profit'))
-    return summ['sum_profits']
+    summ = query_set.aggregate(total=Sum('gross_profit'))
+    return summ['total']
 
 @register.filter()
 def summ_payment_amount(query_set):
