@@ -115,3 +115,12 @@ class CashFlow(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('shop:cashflow_index')
+
+# class Expense(TimeStampedModel):
+#     """Expenses not directly incurred on a garment"""
+#     item_name = models.CharField(max_length=50, blank=True, null=True)
+#     amount = models.DecimalField(max_digits=10, decimal_places=2)
+#     notes = models.CharField(max_length=500, blank=True)
+
+#     def __str__(self):
+#         return "Exp: {}-{}".format(self.item_name, self.amount)
