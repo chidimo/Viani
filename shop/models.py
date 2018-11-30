@@ -63,7 +63,7 @@ class Job(Company):
 
     total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    gross_profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         ordering = ('-start_date', 'status', 'customer')
@@ -85,7 +85,7 @@ class Job(Company):
 
         self.total_expense = exp
         self.total_payment = pay
-        self.profit = pay - exp - self.discount
+        self.gross_profit = pay - exp - self.discount
         return super().save(*args, **kwargs)
 
 class CashFlowType(TimeStampedModel):

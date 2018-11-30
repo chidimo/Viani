@@ -34,3 +34,7 @@ urlpatterns += [
     path('cashflow/bank/<int:pk>/', views.bank_cashflow, name='bank_cashflow'),
     path('cashflow-filter', views.CashFlowFilterView.as_view(), name='cashflow_filter'),
 ]
+
+urlpatterns += [
+    path('accounting/', views.accounting, name='accounting')
+]

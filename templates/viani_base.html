@@ -25,7 +25,7 @@
         {% block body %}
         
         {% block navigation %}
-        <nav class="navbar navbar-expand-md navbar-dark bg-primary" role="navigation">
+        <nav class="navbar navbar-expand-md navbar-dark bg-secondary" role="navigation">
             <div class="container">
                 <a class="navbar-brand" href="/">Viani</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,6 +61,7 @@
                                 <li><a class="dropdown-item" href="{% url 'shop:customer_index' %}">Customers</a></li>
                                 <li><a class="dropdown-item" href="{% url 'shop:cashflow_index' %}">Cashflows</a></li>
                                 <li><a class="dropdown-item" href="{% url 'shop:cashflowtype_index' %}">Cashflow types</a></li>
+                                <li><a class="dropdown-item" href="{% url 'shop:accounting' %}">Accounting</a></li>
                             </ul>
                         </li>
                     </ul>

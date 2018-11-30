@@ -2,7 +2,7 @@ import datetime
 import operator
 from functools import reduce
 
-from django.db.models import Q
+from django.db.models import Q, Sum
 from django.shortcuts import render, redirect, reverse
 from django.views import generic
 from django.contrib import messages
@@ -314,3 +314,16 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 # execute query
                 messages.success(self.request, "Search results for {}".format(query_str))
                 return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')
+
+def accounting(request):
+    template = 'shop/accounting.html'
+    context = {}
+
+    context['total_job_value'] = Job.objects.aggregate(total=Sum('value'))['total']
+    context['total_payments'] = Job.objects.aggregate(total=Sum('total_payment'))['total']
+    context['total_expenses'] = Job.objects.aggregate(total=Sum('total_expense'))['total']
+    context['total_discounts'] = Job.objects.aggregate(total=Sum('discount'))['total']
+    context['gross_profit'] = Job.objects.aggregate(total=Sum('gross_profit'))['total']
+    context['net_profit'] = 'Deduct overheads'
+
+    return render(request, template, context)
