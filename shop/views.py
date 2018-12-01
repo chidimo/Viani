@@ -321,9 +321,10 @@ def accounting(request):
 
     context['total_job_value'] = Job.objects.aggregate(total=Sum('value'))['total']
     context['total_payments'] = Job.objects.aggregate(total=Sum('total_payment'))['total']
-    context['total_expenses'] = Job.objects.aggregate(total=Sum('total_expense'))['total']
+    context['total_expenses'] = CashFlow.objects.filter(category__name='expense').aggregate(total=Sum('amount'))['total']
     context['total_discounts'] = Job.objects.aggregate(total=Sum('discount'))['total']
     context['gross_profit'] = Job.objects.aggregate(total=Sum('gross_profit'))['total']
+    context['total_amount_banked'] = CashFlow.objects.filter(banked=True, category__name='payment').aggregate(total=Sum('amount'))['total']
     context['net_profit'] = 'Deduct overheads'
 
     return render(request, template, context)
