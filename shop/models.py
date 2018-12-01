@@ -108,7 +108,7 @@ class CashFlow(TimeStampedModel):
     notes = models.CharField(max_length=500, blank=True)
 
     class Meta:
-        ordering = ('job', 'category', 'banked')
+        ordering = ('-created', 'job', 'category', 'banked')
 
     def __str__(self):
         return self.name
