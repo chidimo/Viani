@@ -66,7 +66,7 @@ class Job(Company):
     gross_profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
-        ordering = ('-start_date', 'status', 'customer')
+        ordering = ('status', '-start_date', 'customer')
 
     def __str__(self):
         return self.short_description.title()
@@ -111,7 +111,7 @@ class CashFlow(TimeStampedModel):
         ordering = ('-created', 'job', 'category', 'banked')
 
     def __str__(self):
-        return self.name
+        return "{}-{}".format(self.category.name, self.amount)
 
     def get_absolute_url(self):
         return reverse('shop:cashflow_index')
