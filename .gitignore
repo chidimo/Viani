@@ -1,5 +1,6 @@
-.vs/
 .env
 .vscode/
 **__pycache__/
 staticfiles/
+htmlcov/
+.coverage
