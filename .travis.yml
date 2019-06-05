@@ -1,0 +1,26 @@
+dist: xenial
+language: python
+python:
+    - "3.7"
+env:
+  global:
+    - CC_TEST_REPORTER_ID=f92b66c7fc4f0ece98022ad56ddf4acf1d790e46fa3947b7ca8257acd4148c9c
+    - DJANGO_SETTINGS_MODULE=viani.settings.travis
+    - ALLOWED_HOSTS=*
+install:
+    - pip install pipenv
+    - pipenv install --skip-lock
+    - pipenv install coverage==4.0.3 model-mommy==1.6.0 python-coveralls==2.9.1 django-debug-toolbar==1.11 --skip-lock
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+    - coverage run --omit=../*migrations* manage.py test
+after_script:
+  # - coverage xml
+  - ./cc-test-reporter format-coverage -t coverage.py /.coverage
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_PYTHON_VERSION" == "3.7" ]]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
+  # - ./cc-test-reporter upload-coverage
+after_success:
+    - coveralls

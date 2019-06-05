@@ -38,7 +38,7 @@ class EditCustomerForm(forms.ModelForm):
 class NewJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('start_date', 'customer', 'short_description', 'value', 'discount', 'notes')
+        fields = ('start_date', 'customer', 'description', 'value', 'discount', 'notes')
 
         widgets = {
             'customer' : AddAnotherWidgetWrapper(
@@ -46,7 +46,7 @@ class NewJobForm(forms.ModelForm):
                 reverse_lazy('shop:customer_new')
             ),
             'start_date' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
-            'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
+            'description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Any notes or longer description'}),
@@ -55,7 +55,7 @@ class NewJobForm(forms.ModelForm):
 class EditJobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('start_date', 'customer', 'short_description', 'value', 'discount', 'notes')
+        fields = ('start_date', 'customer', 'description', 'value', 'discount', 'notes')
 
         widgets = {
             'customer' : AddAnotherWidgetWrapper(
@@ -63,7 +63,7 @@ class EditJobForm(forms.ModelForm):
                 reverse_lazy('shop:customer_new')
             ),
             'start_date' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
-            'short_description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
+            'description' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Describe job in 30 characters'}),
             'value' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter job price'}),
             'discount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter discount (if any)'}),
             'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Any notes or longer description'}),

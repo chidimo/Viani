@@ -1,6 +1,5 @@
 # Viani
 
-## Installing `pipenv` on <https://www.pythonanywhere.com/>
-
-Open a root bash console and do `pip install --user pipenv==2018.6.25` or `pip3.6 install --user pipenv==2018.6.25`
-Install `pipenv` for a project: `pipenv install --python 3.6`
+[![Build Status](https://travis-ci.com/chidimo/Viani.svg?branch=develop)](https://travis-ci.com/chidimo/Viani)
+[![Coverage Status](https://coveralls.io/repos/github/chidimo/Viani/badge.svg?branch=develop)](https://coveralls.io/github/chidimo/Viani?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/c5e73349601b432ab1a5/maintainability)](https://codeclimate.com/github/chidimo/Viani/maintainability)

@@ -35,7 +35,7 @@ class Customer(TimeStampedModel):
         ordering = ('sex', 'first_name', 'last_name')
 
     def __str__(self):
-        return '{} {}'.format(self.first_name.title(), self.last_name.title())
+        return f'{self.first_name.title()}, {self.last_name.title()}'
 
     def get_absolute_url(self):
         return reverse('shop:customer_index')
@@ -55,7 +55,7 @@ class Job(Company):
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.IntegerField(choices=status_choices, default=1)
-    short_description = models.CharField(max_length=30)
+    description = models.CharField(max_length=30)
     notes = models.CharField(max_length=500, blank=True, null=True)
 
     start_date = models.DateField(default=datetime.date.today)
@@ -69,7 +69,7 @@ class Job(Company):
         ordering = ('status', '-start_date', 'customer')
 
     def __str__(self):
-        return self.short_description.title()
+        return f'{self.description.title()}'
 
     def get_absolute_url(self):
         return reverse('shop:job_index')
