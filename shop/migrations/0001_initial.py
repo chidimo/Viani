@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
                 ('start', models.DateField(default=django.utils.timezone.now)),
                 ('completion', models.DateField(blank=True, null=True)),
                 ('status', models.IntegerField(blank=True, null=True)),
-                ('short_description', models.CharField(max_length=30)),
+                ('description', models.CharField(max_length=30)),
                 ('long_description', models.CharField(blank=True, max_length=500)),
                 ('feedback', models.CharField(max_length=1000)),
                 ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='shop.Customer')),

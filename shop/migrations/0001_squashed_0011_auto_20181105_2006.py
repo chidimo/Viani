@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                 ('start', models.DateField(default=django.utils.timezone.now)),
                 ('completion', models.DateField(blank=True, null=True)),
                 ('status', models.CharField(choices=[('new job', 'New job'), ('started', '25%/ done'), ('halfway', '50%/ done'), ('almost', '75%/ done'), ('completed', '100%/ done')], default='not started', max_length=15)),
-                ('short_description', models.CharField(max_length=30)),
+                ('description', models.CharField(max_length=30)),
                 ('long_description', models.CharField(blank=True, max_length=500)),
                 ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='shop.Customer')),
                 ('profit', models.DecimalField(decimal_places=2, default=0, max_digits=10)),
