@@ -50,7 +50,7 @@ class Customer(TimeStampedModel):
 #         return reverse('shop:dresstype_index')
 
 class Job(Company):
-    status_choices = ((1, 'Level 1'), (2, "Level 2"), (3,  'Level 3'), (4, 'Level 4'), (5, 'Level 5'))
+    status_choices = ((1, 'Started'), (2, "Finished"), (3,  'Delivered'), (4, 'Accepted'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)

@@ -89,7 +89,7 @@ class JobFilterForm(forms.Form):
 
     phase = forms.ChoiceField(
         required=False,
-        choices = (('', 'Select phase'), (1, 'Phase 1'), (2, 'Phase 2'), (3, 'Phase 3'), (4, 'Phase 4'), (5, 'Phase 5')),
+        choices = (('Started', 'Started'), ('Finished', "Finished"), ('Delivered',  'Delivered'), ('Accepted', 'Accepted')),
         widget=forms.Select(attrs={"class" : "form-control"})
         )
     customer = forms.ModelChoiceField(
