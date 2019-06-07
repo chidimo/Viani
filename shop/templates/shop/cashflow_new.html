@@ -12,13 +12,13 @@
     </ol>
 </nav>
 
-<div class="upload-form">
+<div class="form_container">
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <p>{{ form.as_p }}</p>
 
-        <button class="btn btn-primary btn-sm float-right" type="submit" value="Save">Save</button>
+        <button class="btn btn-primary btn-md" type="submit" value="Save">Save</button>
     </form>
 </div>
 
