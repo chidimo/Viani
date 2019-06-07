@@ -152,7 +152,7 @@ class AddCashFlowToJobForm(forms.ModelForm):
 class CashFlowFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['payment_date'].label = 'Payment date'
+        self.fields['start_date'].label = 'Start date'
 
     job = forms.ModelChoiceField(
         required=False,
@@ -172,9 +172,9 @@ class CashFlowFilterForm(forms.Form):
         queryset=CashFlowType.objects.all(),
         widget=forms.Select(attrs={"class" : "form-control"}))
 
-    payment_date = DateField(
+    start_date = DateField(
         required=False,
-        initial=timezone.now,
+        initial=timezone.now() + datetime.timedelta(days=-30),
         widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
 
     to_date = DateField(

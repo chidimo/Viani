@@ -13,33 +13,31 @@
     </ol>
 </nav>
 
+<div class="filter">
     <form action="{% url 'shop:cashflow_filter' %}" method="get" enctype="multipart/form-data">
-        <section class="text-center">
+        <div class="filter_fields text-center">
             {% for field in cashflow_filter_form %}
-            <span class="btn btn-filter">{{ field.label }}{{ field }}</span>
+            <span>{{ field.label }}{{ field }}</span>
             {% endfor %}
-            <span class='btn btn-filter'>
-                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
-            </span>
-        </section>
+        </div>
+        <button class="btn btn-primary btn-md" type="submit" value="Continue">Continue</button>
     </form>
+</div>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <caption>Cashflows</caption>
+    <table>
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Job</th>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Item</th>
+                <th>Banked</th>
+                <th>Notes</th>
+            </tr>
         </thead>
-        <tr>
-            <th>S/N</th>
-            <th>Job</th>
-            <th>Date</th>
-            <th>Customer</th>
-            <th>Category</th>
-            <th>Amount</th>
-            <th>Item</th>
-            <th>Banked</th>
-            <th>Notes</th>
-        </tr>
 
         {% if cashflows %}
         <tbody>
@@ -48,7 +46,6 @@
                     <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'shop:job_detail' cashflow.job.pk %}">{{ cashflow.job }}</a></td>
                     <td>{{ cashflow.created|date:"d/M/Y" }}</td>
-                    <td>{{ cashflow.job.customer }}</td>
                     <td>{{ cashflow.category }}</td>
                     {% if cashflow.category.name == 'expense' %}
                         <td class="text-danger">-{{ cashflow.amount }}</td>
@@ -70,17 +67,6 @@
                     <td>{{ cashflow.notes }}</td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>{{ cashflows|summ_payment_amount }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
         </tbody>
         {% else %}
             <p>No cashflows to show</p>

@@ -12,23 +12,22 @@
 </nav>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <caption>Cashflowtypes</caption>
+    <table>
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
         </thead>
-        <tr>
-            <th>S/N</th>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
 
         {% if cashflowtypes %}
         <tbody>
             {% for cashflowtype in cashflowtypes %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ cashflowtype.name.title }}</td>
-                    <td>{{ cashflowtype.description }}</td>
+                    <td><a href="">{{ forloop.counter }}</a></td>
+                    <td><a href="">{{ cashflowtype.name.title }}</a></td>
+                    <td><a href="">{{ cashflowtype.description }}</a></td>
                 </tr>
             {% endfor %}
         </tbody>

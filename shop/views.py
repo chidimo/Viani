@@ -222,7 +222,7 @@ class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     context_object_name = 'cashflowtypes'
     paginate_by = 100
 
-class NewCashFlowType(LoginRequiredMixin, generic.CreateView):
+class NewCashFlowType(CreatePopupMixin, LoginRequiredMixin, generic.CreateView):
     model = CashFlowType
     form_class = NewCashFlowTypeForm
     template_name = 'shop/cashflowtype_new.html'
@@ -293,7 +293,7 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 customer = form['customer']
                 job = form['job']
                 category = form['category']
-                payment_date = form['payment_date']
+                start_date = form['start_date']
                 to_date = form['to_date']
 
                 # build queries
@@ -301,19 +301,19 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 msg = []
                 if job:
                     queries.append(Q(job=job))
-                    msg.append('Phase {}'.format(job))
+                    msg.append(f'{job}')
                 if customer:
                     queries.append(Q(job__customer=customer))
-                    msg.append('{}'.format(customer))
+                    msg.append(f'{customer}')
                 if category:
                     queries.append(Q(category=category))
-                    msg.append('Phase {}'.format(category))
+                    msg.append(f'{category}')
 
-                if payment_date:
+                if start_date:
                     if not to_date:
-                        to_date = payment_date + datetime.timedelta(days=30)
-                    queries.append(Q(created__range=[payment_date, to_date]))
-                    msg.append('Paid between {} and {}'.format(payment_date, to_date))
+                        to_date = start_date + datetime.timedelta(days=30)
+                    queries.append(Q(created__range=[start_date, to_date]))
+                    msg.append(f'Paid between {start_date} and {to_date}')
 
                 # combine queries
                 try:
@@ -324,7 +324,7 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                     query_str = ""
 
                 # execute query
-                messages.success(self.request, "Search results for {}".format(query_str))
+                messages.success(self.request, f"Search results for {query_str}")
                 return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')
 
 def accounting(request):
