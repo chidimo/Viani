@@ -100,9 +100,13 @@ table th {
 .social-google .login-using-text {
     display: block;
 }
+
+/* login form */
+
 .form-group {
     position: relative;
 }
+
 input#id_username {
     text-indent: 2rem;
     position: relative;
@@ -116,51 +120,45 @@ input#id_password {
     position: relative;
 }
 
-select.form-control:not([size]):not([multiple]), .btn-filter > input {
-  height: calc(2rem + 2px);
-  padding: 2px;
+input#id_username {
+    text-indent: 30px;
+    position: relative;
+    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
 }
 
-.btn-filter {
-    padding:0;
-        margin: 5px 5px;
+input#id_password {
+    text-indent: 30px;
+    position: relative;
+    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
 }
 
-.social-logins {
-    font-size: 22px;
-    border-radius: 0.15rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+.fa-user {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 25px;
+    color: #336B87;
+    border-right: 1px solid #ccc;
+    padding-right: 5px;
+}
+
+.fa-unlock-alt {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 25px;
+    color: #336B87;
+    border-right: 1px solid #ccc;
+    padding-right: 5px;
+}
+
+footer {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-}
-.social-logins > a {
-    border-radius: 50%;
-    border: 1px solid #ccc;
+    flex-direction: column;
+    justify-content: center;
+    background: #2A3131;
+    color: #FFFFFF;
     text-align: center;
-    width: 40px;
-    height: 40px;
-    padding: 3px;
+    padding: 20px;
+    margin-top: 20px;
 }
-
-.upload-form {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    max-width:500px;
-    padding: 1rem 1rem 1rem;
-    border-radius: 5px;
-    padding-bottom: 50px;
-    margin-top: .5rem;
-    margin-bottom: 35rem;
-    border: .5px solid #375a7f;
-}
-
-.errorlist {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-    color: yellow;
-    font-size: 18px;
-  }
