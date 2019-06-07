@@ -72,12 +72,10 @@ class EditJobForm(forms.ModelForm):
 class UpdateJobStatusForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('status', 'completed', 'notes')
+        fields = ('status',)
 
         widgets = {
-            'completed' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
             'status' : forms.Select(attrs={'class' : 'form-control'}),
-            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
         }
 
 class JobFilterForm(forms.Form):
@@ -89,7 +87,7 @@ class JobFilterForm(forms.Form):
 
     phase = forms.ChoiceField(
         required=False,
-        choices = (('Started', 'Started'), ('Finished', "Finished"), ('Delivered',  'Delivered'), ('Accepted', 'Accepted')),
+        choices = ((1, 'Started'), (2, "Finished"), (3,  'Delivered'), (4, 'Accepted')),
         widget=forms.Select(attrs={"class" : "form-control"})
         )
     customer = forms.ModelChoiceField(

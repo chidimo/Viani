@@ -27,8 +27,8 @@ class Customer(TimeStampedModel):
     validate_contact = RegexValidator(regex=r'^\+[0-9]{1,13}$', message=msg, code='Not set')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact], default="+2341234567890")
-    address = models.CharField(max_length=50, blank=True, null=True)
+    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact])
+    address = models.CharField(max_length=50, default="Unknown address")
     sex = models.CharField(max_length=10, choices=sex_choices, default='female')
 
     class Meta:
