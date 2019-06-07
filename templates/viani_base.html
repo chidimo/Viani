@@ -11,7 +11,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Viani. Fashion design is our passion">
         <meta name="keywords" content="viani, fasion designers, clothes, events">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/slate/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
         <link rel="stylesheet" href="{% static 'css/viani.css' %}">
@@ -24,84 +24,66 @@
     <body>
         {% block body %}
         
-        {% block navigation %}
-        <nav class="navbar navbar-expand-md navbar-dark bg-secondary" role="navigation">
-            <div class="container">
-                <a class="navbar-brand" href="/">Viani</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="sr-only">Toggle navigation</span>
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-    
-                <div class="collapse navbar-collapse navcontent" id="navbarColor02">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'shop:gallery' %}">Gallery</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Instagram</a></li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contact <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="tel:+2349036650603"><i class="fas fa-mobile"></i> +2349036650603</a></li>
-                                <li><a class="dropdown-item" href="mailto:orjichidi95@gmail.com">Email: orjichidi95@gmail.com</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Social <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
-                                <li><a class="dropdown-item" href="#" target="_blank"><i class="fab fa-github"></i> Instagram</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'shop:job_index' %}">Jobs</a></li>
-                                <li><a class="dropdown-item" href="{% url 'shop:customer_index' %}">Customers</a></li>
-                                <li><a class="dropdown-item" href="{% url 'shop:cashflow_index' %}">Cashflows</a></li>
-                                <li><a class="dropdown-item" href="{% url 'shop:cashflowtype_index' %}">Cashflow types</a></li>
-                                <li><a class="dropdown-item" href="{% url 'shop:accounting' %}">Accounting</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    {% block navigation_left_right %}
-                        {% include "navigation_right.html" %}
-                    {% endblock navigation_left_right %}
-                </div>
-            </div>
-        </nav>
+        <div class="page_wrapper">
+            <div class="page_top">
+                {% block navigation %}
 
-        {% endblock navigation %}
-
-        <div class="container-fluid">
-            {% include 'messages.html' %}
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-8">
+                <header>
+                    <nav class="navbar navbar-expand-md" role="navigation">
+                        <div class="container">
+                            <a class="navbar_brand" href="/">Viani</a>
+                            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                                    <span class="sr-only">Toggle navigation</span>
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                
+                            <div class="collapse navbar-collapse navcontent" id="navbarColor02">
+                                {% include "navigation_right.html" %}
+                            </div>
+                        </div>
+                    </nav>
+                </header>
+        
+                {% endblock navigation %}
+        
+                <div class="body_container">
+                    {% include 'messages.html' %}
                     {% block content %}
                     {% endblock content %}
                 </div>
-                <div class="col-md-2"></div>
             </div>
+    
+            <footer>
+                <div class="footer_text">
+                    <p>Viani</p>
+                    <p>Contact us: +2349036650603 | orjichidi95@gmail.com</p>
+                    <p><a class="" href="#">Instagram</a> | <a class="" href="#">Twitter</a></p>
+                </div>
+            </footer>
         </div>
 
         {% endblock body %}
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous" async></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous" async></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.5"></script>
-
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js" async></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.min.js"></script>
-
-        <script type="text/javascript" src="https://platform.linkedin.com/badges/js/profile.js" async defer></script>
-        
         {% block page_js %}{% endblock page_js %}
-        {% include "dropdown_js.html" %}        
+        
+        <script>
+            $(".dropdown-toggle").on("mouseenter", function () {
+                // make sure it is not shown:
+                if (!$(this).parent().hasClass("show")) {
+                    $(this).click();
+                }
+            });
+
+            $(".btn-group, .dropdown").on("mouseleave", function () {
+                // make sure it is shown:
+                if ($(this).hasClass("show")){
+                    $(this).children('.dropdown-toggle').first().click();
+                }
+            });
+        </script>      
     </body>
 </html>

@@ -72,12 +72,10 @@ class EditJobForm(forms.ModelForm):
 class UpdateJobStatusForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ('status', 'completed', 'notes')
+        fields = ('status',)
 
         widgets = {
-            'completed' : forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}),
             'status' : forms.Select(attrs={'class' : 'form-control'}),
-            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
         }
 
 class JobFilterForm(forms.Form):
@@ -89,7 +87,7 @@ class JobFilterForm(forms.Form):
 
     phase = forms.ChoiceField(
         required=False,
-        choices = (('', 'Select phase'), (1, 'Phase 1'), (2, 'Phase 2'), (3, 'Phase 3'), (4, 'Phase 4'), (5, 'Phase 5')),
+        choices = ((1, 'Started'), (2, "Finished"), (3,  'Delivered'), (4, 'Accepted')),
         widget=forms.Select(attrs={"class" : "form-control"})
         )
     customer = forms.ModelChoiceField(
@@ -154,7 +152,7 @@ class AddCashFlowToJobForm(forms.ModelForm):
 class CashFlowFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['payment_date'].label = 'Payment date'
+        self.fields['start_date'].label = 'Start date'
 
     job = forms.ModelChoiceField(
         required=False,
@@ -174,9 +172,9 @@ class CashFlowFilterForm(forms.Form):
         queryset=CashFlowType.objects.all(),
         widget=forms.Select(attrs={"class" : "form-control"}))
 
-    payment_date = DateField(
+    start_date = DateField(
         required=False,
-        initial=timezone.now,
+        initial=timezone.now() + datetime.timedelta(days=-30),
         widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
 
     to_date = DateField(

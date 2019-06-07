@@ -27,8 +27,8 @@ class Customer(TimeStampedModel):
     validate_contact = RegexValidator(regex=r'^\+[0-9]{1,13}$', message=msg, code='Not set')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact], default="+2341234567890")
-    address = models.CharField(max_length=50, blank=True, null=True)
+    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact])
+    address = models.CharField(max_length=50, default="Unknown address")
     sex = models.CharField(max_length=10, choices=sex_choices, default='female')
 
     class Meta:
@@ -50,7 +50,7 @@ class Customer(TimeStampedModel):
 #         return reverse('shop:dresstype_index')
 
 class Job(Company):
-    status_choices = ((1, 'Level 1'), (2, "Level 2"), (3,  'Level 3'), (4, 'Level 4'), (5, 'Level 5'))
+    status_choices = ((1, 'Started'), (2, "Finished"), (3,  'Delivered'), (4, 'Accepted'))
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)

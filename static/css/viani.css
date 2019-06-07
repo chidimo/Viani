@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 /* fix nav scrolling on small screens */
 @media (min-width: 300px) {
     .navbar-collapse.navcontent.collapse.show {
@@ -7,102 +11,207 @@
     }
 }
 
-.navbar-dark .navbar-brand {
-    font-size: 28px;
+body {
+    font-family: 'Open Sans', sans-serif;
+    padding: 0;
+    margin: 0;
+    background: #FFFFFF;
+    color: #2A3131;
 }
 
-.dropdown-menu > a.nav-link {
-    padding: 3px;
+a {
+    text-decoration: none;
 }
 
-.dropdown-divider {
-    margin: .2rem;
+a:hover {
+    text-decoration: none;
+}
+
+.page_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    min-height: 70px;
+    background: #FFFFFF;
+    box-shadow: 5px 5px 30px #2A3131;
+    border-bottom: 5px solid #2A3131;
+}
+
+header a {
+    color: #2A3131;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+header a:hover {
+    color: #763626;
+    font-weight: bold;
+}
+
+a.navbar_brand {
+    font-size: 40px;
+    text-decoration: none;
+}
+
+/* Global */
+.body_container {
+    width: 60%;
+    margin: auto;
+    padding-top: 20px;
+}
+
+.form_container {
+    width: 50%;
+    margin: auto;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 30px #2A3131;
+}
+
+.form_container button {
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+}
+
+.registration_form {
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #336B87;
+    border-color: #336B87;
+}
+
+button.btn-primary:hover {
+    background-color: #336B87;
+    border-color: #336B87;
+    opacity: 0.9;
+}
+
+.filter_fields {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.filter {
+    margin: 15px 0;
+}
+
+.filter span {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.filter button {
+    width: 50%;
+    margin: 5px auto;
+    display: block;
+}
+
+/* job detail */
+
+.viani_card {
+    margin-top: 10px;
+    padding: 10px;
+    box-shadow: 5px 5px 30px #2A3131;
+}
+
+.job_actions_grid {
+    display: grid;
+    justify-content: space-evenly;
+}
+
+.job_actions {
+    margin-bottom: 15px;
+}
+
+.job_actions button {
+    margin: 5px;
+}
+
+.figures, .details {
+    font-weight: bold;
+}
+
+/* table styles */
+table.jobs_table > tbody > tr:last-child {
+    background: #FFFFFF;
+}
+
+table {
+    text-align: center;
+    width: 99%;
+    margin: auto;
+}
+
+table a:hover {
+    text-decoration: none;
+}
+
+thead tr {
+    background: #2A3131;
+    color: #ffffff;
 }
 
 table td {
+    padding: 0;
+}
+
+th {
     white-space: nowrap;
+    padding: 7px;
 }
 
-table th {
-    color: orange;
+tbody tr:nth-of-type(odd) {
+    background: #EEEEEE;
 }
 
-.login-form {
-    max-width:350px;
-    margin:auto;
-    /*border: 1px solid #595959;*/
-    border-radius: 5px;
-    padding-bottom: 50px;
-  }
-
-  .form-group {
-    position: relative;
-  }
-
-  .login-logo {
-    margin:auto;
-  }
-
-  input#id_username {
-    text-indent: 30px;
-    position: relative;
-    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
-  }
-
-  input#id_password {
-    text-indent: 30px;
-    position: relative;
-    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
-  }
-
-  .fa-user {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    font-size: 25px;
-    color: rebeccapurple;
-    border-right: 1px solid #ccc;
-    padding-right: 5px;
-  }
-
-  .fa-unlock-alt {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    font-size: 25px;
-    color: rebeccapurple;
-    border-right: 1px solid #ccc;
-    padding-right: 5px;
-  }
-
-.social-google {
-    border-radius: 0.15rem;
-    height: 2.5rem;
-    margin-bottom: 0.5rem;
+tbody tr:nth-of-type(odd) a {
+    color: #2A3131;
 }
-.social-google .login-using-icon-div {
-    border-top-left-radius: 0.2rem;
-    border-bottom-left-radius: 0.2rem;
-    width: 20%;
+
+tbody tr:nth-of-type(even) {
+    background: #90AFC5;
 }
-.social-google .login-using-icon {
-    font-size: 22px;
+
+tbody tr:nth-of-type(even) a {
+    color: #FFFFFF;
+}
+
+table tr td a {
     display: block;
-    width: 30%;
-    margin: auto;
-    padding-top: 0.25rem;
+    padding: 15px 0;
+    text-decoration: none;
 }
-.social-google .login-using-text-div {
-    border-top-right-radius: 0.15rem;
-    border-bottom-right-radius: 0.15rem;
-    width: 80%;
+
+tbody tr:hover {
+    border: 1px solid #2A3131;
 }
-.social-google .login-using-text {
-    display: block;
+
+table tr td {
+    padding: 0;
 }
+
+tr.summation_row td {
+    font-weight: bold;
+}
+
+/* login form */
+
 .form-group {
     position: relative;
 }
+
 input#id_username {
     text-indent: 2rem;
     position: relative;
@@ -116,51 +225,45 @@ input#id_password {
     position: relative;
 }
 
-select.form-control:not([size]):not([multiple]), .btn-filter > input {
-  height: calc(2rem + 2px);
-  padding: 2px;
+input#id_username {
+    text-indent: 30px;
+    position: relative;
+    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
 }
 
-.btn-filter {
-    padding:0;
-        margin: 5px 5px;
+input#id_password {
+    text-indent: 30px;
+    position: relative;
+    box-shadow: 0 0 3px #ccc, 0 10px 15px #ebebeb inset;
 }
 
-.social-logins {
-    font-size: 22px;
-    border-radius: 0.15rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
+.fa-user {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 25px;
+    color: #336B87;
+    border-right: 1px solid #ccc;
+    padding-right: 5px;
+}
+
+.fa-unlock-alt {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    font-size: 25px;
+    color: #336B87;
+    border-right: 1px solid #ccc;
+    padding-right: 5px;
+}
+
+footer {
     display: flex;
-    flex-flow: row wrap;
-    justify-content: space-around;
-    margin-bottom: 1rem;
-}
-.social-logins > a {
-    border-radius: 50%;
-    border: 1px solid #ccc;
+    flex-direction: column;
+    justify-content: center;
+    background: #2A3131;
+    color: #FFFFFF;
     text-align: center;
-    width: 40px;
-    height: 40px;
-    padding: 3px;
+    padding: 20px;
+    margin-top: 20px;
 }
-
-.upload-form {
-    margin-left: auto !important;
-    margin-right: auto !important;
-    max-width:500px;
-    padding: 1rem 1rem 1rem;
-    border-radius: 5px;
-    padding-bottom: 50px;
-    margin-top: .5rem;
-    margin-bottom: 35rem;
-    border: .5px solid #375a7f;
-}
-
-.errorlist {
-    list-style: none;
-    padding: 0;
-    text-align: left;
-    color: yellow;
-    font-size: 18px;
-  }

@@ -16,12 +16,11 @@ import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
-from .forms import NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm, UpdateJobStatusForm, JobFilterForm, NewCashFlowForm, NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
-
-def gallery(request):
-    template = 'shop/gallery.html'
-    context = {}
-    return render(request, template, context)
+from .forms import (
+    NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm,
+    UpdateJobStatusForm, JobFilterForm, NewCashFlowForm,
+    NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
+)
 
 class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     model = Customer
@@ -29,7 +28,7 @@ class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     context_object_name = 'customers'
     paginate_by = 100
 
-class NewCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+class NewCustomer(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Customer
     template_name = 'shop/customer_new.html'
     form_class = NewCustomerForm
@@ -47,6 +46,9 @@ class EditCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     template_name = 'shop/customer_edit.html'
     form_class = EditCustomerForm
     success_message = 'Customer updated successfully !'
+
+    def get_success_url(self, **kwargs):
+        return reverse('shop:customer_details', kwargs={'pk': self.kwargs['pk']})
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
@@ -70,12 +72,15 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['completed_job_count'] = Job.objects.filter(status=5).count()
+        completed_job_count = Job.objects.filter(status=4).count()
+        context['completed_job_count'] = completed_job_count
+        completion_rate = (completed_job_count / Job.objects.count()) * 100
+        context['completion_rate'] = round(completion_rate, 2)
         context['job_filter_form'] = JobFilterForm()
         context['filter_view'] = False
         return context
 
-class NewJob(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+class NewJob(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Job
     form_class = NewJobForm
     template_name = 'shop/job_new.html'
@@ -92,12 +97,15 @@ class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     form_class = EditJobForm
     template_name = 'shop/job_edit.html'
 
+    def get_success_url(self, **kwargs):
+        return reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']})
+
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
         if rules.test_rule('edit_job', user):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
-        return redirect(reverse('shop:job_index'))
+        return redirect(reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']}))
 
 class JobDetail(LoginRequiredMixin, generic.DetailView):
     model = Job
@@ -109,9 +117,9 @@ def job_add_cashflow(request, pk):
     template = 'shop/job_add_cashflow.html'
     form = AddCashFlowToJobForm()
 
-    if job.status == 'completed':
-        messages.error(request, "This job is done. You can no longer add a cashflow")
-        return redirect(reverse('shop:job_index'))
+    if job.status == 4:
+        messages.error(request, "This job can no longer accept a cashflow")
+        return redirect(reverse('shop:job_detail', kwargs={'pk': job.pk}))
 
     context = {}
     context['form'] = form
@@ -127,7 +135,7 @@ def job_add_cashflow(request, pk):
             notes = form['notes']
             CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
             job.save()
-            return redirect(reverse('shop:job_index'))
+            return redirect(reverse('shop:job_detail', kwargs={'pk': job.pk}))
         else:
             return render(request, template, {'form' : form})
     return render(request, template, context)
@@ -137,6 +145,9 @@ class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateVi
     template_name = 'shop/job_update_status.html'
     form_class = UpdateJobStatusForm
     success_message = "Job status updated successfully."
+
+    def get_success_url(self, **kwargs):
+        return reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -169,26 +180,27 @@ class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 to_date = form['to_date']
 
                 # build queries
+                phases = {1: 'Started', 2: "Finished", 3: 'Delivered', 4: 'Accepted'}
                 queries = []
                 msg = []
                 if customer:
                     queries.append(Q(customer=customer))
-                    msg.append('{}'.format(customer))
+                    msg.append(f'{customer}')
                 if phase:
                     queries.append(Q(status=phase))
-                    msg.append('Phase {}'.format(phase))
+                    msg.append(f'{phases[int(phase)]} jobs')
 
                 if completed:
                     if not to_date:
                         to_date = start_date + datetime.timedelta(days=30)
                     queries.append(Q(start_date__range=[start_date, to_date]))
-                    msg.append('Completed between {} and {}'.format(start_date, to_date))
+                    msg.append(f'Completed between {start_date} and {to_date}')
 
                 if start_date:
                     if not to_date:
                         to_date = start_date + datetime.timedelta(days=30)
                     queries.append(Q(start_date__range=[start_date, to_date]))
-                    msg.append('Started between {} and {}'.format(start_date, to_date))
+                    msg.append(f'Started between {start_date} and {to_date}')
 
                 # combine queries
                 try:
@@ -210,7 +222,7 @@ class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     context_object_name = 'cashflowtypes'
     paginate_by = 100
 
-class NewCashFlowType(LoginRequiredMixin, generic.CreateView):
+class NewCashFlowType(CreatePopupMixin, LoginRequiredMixin, generic.CreateView):
     model = CashFlowType
     form_class = NewCashFlowTypeForm
     template_name = 'shop/cashflowtype_new.html'
@@ -281,7 +293,7 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 customer = form['customer']
                 job = form['job']
                 category = form['category']
-                payment_date = form['payment_date']
+                start_date = form['start_date']
                 to_date = form['to_date']
 
                 # build queries
@@ -289,19 +301,19 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 msg = []
                 if job:
                     queries.append(Q(job=job))
-                    msg.append('Phase {}'.format(job))
+                    msg.append(f'{job}')
                 if customer:
                     queries.append(Q(job__customer=customer))
-                    msg.append('{}'.format(customer))
+                    msg.append(f'{customer}')
                 if category:
                     queries.append(Q(category=category))
-                    msg.append('Phase {}'.format(category))
+                    msg.append(f'{category}')
 
-                if payment_date:
+                if start_date:
                     if not to_date:
-                        to_date = payment_date + datetime.timedelta(days=30)
-                    queries.append(Q(created__range=[payment_date, to_date]))
-                    msg.append('Paid between {} and {}'.format(payment_date, to_date))
+                        to_date = start_date + datetime.timedelta(days=30)
+                    queries.append(Q(created__range=[start_date, to_date]))
+                    msg.append(f'Paid between {start_date} and {to_date}')
 
                 # combine queries
                 try:
@@ -312,7 +324,7 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                     query_str = ""
 
                 # execute query
-                messages.success(self.request, "Search results for {}".format(query_str))
+                messages.success(self.request, f"Search results for {query_str}")
                 return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')
 
 def accounting(request):

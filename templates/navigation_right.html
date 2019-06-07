@@ -1,51 +1,55 @@
 {% load thumbnail %}
 {% load static %}
 
-<ul class="nav navbar-nav ml-auto">
+<ul class="navbar-nav ml-auto">
     {% if request.user.is_authenticated %}
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i></a>
-            <div class="dropdown-menu">
+    <li class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'shop:job_index' %}">Jobs</a></li>
+            <li><a class="dropdown-item" href="{% url 'shop:customer_index' %}">Customers</a></li>
+            <li><a class="dropdown-item" href="{% url 'shop:cashflow_index' %}">Cashflows</a></li>
+            <li><a class="dropdown-item" href="{% url 'shop:cashflowtype_index' %}">Cashflow types</a></li>
+            <li><a class="dropdown-item" href="{% url 'shop:accounting' %}">Accounting</a></li>
+        </ul>
+    </li>
 
-                <a class="nav-link" href="#">Edit profile</a>
-                {% if request.user.personnel.avatar %}
-                    <a class="nav-link" href="#">Change avatar</a>
-                    <div class="dropdown-divider"></div>
-                {% else %}
-                    <a class="nav-link" href="#">Add avatar</a>
-                    <div class="dropdown-divider"></div>
-                {% endif %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'shop:job_new' %}">Job</a>
+            <a class="dropdown-item" href="{% url 'shop:customer_new' %}">Customer</a>
+            <a class="dropdown-item" href="{% url 'shop:cashflowtype_new' %}">Cashflowtype</a>
+            <a class="dropdown-item" href="{% url 'shop:cashflow_new' %}">Cashflow</a>
+        </div>
+    </li>
+    
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i></a>
+        <div class="dropdown-menu">
 
-                <a class="nav-link" href="{% url 'personnel:password_change' %}">Change password</a>
-                <a class="nav-link" href="{% url 'personnel:password_reset' %}">Reset password</a>
-                <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Edit profile</a>
+            {% if request.user.personnel.avatar %}
+                <a class="dropdown-item" href="#">Change avatar</a>
+            {% else %}
+                <a class="dropdown-item" href="#">Add avatar</a>
+            {% endif %}
 
-                {% if user.is_admin %}
-                    <a class="nav-link" href="/admin/">Admin</a>
-                    <div class="dropdown-divider"></div>
-                {% endif %}
+            <a class="dropdown-item" href="{% url 'personnel:password_change' %}">Change password</a>
+            <a class="dropdown-item" href="{% url 'personnel:password_reset' %}">Reset password</a>
+            <a class="dropdown-item" href="{% url 'personnel:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </li>
 
-                <a class="nav-link" href="{% url 'personnel:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
-            </div>
-        </li>
+    {% if user.is_admin %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle text-danger"></i></a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="/admin/">Admin</a>
+        </div>
+    </li>
+    {% endif %}
 
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
-            <div class="dropdown-menu">
-                <a class="nav-link" href="{% url 'shop:job_new' %}">Job</a>
-            </div>
-        </li>
-
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus text-danger"></i></a>
-            <div class="dropdown-menu">
-                <a class="nav-link" href="{% url 'shop:job_new' %}">Job</a>
-                <div class="dropdown-divider"></div>
-                <a class="nav-link" href="{% url 'shop:customer_new' %}">Customer</a>
-                <a class="nav-link" href="{% url 'shop:cashflowtype_new' %}">Cashflowtype</a>
-                <a class="nav-link" href="{% url 'shop:cashflow_new' %}">Cashflow</a>
-            </div>
-        </li>
     {% else %}
         <a class="nav-link" href="{% url 'personnel:login' %}">Login <i class="fas fa-sign-in-alt"></i></a>
     {% endif %}

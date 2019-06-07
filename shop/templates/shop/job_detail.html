@@ -1,61 +1,91 @@
 {% extends "viani_base.html" %}
 {% block title %}{{ job }}{% endblock %}
 
+{% load shop_tags_and_filters %}
+
 {% block content %}
 
 <h1>{{ job }}</h1>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-        <li class="breadcrumb-item"><a href="/shop/job-index/">Jobs</a></li>
+        <li class="breadcrumb-item"><a href="/">Shop</a></li>
+        <li class="breadcrumb-item"><a href="/shop/jobs/index/">Jobs</a></li>
         <li class="breadcrumb-item active">{{ job }}</li>
     </ol>
 </nav>
 
-    {% if job.status == 5%}
-    <h3 class="text-success">This job has been completed</h3>
-    {% endif %}
+<div class="row">
+    <div class="col-sm-12 job_actions_grid">
+        <div class="job_actions">
+            <a href="{% url 'shop:job_add_cashflow' job.pk %}"><button class="btn btn-md btn-success">Add cashflow</button></a>
+            <a href="{% url 'shop:job_update_status' job.pk %}"><button class="btn btn-md btn-info">Update status</button></a>
+            <a href="{% url 'shop:job_edit' job.pk %}"><button class="btn btn-md btn-primary">Edit</button></a>
+            <a href="#"><button class="btn btn-md btn-success">Mark Accepted</button></a>
+        </div>
+    </div>
+</div>
+   
+<div class="row">
+    <div class="col-md-6">
+        <div class="card viani_card">
+            <div class="description">
+                <h3>{{ job.description.title }}</h3>
+            </div>
+            <hr>
 
-<div class="table-responsive">
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <caption>{{ job }}</caption>
-            </thead>
-            <tr>
-                <th>Customer</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Value</th>
-                <th>Discount</th>
-                <th>Expense</th>
-                <th>Payment</th>
-                <th>Profit</th>
-                <th>Start</th>
-                <th>Completed</th>
-                <th>Date</th>
-                <th>Notes/Description</th>
-            </tr>
-
-            <tbody>
-                <tr>
-                    <td>{{ job.customer }}</td>
-                    <td>{{ job.description.title }}</td>
-                    <td>{{ job.status }}</td>
-                    <td>{{ job.value }}</td>
-                    <td>{{ job.discount }}</td>
-                    <td>{{ job.total_expense }}</td>
-                    <td>{{ job.total_payment }}</td>
-                    <td>{{ job.gross_profit }}</td>
-                    <td>{{ job.start}}</td>
-                    <td>{{ job.completion }}</td>
-                    <td>{{ job.created|date:"d/M/Y" }}</td>
-                    <td>{{ job.notes }}</td>
-                </tr>
-            </tbody>
-        </table>
+            <div class="figures">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            {{ job.status|status_text }}
+                            {% if job.status == 4 %}<i class="fas fa-check-circle text-success"></i>{% endif %}
+                        </div>
+                        <div class="col-sm-4">{{ job.start_date|date:"d/M/Y" }}</div>
+                        <div class="col-sm-4">{{ job.completed|date:"d/M/Y" }}</div>
+                    </div>
+                </div>
+                <hr>
+                <p>Value: {{ job.value }}</p>
+                <p>Discount: {{ job.discount }}</p>
+                <p>Payment: {{ job.total_payment }}</p>
+                <p>Expenses: {{ job.total_expense }}</p>
+                <p>Net profit: {{ job.gross_profit }}</p>
+                <p>Description: {{ job.description }}</p>
+            </div>
+        </div>
     </div>
 
+    <div class="col-md-6">
+        
+        <div class="card viani_card">
+            <div class="customer">
+                <h2>{{ job.customer }}</h2>
+            </div>
+            <hr>
+            <div class="details">
+                <p>{{ job.customer.phone }}</p>
+                <p><a href="{% url 'shop:customer_details' job.customer.pk %}">More...</a></p>
+            </div>
+        </div>
+        <div class="card viani_card">
+            <h2>Cashflow</h2>
+            <hr>
+            {% for cashflow in job.cashflow_set.all %}
+            <p>
+                {{ forloop.counter }}.
+                {% if cashflow.category.name == 'payment' %}
+                    <i class="fas fa-plus text-success"></i>
+                {% else %}
+                    <i class="fas fa-minus text-danger"></i>
+                {% endif %}
+
+                {{ cashflow.amount }} on {{ cashflow.created|date:"d/M/Y" }}
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
 {% endblock content %}
-{% block footer %}{% endblock footer %}

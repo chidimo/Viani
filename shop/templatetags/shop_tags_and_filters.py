@@ -3,6 +3,10 @@ from django.db.models import Sum
 
 register = template.Library()
 
+@register.filter
+def status_text(value):
+    return {1: 'Started', 2: "Finished", 3: 'Delivered', 4: 'Accepted'}[value]
+
 @register.filter()
 def summ_values(query_set):
     summ = query_set.aggregate(total=Sum('value'))
