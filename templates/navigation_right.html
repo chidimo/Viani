@@ -2,6 +2,7 @@
 {% load static %}
 
 <ul class="navbar-nav ml-auto">
+    {% if request.user.is_authenticated %}
     <li class="nav-item dropdown">
         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop <span class="caret"></span></a>
         <ul class="dropdown-menu">
@@ -13,7 +14,6 @@
         </ul>
     </li>
 
-    {% if request.user.is_authenticated %}
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
         <div class="dropdown-menu">

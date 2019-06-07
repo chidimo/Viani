@@ -6,10 +6,6 @@ app_name = 'shop'
 urlpatterns = []
 
 urlpatterns += [
-    path('gallery/', views.gallery, name='gallery'),
-]
-
-urlpatterns += [
     path('customers/index/', views.CustomerIndex.as_view(), name='customer_index'),
     path('customers/new/', views.NewCustomer.as_view(), name='customer_new'),
     path('customers/<int:pk>/', views.customer_details, name='customer_details'),

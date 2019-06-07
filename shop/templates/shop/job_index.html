@@ -7,15 +7,14 @@
 
 <h1>Jobs</h1>
 
-{% if filter_view %}
-{% else %}
-    <h2 class="text-success">{{ completed_job_count }} jobs completed till date.</h2>
+{% if not filter_view%}
+    <h4>Completed: {{ completed_job_count }}</h4>
+    <h4>Rate: {{ completion_rate }}%</h4>
 {% endif %}
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Shop</a></li>
+        <li class="breadcrumb-item"><a href="/">Shop</a></li>
         <li class="breadcrumb-item active" aria-current="page">Jobs</li>
     </ol>
 </nav>

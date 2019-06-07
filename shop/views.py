@@ -18,11 +18,6 @@ from .utils import context_messages as cm
 from .models import Customer, Job, CashFlow, CashFlowType
 from .forms import NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm, UpdateJobStatusForm, JobFilterForm, NewCashFlowForm, NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
 
-def gallery(request):
-    template = 'shop/gallery.html'
-    context = {}
-    return render(request, template, context)
-
 class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     model = Customer
     template_name = 'shop/customer_index.html'
