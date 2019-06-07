@@ -12,20 +12,43 @@
     </ol>
 </nav>
 
-<h2>Jobs belonging to {{ customer }}</h2>
-<p>Completed jobs are coloured <span class="text-success">green</span></p>
-<hr>
+<div class="row">
+    <div class="col-sm-12 job_actions_grid">
+        <div class="job_actions">
+            <a href="{% url 'shop:edit_customer' customer.pk %}"><button class="btn btn-md btn-success">Edit</button></a>
+        </div>
+    </div>
+</div>
 
-{% for job in customer_jobs%}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card viani_card">
+            <div class="customer">
+                <h2>{{ customer }}</h2>
+            </div>
+            <hr>
+            <div class="details">
+                <p>{{ customer.sex.title }}</p>
+                <p>{{ customer.phone }}</p>
+                <p>{{ customer.address }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card viani_card">
+            <h2>Jobs</h2>
+            <hr>
 
-    {% if job.status == 5%}
-        <h3>{{ forloop.counter }} - <a class="text-success" href="{% url 'shop:job_detail' job.pk %}">{{ job }}</a></h3>
-    {% else %}
-        <h3>{{ forloop.counter }} - <a href="{% url 'shop:job_detail' job.pk %}">{{ job }}</a></h3>
-    {% endif %}
-
-
-{% endfor %}
+            {% for job in customer_jobs%}
+                <a href="{% url 'shop:job_detail' job.pk %}">
+                    <h5>{{ forloop.counter }} - {{ job }} - {{ job.value }}
+                        {% if job.status == 4 %}<i class="fas fa-check-circle text-success"></i>{% endif %}
+                    </h5>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock content %}
-

@@ -12,42 +12,30 @@
 </nav>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <caption>Customers</caption>
+    <table>
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Sex</th>
+                <th>Jobs</th>
+            </tr>
         </thead>
-        <tr>
-            <th>S/N</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Sex</th>
-            <th>Jobs</th>
-            <th>Action</th>
-        </tr>
 
         {% if customers %}
         <tbody>
             {% for customer in customers %}
                 <tr>
-                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ forloop.counter }}</a></td>
                     <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.first_name.title }} {{ customer.last_name.title }}</a></td>
-                    <td><a class="text-success" href="tel:{{ customer.phone }}">{{ customer.phone }}</a></td>
-                    <td>{{ customer.address.title }}</td>
-                    <td>{{ customer.sex.title }}</td>
-                    <td>{{ customer.job_set.count }}</td>
-                    <td><a href="{% url 'shop:edit_customer' customer.pk %}"><i class="fas fa-edit"></i></a></td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.phone }}</a></td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.address.title }}</a></td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.sex.title }}</a></td>
+                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.job_set.count }}</a></td>
                 </tr>
             {% endfor %}
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
         </tbody>
         {% else %}
             <p>No customers to show</p>

@@ -28,7 +28,7 @@ class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     context_object_name = 'customers'
     paginate_by = 100
 
-class NewCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
+class NewCustomer(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Customer
     template_name = 'shop/customer_new.html'
     form_class = NewCustomerForm
@@ -46,6 +46,9 @@ class EditCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     template_name = 'shop/customer_edit.html'
     form_class = EditCustomerForm
     success_message = 'Customer updated successfully !'
+
+    def get_success_url(self, **kwargs):
+        return reverse('shop:customer_details', kwargs={'pk': self.kwargs['pk']})
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
