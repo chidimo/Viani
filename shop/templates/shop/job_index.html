@@ -19,81 +19,58 @@
     </ol>
 </nav>
 
+<div class="filter">
     <form action="{% url 'shop:job_filter' %}" method="get" enctype="multipart/form-data">
-        <section class="text-center">
+        <div class="filter_fields text-center">
             {% for field in job_filter_form %}
-            <span class="btn btn-filter">{{ field.label }}{{ field }}</span>
+            <span>{{ field.label }}{{ field }}</span>
             {% endfor %}
-            <span class='btn btn-filter'>
-                <button class="btn btn-primary btn-sm float-right" type="submit" value="Continue">Continue</button>
-            </span>
-        </section>
+        </div>
+        <button class="btn btn-primary btn-md" type="submit" value="Continue">Continue</button>
     </form>
+</div>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <caption>Jobs</caption>
+    <table class="jobs_table">
+        <thead>
+            <tr>
+                <th>S/N</th>
+                <th>Title</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Value</th>
+                <th>Discount</th>
+                <th>Expense</th>
+                <th>Payment</th>
+                <th>Profit</th>
+            </tr>
         </thead>
-        <tr>
-            <th>S/N</th>
-            <th>Title</th>
-            <th>Customer</th>
-            <th>Status</th>
-            <th>Value</th>
-            <th>Discount</th>
-            <th>Expense</th>
-            <th>Payment</th>
-            <th>Profit</th>
-            <th>Start</th>
-            <th>Completed</th>
-            <th>Notes/Description</th>
-            <th>Action</th>
-        </tr>
 
         {% if jobs %}
         <tbody>
             {% for job in jobs %}
-
-                {% if job.status == 5 %}
-                    <tr style="background: #024602; color:white;">
-                {% else %}
-                    <tr>
-                {% endif %}
-                        <td>{{ forloop.counter }}</td>
-                        <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.description.title }}</a></td>
-                        <td>{{ job.customer }}</td>
-                        <td>Level {{ job.status }}</td>
-                        <td>{{ job.value }}</td>
-                        <td>{{ job.discount }}</td>
-                        <td class="text-danger">{{ job.total_expense }}</td>
-                        <td>{{ job.total_payment }}</td>
-                        <td class="text-success">{{ job.gross_profit }}</td>
-                        <td>{{ job.start_date|date:"d/M/Y" }}</td>
-                        <td>{{ job.completed|date:"d/M/Y" }}</td>
-                        <td>{{ job.notes }}</td>
-                        <td>
-                            <a href="{% url 'shop:job_add_cashflow' job.pk %}" title="Add cashflow to this job"><i class="fas fa-plus"></i></a>&nbsp;
-                            <a href="{% url 'shop:job_update_status' job.pk %}" title="Update status"><i class="fas fa-pencil-alt"></i></a>&nbsp;
-                            <a href="{% url 'shop:job_edit' job.pk %}" title="Update status"><i class="fas fa-edit"></i></a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ forloop.counter }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.description.title }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.customer }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.status|status_text }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.value }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.discount }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.total_expense }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.total_payment }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.gross_profit }}</a></td>
+                </tr>
             {% endfor %}
-            <tr>
+            <tr class="summation_row">
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><strong>{{ jobs|summ_values }}</strong></td>
-                <td><strong>{{ jobs|summ_discounts }}</strong></td>
-                <td class="text-danger"><strong>{{ jobs|summ_total_expenses }}</strong></td>
-                <td style="color:white"><strong>{{ jobs|summ_total_payments }}</strong></td>
-                <td class="text-success"><strong>{{ jobs|summ_profits }}</strong></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ jobs|summ_values }}</td>
+                <td>{{ jobs|summ_discounts }}</td>
+                <td class="text-danger">{{ jobs|summ_total_expenses }}</td>
+                <td>{{ jobs|summ_total_payments }}</strong></td>
+                <td class="text-success">{{ jobs|summ_profits }}</td>
             </tr>
         </tbody>
         {% else %}
@@ -103,4 +80,3 @@
 </div>
 
 {% endblock content %}
-
