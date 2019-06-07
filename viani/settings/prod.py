@@ -1,6 +1,6 @@
 import os
 from .base import *
-DEBUG = True
+DEBUG = False
 ENVIRONMENT_NAME, _ = os.path.splitext(os.path.basename(os.path.abspath(__file__)))
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
