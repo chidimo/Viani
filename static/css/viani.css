@@ -266,6 +266,19 @@ input#id_password {
     padding-right: 5px;
 }
 
+.pagination {
+    padding: .5rem;
+    background: #CCC;
+}
+
+.pagination a {
+    padding: 0 10px;
+}
+
+span.next, span.prev {
+    padding: 0 10px;
+}
+
 footer {
     display: flex;
     flex-direction: column;
