@@ -72,7 +72,7 @@ class Job(Company):
         return f'{self.description.title()}'
 
     def get_absolute_url(self):
-        return reverse('shop:job_index')
+        return reverse('shop:job_detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
         exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']

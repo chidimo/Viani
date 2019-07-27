@@ -107,6 +107,16 @@ class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect(reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']}))
 
+def mark_accepted(request, pk):
+    user = request.user
+    if rules.test_rule('mark_accepted', user):
+        job = Job.objects.get(pk=pk)
+        job.status = 4
+        job.save()
+        return redirect(reverse('shop:job_detail', kwargs={'pk': pk}))
+    messages.error(request, cm.OPERATION_FAILED)
+    return redirect(reverse('shop:job_detail', kwargs={'pk': pk}))
+
 class JobDetail(LoginRequiredMixin, generic.DetailView):
     model = Job
     template_name = 'shop/job_detail.html'

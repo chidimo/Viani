@@ -19,6 +19,7 @@ urlpatterns += [
     path('jobs/<int:pk>/', views.JobDetail.as_view(), name='job_detail'),
     path('jobs/add-cashflow/<int:pk>/', views.job_add_cashflow, name='job_add_cashflow'),
     path('jobs/update-status/<int:pk>/', views.UpdateJobStatus.as_view(), name='job_update_status'),
+    path('jobs/mark-accepted/<int:pk>', views.mark_accepted, name='job_mark_accepted'),
     path('jobs-filter', views.JobFilterView.as_view(), name='job_filter'),
 ]
 

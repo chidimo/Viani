@@ -14,6 +14,7 @@ perms['edit_customer'] = 'Can edit customer'
 # job
 perms['create_job'] = 'Can create job'
 perms['edit_job'] = 'Can edit job'
+perms['mark_accepted'] = 'Can mark a job as accepted'
 
 # cashflow
 perms['create_cashflow'] = 'Can create cashflow'
