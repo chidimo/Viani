@@ -32,5 +32,5 @@ class JobModel(TestCase):
             f'{self.job.description.title()}'
         )
         self.assertEqual(
-            self.job.get_absolute_url(), reverse('shop:job_index')
+            self.job.get_absolute_url(), reverse('shop:job_detail', kwargs={'pk': self.job.pk})
         )

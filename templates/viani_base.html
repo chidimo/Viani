@@ -5,7 +5,7 @@
 		{% load staticfiles %}
 		{% load static %}
         {% load thumbnail %}
-        
+
         <title>{% block title %}Home{% endblock title %} - Viani</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +23,7 @@
 
     <body>
         {% block body %}
-        
+
         <div class="page_wrapper">
             <div class="page_top">
                 {% block navigation %}
@@ -36,23 +36,27 @@
                                     <span class="sr-only">Toggle navigation</span>
                                 <span class="navbar-toggler-icon"></span>
                             </button>
-                
+
                             <div class="collapse navbar-collapse navcontent" id="navbarColor02">
                                 {% include "navigation_right.html" %}
                             </div>
                         </div>
                     </nav>
                 </header>
-        
+
                 {% endblock navigation %}
-        
+
                 <div class="body_container">
                     {% include 'messages.html' %}
                     {% block content %}
                     {% endblock content %}
                 </div>
+
+                {% if is_paginated %}
+                    {% include "pure_pagination.html" %}
+                {% endif %}
             </div>
-    
+
             <footer>
                 <div class="footer_text">
                     <p>Viani</p>
@@ -69,7 +73,7 @@
         <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js" async></script>
 
         {% block page_js %}{% endblock page_js %}
-        
+
         <script>
             $(".dropdown-toggle").on("mouseenter", function () {
                 // make sure it is not shown:
@@ -84,6 +88,6 @@
                     $(this).children('.dropdown-toggle').first().click();
                 }
             });
-        </script>      
+        </script>
     </body>
 </html>

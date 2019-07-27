@@ -21,11 +21,11 @@
             <a href="{% url 'shop:job_add_cashflow' job.pk %}"><button class="btn btn-md btn-success">Add cashflow</button></a>
             <a href="{% url 'shop:job_update_status' job.pk %}"><button class="btn btn-md btn-info">Update status</button></a>
             <a href="{% url 'shop:job_edit' job.pk %}"><button class="btn btn-md btn-primary">Edit</button></a>
-            <a href="#"><button class="btn btn-md btn-success">Mark Accepted</button></a>
+            <a href="{% url 'shop:job_mark_accepted' job.pk %}"><button class="btn btn-md btn-success">Mark Accepted</button></a>
         </div>
     </div>
 </div>
-   
+
 <div class="row">
     <div class="col-md-6">
         <div class="card viani_card">
@@ -57,7 +57,7 @@
     </div>
 
     <div class="col-md-6">
-        
+
         <div class="card viani_card">
             <div class="customer">
                 <h2>{{ job.customer }}</h2>

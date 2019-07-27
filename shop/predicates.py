@@ -21,6 +21,10 @@ def create_job(user):
 def edit_job(user):
     return 'edit_job' in user_permissions(user)
 
+@predicate
+def mark_accepted(user):
+    return 'mark_accepted' in user_permissions(user)
+
 # cashflow
 @predicate
 def create_cashflow(user):

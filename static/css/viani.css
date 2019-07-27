@@ -2,15 +2,6 @@
     box-sizing: border-box;
 }
 
-/* fix nav scrolling on small screens */
-@media (min-width: 300px) {
-    .navbar-collapse.navcontent.collapse.show {
-        max-height: 500px !important;
-        overflow-y: scroll !important;
-        overflow-x: hidden !important;
-    }
-}
-
 body {
     font-family: 'Open Sans', sans-serif;
     padding: 0;
@@ -59,6 +50,24 @@ a.navbar_brand {
     text-decoration: none;
 }
 
+/* media queries */
+
+/* fix nav scrolling on small screens */
+@media (min-width: 300px) {
+    .navbar-collapse.navcontent.collapse.show {
+        max-height: 500px !important;
+        overflow-y: scroll !important;
+        overflow-x: hidden !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Global */
+    div.body_container {
+        width: 95%;
+    }
+}
+
 /* Global */
 .body_container {
     width: 60%;
@@ -67,7 +76,7 @@ a.navbar_brand {
 }
 
 .form_container {
-    width: 50%;
+    width: 80%;
     margin: auto;
     padding: 15px;
     border-radius: 5px;
@@ -206,6 +215,15 @@ tr.summation_row td {
     font-weight: bold;
 }
 
+tbody tr.completed {
+    /* background: #17a2b8; */
+    font-weight: bold;
+}
+
+tbody tr.completed a {
+    color: green;
+}
+
 /* login form */
 
 .form-group {
@@ -255,6 +273,19 @@ input#id_password {
     color: #336B87;
     border-right: 1px solid #ccc;
     padding-right: 5px;
+}
+
+.pagination {
+    padding: .5rem;
+    background: #CCC;
+}
+
+.pagination a {
+    padding: 0 10px;
+}
+
+span.next, span.prev {
+    padding: 0 10px;
 }
 
 footer {
