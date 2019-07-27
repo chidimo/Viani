@@ -73,8 +73,10 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         completed_job_count = Job.objects.filter(status=4).count()
+        total_job_count = Job.objects.count()
         context['completed_job_count'] = completed_job_count
-        completion_rate = (completed_job_count / Job.objects.count()) * 100
+        context['total_job_count'] = total_job_count
+        completion_rate = (completed_job_count / total_job_count) * 100
         context['completion_rate'] = round(completion_rate, 2)
         context['job_filter_form'] = JobFilterForm()
         context['filter_view'] = False
