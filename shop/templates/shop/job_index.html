@@ -49,7 +49,12 @@
         {% if jobs %}
         <tbody>
             {% for job in jobs %}
+
+            {% if job.status == 4 %}
+                <tr class='completed'>
+            {% else %}
                 <tr>
+            {% endif %}
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ forloop.counter }}</a></td>
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.description.title }}</a></td>
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.customer }}</a></td>

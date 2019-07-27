@@ -215,6 +215,15 @@ tr.summation_row td {
     font-weight: bold;
 }
 
+tbody tr.completed {
+    /* background: #17a2b8; */
+    font-weight: bold;
+}
+
+tbody tr.completed a {
+    color: green;
+}
+
 /* login form */
 
 .form-group {
