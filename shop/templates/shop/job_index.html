@@ -8,7 +8,7 @@
 <h1>Jobs</h1>
 
 {% if not filter_view%}
-    <h4>Completed: {{ completed_job_count }}</h4>
+    <h4>Completed: {{ completed_job_count }} of {{ jobs.count }}</h4>
     <h4>Rate: {{ completion_rate }}%</h4>
 {% endif %}
 
