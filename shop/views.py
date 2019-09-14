@@ -76,7 +76,10 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
         total_job_count = Job.objects.count()
         context['completed_job_count'] = completed_job_count
         context['total_job_count'] = total_job_count
-        completion_rate = (completed_job_count / total_job_count) * 100
+        try:
+            completion_rate = (completed_job_count / total_job_count) * 100
+        except ZeroDivisionError:
+            completion_rate = 1
         context['completion_rate'] = round(completion_rate, 2)
         context['job_filter_form'] = JobFilterForm()
         context['filter_view'] = False
