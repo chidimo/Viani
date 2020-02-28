@@ -70,7 +70,6 @@ THIRD_PARTY_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
     )
 
