@@ -3,15 +3,6 @@ from personnel.models import Personnel, PersonnelPermission
 
 common_permissions = [
     'create_expenditure',
-    'create_debt',
-    'view_bet9ja_nav',
-    'view_cashier_index',
-    'view_product_index',
-    'create_sale',
-    'view_interaccount_index',
-    'view_est_nav',
-    'view_branch_index',
-    'view_department_index'
 ]
 
 

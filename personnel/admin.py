@@ -48,7 +48,7 @@ class PersonAdmin(BaseUserAdmin):
     filter_horizontal = ()
 
 class PersonnelPermissionAdmin(admin.ModelAdmin):
-    list_display = ("name", "code_name", "permitted_personnels")
+    list_display = ('app_name', "name", "code_name", "permitted_personnels")
 
 admin.site.register(Personnel, PersonnelAdmin)
 admin.site.register(PersonnelPermission, PersonnelPermissionAdmin)

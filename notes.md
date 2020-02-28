@@ -13,3 +13,7 @@ mysqldump -u vianifashion -h vianifashion.mysql.pythonanywhere-services.com 'via
 mysql -u vianifashion -h vianifashion.mysql.pythonanywhere-services.com 'vianifashion$vianirestore'  < viani.sql
 
 'psql -h localhost -d viani -U postgres -f viani.sql';
+
+python manage.py createperms
+python manage.py cleanperms
+python manage.py grantperms

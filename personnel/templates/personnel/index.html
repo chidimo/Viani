@@ -19,7 +19,6 @@
                 <th>Salary</th>
                 <th>Balance</th>
                 <th>Designation</th>
-                <th>Branch</th>
                 <th>Job status</th>
                 <th>Account status</th>
                 <th>Groups</th>
@@ -44,8 +43,6 @@
                 </td>
                 <td>{{ personnel.balance }}</td>
                 <td>{{ personnel.designation }}</td>
-                <td>{{ personnel.branchaccesscode.branch }}</td>
-
                 <td>{{ personnel.status }}</td>
                 <td>{% if personnel.user.is_active %}Active{% else %}Inactive{% endif %}</td>
 

@@ -81,9 +81,8 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
 
 
     def dispatch(self, request, *args, **kwargs):
-        user = self.request.user
         rule_to_check = 'view_jobs_index'
-        if vianirules.has_permission(rule_to_check, request):
+        if vianirules.has_permission(rule_to_check, self.request):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')

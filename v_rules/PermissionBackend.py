@@ -11,9 +11,9 @@ class PermissionBackend():
     def has_permission(self, perm, request, *args, **kwargs):
         try:
             user_perms = request.user.personnel.personnel_permissions()
+            print('user_perms', user_perms)
             return perm in user_perms
         except:
-            messages.warning(request, BANNER['BRANCH_NOT_IN_SESSION'])
             logout(request)
             redirect('personnel:login')
 

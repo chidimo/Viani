@@ -32,8 +32,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-# LOGIN_REDIRECT_URL = reverse_lazy('personnel:dashboard')
-# LOGIN_REDIRECT_URL = reverse_lazy('establishment:select_branch')
 LOGIN_URL = reverse_lazy('personnel:login')
 LOGOUT_URL = reverse_lazy('personnel:logout')
 LOGOUT_REDIRECT_URL = reverse_lazy('personnel:login')

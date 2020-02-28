@@ -63,7 +63,7 @@ class Expenditure(TimeStampedModel):
         ordering = ('locked', '-date')
 
     def __str__(self):
-        return f'Exp: {self.item}-{self.branch}'
+        return f'Exp: {self.item}-{self.amount}'
 
     def get_absolute_url(self):
         return reverse('account:expenditures')
