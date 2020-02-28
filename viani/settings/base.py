@@ -32,13 +32,6 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = config('EMAIL_PORT')
-# EMAIL_HOST_USER = 'viani3@gmail.com'
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = 'viani3@gmail.com'
-
 # LOGIN_REDIRECT_URL = reverse_lazy('personnel:dashboard')
 # LOGIN_REDIRECT_URL = reverse_lazy('establishment:select_branch')
 LOGIN_URL = reverse_lazy('personnel:login')
@@ -63,24 +56,20 @@ PREREQ_APPS = [
 ]
 
 PROJECT_APPS = [
-    'account',
-    'personnel',
     'shop',
+    'account',
+    'v_rules',
+    'personnel',
 ]
 
 THIRD_PARTY_APPS = [
-    'rules.apps.AutodiscoverRulesConfig',
     'django_extensions',
     'pure_pagination',
     'sorl.thumbnail',
     'django_addanother',
-    'social_django',
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
-    'social_core.backends.twitter.TwitterOAuth',
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
     )

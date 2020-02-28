@@ -2,17 +2,16 @@ import datetime
 import operator
 from functools import reduce
 
-from django.db.models import Q, Sum
-from django.shortcuts import render, redirect, reverse
 from django.views import generic
+from django.db.models import Q, Sum
 from django.contrib import messages
+from django.shortcuts import render, redirect, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django_addanother.views import CreatePopupMixin
 from pure_pagination.mixins import PaginationMixin
 
-import rules
 from .utils import context_messages as cm
 
 from .models import Customer, Job, CashFlow, CashFlowType
@@ -22,11 +21,15 @@ from .forms import (
     NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
 )
 
+from v_rules.PermissionBackend import vianirules
+
+
 class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     model = Customer
     template_name = 'shop/customer_index.html'
     context_object_name = 'customers'
     paginate_by = 100
+
 
 class NewCustomer(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Customer
@@ -36,10 +39,12 @@ class NewCustomer(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, gen
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
-        if rules.test_rule('create_customer', user):
+        rule_to_check = 'create_customer'
+        if vianirules.has_permission(rule_to_check, request):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
+
 
 class EditCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Customer
@@ -52,10 +57,13 @@ class EditCustomer(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
-        if rules.test_rule('edit_customer', user):
+        rule_to_check = 'edit_customer'
+
+        if vianirules.has_permission(rule_to_check, request):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
+
 
 def customer_details(request, pk):
     template = 'shop/customer_details.html'
@@ -64,11 +72,21 @@ def customer_details(request, pk):
     context['customer_jobs'] = Job.objects.filter(customer__pk=pk)
     return render(request, template, context)
 
+
 class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
     paginate_by = 100
+
+
+    def dispatch(self, request, *args, **kwargs):
+        user = self.request.user
+        rule_to_check = 'view_jobs_index'
+        if vianirules.has_permission(rule_to_check, request):
+            return super().dispatch(request, *args, **kwargs)
+        messages.error(self.request, cm.OPERATION_FAILED)
+        return redirect('/')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,6 +103,7 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
         context['filter_view'] = False
         return context
 
+
 class NewJob(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = Job
     form_class = NewJobForm
@@ -92,10 +111,12 @@ class NewJob(LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
-        if rules.test_rule('create_job', user):
+        rule_to_check = 'create_job'
+        if vianirules.has_permission(rule_to_check, request):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect('/')
+
 
 class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Job
@@ -107,14 +128,18 @@ class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
 
     def dispatch(self, request, *args, **kwargs):
         user = self.request.user
-        if rules.test_rule('edit_job', user):
+        rule_to_check = 'edit_job'
+        if vianirules.has_permission(rule_to_check, request):
             return super().dispatch(request, *args, **kwargs)
         messages.error(self.request, cm.OPERATION_FAILED)
         return redirect(reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']}))
 
+
 def mark_accepted(request, pk):
     user = request.user
-    if rules.test_rule('mark_accepted', user):
+
+    rule_to_check = 'mark_accepted'
+    if vianirules.has_permission(rule_to_check, request):
         job = Job.objects.get(pk=pk)
         job.status = 4
         job.save()
@@ -122,10 +147,12 @@ def mark_accepted(request, pk):
     messages.error(request, cm.OPERATION_FAILED)
     return redirect(reverse('shop:job_detail', kwargs={'pk': pk}))
 
+
 class JobDetail(LoginRequiredMixin, generic.DetailView):
     model = Job
     template_name = 'shop/job_detail.html'
     context_object_name = 'job'
+
 
 def job_add_cashflow(request, pk):
     job = Job.objects.get(pk=pk)
@@ -148,12 +175,14 @@ def job_add_cashflow(request, pk):
             name = form['name']
             amount = form['amount']
             notes = form['notes']
-            CashFlow.objects.create(category=category, name=name, amount=amount, job=job, notes=notes)
+            CashFlow.objects.create(
+                category=category, name=name, amount=amount, job=job, notes=notes)
             job.save()
             return redirect(reverse('shop:job_detail', kwargs={'pk': job.pk}))
         else:
-            return render(request, template, {'form' : form})
+            return render(request, template, {'form': form})
     return render(request, template, context)
+
 
 class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateView):
     model = Job
@@ -168,6 +197,7 @@ class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateVi
         context = super().get_context_data(**kwargs)
         context['job'] = Job.objects.get(pk=self.kwargs['pk'])
         return context
+
 
 class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
@@ -195,7 +225,8 @@ class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 to_date = form['to_date']
 
                 # build queries
-                phases = {1: 'Started', 2: "Finished", 3: 'Delivered', 4: 'Accepted'}
+                phases = {1: 'Started', 2: "Finished",
+                          3: 'Delivered', 4: 'Accepted'}
                 queries = []
                 msg = []
                 if customer:
@@ -224,12 +255,15 @@ class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 except TypeError:
                     query = []
                     query_str = ""
-                    messages.success(self.request, "You did not make any selection")
+                    messages.success(
+                        self.request, "You did not make any selection")
                     return Job.objects.all().order_by('status', 'customer', '-start_date')
 
                 # execute query
-                messages.success(self.request, "Search results for {}".format(query_str))
+                messages.success(
+                    self.request, "Search results for {}".format(query_str))
                 return Job.objects.filter(query).order_by('status', 'customer', '-start_date')
+
 
 class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlowType
@@ -237,17 +271,11 @@ class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     context_object_name = 'cashflowtypes'
     paginate_by = 100
 
+
 class NewCashFlowType(CreatePopupMixin, LoginRequiredMixin, generic.CreateView):
     model = CashFlowType
     form_class = NewCashFlowTypeForm
     template_name = 'shop/cashflowtype_new.html'
-
-    def dispatch(self, request, *args, **kwargs):
-        user = self.request.user
-        if rules.test_rule('create_cashflowtype', user):
-            return super().dispatch(request, *args, **kwargs)
-        messages.error(self.request, cm.OPERATION_FAILED)
-        return redirect('/')
 
 class CashFlowIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlow
@@ -260,32 +288,18 @@ class CashFlowIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
         context['cashflow_filter_form'] = CashFlowFilterForm()
         return context
 
+
 class NewCashFlow(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
     model = CashFlow
     form_class = NewCashFlowForm
     template_name = 'shop/cashflow_new.html'
     success_message = 'Cashflow added successfully'
 
-    def dispatch(self, request, *args, **kwargs):
-        user = self.request.user
-        if rules.test_rule('create_cashflow', user):
-            return super().dispatch(request, *args, **kwargs)
-        messages.error(self.request, cm.OPERATION_FAILED)
-        return redirect('/')
 
 def bank_cashflow(request, pk):
-    if rules.test_rule('bank_cashflow', request.user) is False:
-        messages.error(request, cm.OPERATION_FAILED)
-
-    cashflow = CashFlow.objects.get(pk=pk)
-
-    if cashflow.category.name == 'expense':
-        messages.error(request, 'You cannot bank an expense')
-    else:
-        cashflow.banked = True
-        cashflow.save(update_fields=['banked'])
 
     return redirect('shop:cashflow_index')
+
 
 class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = CashFlow
@@ -339,19 +353,27 @@ class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                     query_str = ""
 
                 # execute query
-                messages.success(self.request, f"Search results for {query_str}")
+                messages.success(
+                    self.request, f"Search results for {query_str}")
                 return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')
+
 
 def accounting(request):
     template = 'shop/accounting.html'
     context = {}
 
-    context['total_job_value'] = Job.objects.aggregate(total=Sum('value'))['total']
-    context['total_payments'] = Job.objects.aggregate(total=Sum('total_payment'))['total']
-    context['total_expenses'] = CashFlow.objects.filter(category__name='expense').aggregate(total=Sum('amount'))['total']
-    context['total_discounts'] = Job.objects.aggregate(total=Sum('discount'))['total']
-    context['gross_profit'] = Job.objects.aggregate(total=Sum('gross_profit'))['total']
-    context['total_amount_banked'] = CashFlow.objects.filter(banked=True, category__name='payment').aggregate(total=Sum('amount'))['total']
+    context['total_job_value'] = Job.objects.aggregate(total=Sum('value'))[
+        'total']
+    context['total_payments'] = Job.objects.aggregate(
+        total=Sum('total_payment'))['total']
+    context['total_expenses'] = CashFlow.objects.filter(
+        category__name='expense').aggregate(total=Sum('amount'))['total']
+    context['total_discounts'] = Job.objects.aggregate(total=Sum('discount'))[
+        'total']
+    context['gross_profit'] = Job.objects.aggregate(
+        total=Sum('gross_profit'))['total']
+    context['total_amount_banked'] = CashFlow.objects.filter(
+        banked=True, category__name='payment').aggregate(total=Sum('amount'))['total']
     context['net_profit'] = 'Deduct overheads'
 
     return render(request, template, context)

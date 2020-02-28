@@ -15,11 +15,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required#, user_passes_test
+from django.contrib.auth.decorators import login_required  # , user_passes_test
 from django.contrib.auth.models import Group
 from django.utils.decorators import method_decorator
 
-import rules
 
 from pure_pagination import PaginationMixin
 from django_addanother.views import CreatePopupMixin
@@ -33,7 +32,10 @@ from .forms import (
     PersonnelRegistrationForm, PersonnelEditForm
 )
 
+from v_rules.PermissionBackend import vianirules
+
 Person = get_user_model()
+
 
 class PersonnelIndex(PaginationMixin, LoginRequiredMixin, generic.ListView):
     model = Personnel
@@ -43,7 +45,8 @@ class PersonnelIndex(PaginationMixin, LoginRequiredMixin, generic.ListView):
 
     def dispatch(self, *args, **kwargs):
         user = self.request.user
-        if rules.test_rule('view_personnel_index', user):
+        rule_to_check = 'view_personnel_index'
+        if vianirules.has_permission(rule_to_check, self.request):
             return super().dispatch(*args, **kwargs)
         messages.error(self.request, cm.RESTRICTED_PAGE)
         return redirect('/')

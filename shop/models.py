@@ -8,6 +8,8 @@ from django.core.validators import RegexValidator
 
 from .utils.models import TimeStampedModel
 
+from constants.validators import validate_branch_code
+
 class Company(TimeStampedModel):
     company = models.CharField(max_length=60, default="viani", editable=False)
     address = models.CharField(max_length=200, default="holy cross road, new benin, benin city", editable=False)
@@ -17,6 +19,7 @@ class Company(TimeStampedModel):
 
     class Meta:
         abstract = True
+
 
 class Customer(TimeStampedModel):
     ML = "male"
