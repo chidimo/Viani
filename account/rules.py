@@ -1,6 +1,7 @@
 ACCOUNT_RULES = {
     'view_accounts_nav': 'view accounts navigation',
 
+    'create_revenue': 'create revenue',
     'create_expenditure': 'create expenditure',
 
     'create_expendituretype': 'create expenditure type',
