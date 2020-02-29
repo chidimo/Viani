@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.urls import reverse_lazy
 from django.forms.fields import DateField
 
-from .models import Customer, Job, CashFlow, CashFlowType
+from .models import Customer, Job
 
 from django_addanother.widgets import AddAnotherWidgetWrapper
 
@@ -104,77 +104,6 @@ class JobFilterForm(forms.Form):
     completed= DateField(
         required=False,
         # initial=timezone.now,
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
-
-    to_date = DateField(
-        required=True,
-        initial=timezone.now() + datetime.timedelta(days=30),
-        widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
-
-class NewCashFlowTypeForm(forms.ModelForm):
-    class Meta:
-        model = CashFlowType
-        fields = ('name', 'description',)
-
-        widgets = {
-            'name' : forms.TextInput(attrs={'class' : 'form-control' ,'placeholder' : 'Enter cashflowtype name'}),
-            'description' : forms.Textarea(attrs={'class' : 'form-control' ,'placeholder' : 'Enter cashflowtype description'}),
-        }
-
-class NewCashFlowForm(forms.ModelForm):
-    class Meta:
-        model = CashFlow
-        fields = ('job', 'category', 'name', 'amount', 'notes')
-
-        widgets = {
-            'name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter name of item (if applicable)'}),
-            'category' : AddAnotherWidgetWrapper(
-                forms.Select(attrs={'class' : 'form-control'}),
-                reverse_lazy('shop:cashflowtype_new')
-            ),
-            'job' : forms.Select(attrs={'class' : 'form-control'}),
-            'amount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter amount'}),
-            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
-        }
-
-class AddCashFlowToJobForm(forms.ModelForm):
-    class Meta:
-        model = CashFlow
-        fields = ('category', 'amount', 'name', 'notes')
-
-        widgets = {
-            'name' : forms.TextInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter name of item (if applicable)'}),
-            'category' : forms.Select(attrs={'class' : 'form-control'}),
-            'amount' : forms.NumberInput(attrs={'class' : 'form-control', 'placeholder' : 'Enter amount'}),
-            'notes' : forms.Textarea(attrs={'class' : 'form-control', 'placeholder' : 'Notes'}),
-        }
-
-class CashFlowFilterForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['start_date'].label = 'Start date'
-
-    job = forms.ModelChoiceField(
-        required=False,
-        empty_label = 'Select job',
-        queryset=Job.objects.all(),
-        widget=forms.Select(attrs={"class" : "form-control"}))
-
-    customer = forms.ModelChoiceField(
-        required=False,
-        empty_label = 'Select customer',
-        queryset=Customer.objects.all(),
-        widget=forms.Select(attrs={"class" : "form-control"}))
-
-    category = forms.ModelChoiceField(
-        required=False,
-        empty_label = 'Select cashflowype',
-        queryset=CashFlowType.objects.all(),
-        widget=forms.Select(attrs={"class" : "form-control"}))
-
-    start_date = DateField(
-        required=False,
-        initial=timezone.now() + datetime.timedelta(days=-30),
         widget=forms.widgets.DateInput(attrs={'type': 'date', 'class' : 'form-control'}))
 
     to_date = DateField(

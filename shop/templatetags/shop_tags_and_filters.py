@@ -9,35 +9,50 @@ def status_text(value):
 
 @register.filter()
 def summ_values(query_set):
-    summ = query_set.aggregate(total=Sum('value'))
-    return summ['total']
+    return query_set.aggregate(total=Sum('value'))['total']
 
 @register.filter()
 def summ_discounts(query_set):
-    summ = query_set.aggregate(total=Sum('discount'))
-    return summ['total']
+    return query_set.aggregate(total=Sum('discount'))['total']
 
 @register.filter()
 def summ_total_expenses(query_set):
-    summ = query_set.aggregate(total=Sum('total_expense'))
-    return summ['total']
+    exp = 0
+    for item in query_set:
+        expenses = item.expenditure_set.aggregate(total=Sum('amount'))['total']
+        exp += expenses if expenses else 0
+    return exp
 
 @register.filter()
 def summ_total_payments(query_set):
-    summ = query_set.aggregate(total=Sum('total_payment'))
-    return summ['total']
+    pay = 0
+    for item in query_set:
+        rev = item.revenue_set.aggregate(total=Sum('amount'))['total']
+        pay += rev if rev else 0
+    return pay
 
 @register.filter()
 def summ_profits(query_set):
-    summ = query_set.aggregate(total=Sum('gross_profit'))
-    return summ['total']
+    profit = 0
+    for item in query_set:
+        rev = item.revenue_set.aggregate(total=Sum('amount'))['total']
+        expenses = item.expenditure_set.aggregate(total=Sum('amount'))['total']
+        profit += rev if rev else 0
+        profit -= expenses if expenses else 0
+    return profit
+
+    return query_set.aggregate(total=Sum('gross_profit'))['total']
 
 @register.filter()
-def summ_payment_amount(query_set):
-    summ = 0
-    for item in query_set:
-        if item.category.name == 'expense':
-            summ -= item.amount
-        else:
-            summ += item.amount
-    return summ
+def sum_amounts(query_set):
+    total = query_set.aggregate(total=Sum('amount'))['total']
+    return total if total else 0
+
+@register.filter()
+def get_job_profit(job):
+    profit = 0
+    pay = job.revenue_set.aggregate(total=Sum('amount'))['total']
+    exp = job.expenditure_set.aggregate(total=Sum('amount'))['total']
+    profit += pay if pay else 0
+    profit -= exp if exp else 0
+    return profit

@@ -26,6 +26,7 @@
             <th>Date</th>
             <th>Personnel</th>
             <th>Amount</th>
+            <th>Job</th>
             <th>Action</th>
         </tr>
 
@@ -37,6 +38,7 @@
                     <td>{{ revenue.date }}</td>
                     <td>{{ revenue.personnel }}</td>
                     <td>{{ revenue.amount }}</td>
+                    <td><a href="{% url 'shop:job_detail' revenue.job.pk %}">{{ revenue.job }}</a></td>
                     <td></td>
                 </tr>
             {% empty %}
@@ -49,6 +51,7 @@
                 <td></td>
                 <td>{{ revenues|sum_revenues }}<br></td>
                 <td></td>
+                <td></td>
             </tr>
 
             {% test_permission 'view_running_rev_total' request as view_running_rev_total %}
@@ -59,6 +62,7 @@
                 <td></td>
                 <td></td>
                 <td>{{ total_revenue_value }}</td>
+                <td></td>
                 <td></td>
             </tr>
             {% endif %}

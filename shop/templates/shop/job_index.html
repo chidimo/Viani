@@ -58,9 +58,9 @@
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.status|status_text }}</a></td>
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.value }}</a></td>
                     <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.discount }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.total_expense }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.total_payment }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.gross_profit }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.expenditure_set.all|sum_amounts }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.revenue_set.all|sum_amounts }}</a></td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job|get_job_profit }}</a></td>
                 </tr>
             {% endfor %}
             <tr class="summation_row">

@@ -14,11 +14,10 @@ from pure_pagination.mixins import PaginationMixin
 
 from .utils import context_messages as cm
 
-from .models import Customer, Job, CashFlow, CashFlowType
+from .models import Customer, Job
 from .forms import (
     NewCustomerForm, EditCustomerForm, NewJobForm, EditJobForm,
-    UpdateJobStatusForm, JobFilterForm, NewCashFlowForm,
-    NewCashFlowTypeForm, AddCashFlowToJobForm, CashFlowFilterForm
+    UpdateJobStatusForm, JobFilterForm
 )
 
 from v_rules.PermissionBackend import vianirules
@@ -78,7 +77,6 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
     paginate_by = 100
-
 
     def dispatch(self, request, *args, **kwargs):
         rule_to_check = 'view_jobs_index'
@@ -152,35 +150,21 @@ class JobDetail(LoginRequiredMixin, generic.DetailView):
     template_name = 'shop/job_detail.html'
     context_object_name = 'job'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        net_profit = 0
+        j = Job.objects.get(pk=self.kwargs['pk'])
+        total_payment = j.revenue_set.aggregate(total=Sum('amount'))['total']
+        total_expenditure = j.expenditure_set.aggregate(total=Sum('amount'))[
+            'total']
+        context['total_payment'] = total_payment
+        context['total_expenditure'] = total_expenditure
 
-def job_add_cashflow(request, pk):
-    job = Job.objects.get(pk=pk)
-    template = 'shop/job_add_cashflow.html'
-    form = AddCashFlowToJobForm()
+        net_profit += total_payment if total_payment else 0
+        net_profit -= total_expenditure if total_expenditure else 0
 
-    if job.status == 4:
-        messages.error(request, "This job can no longer accept a cashflow")
-        return redirect(reverse('shop:job_detail', kwargs={'pk': job.pk}))
-
-    context = {}
-    context['form'] = form
-    context['job'] = job
-
-    if request.method == 'POST':
-        form = AddCashFlowToJobForm(request.POST)
-        if form.is_valid():
-            form = form.cleaned_data
-            category = form['category']
-            name = form['name']
-            amount = form['amount']
-            notes = form['notes']
-            CashFlow.objects.create(
-                category=category, name=name, amount=amount, job=job, notes=notes)
-            job.save()
-            return redirect(reverse('shop:job_detail', kwargs={'pk': job.pk}))
-        else:
-            return render(request, template, {'form': form})
-    return render(request, template, context)
+        context['net_profit'] = net_profit
+        return context
 
 
 class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateView):
@@ -262,117 +246,3 @@ class JobFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
                 messages.success(
                     self.request, "Search results for {}".format(query_str))
                 return Job.objects.filter(query).order_by('status', 'customer', '-start_date')
-
-
-class CashFlowTypeIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
-    model = CashFlowType
-    template_name = 'shop/cashflowtype_index.html'
-    context_object_name = 'cashflowtypes'
-    paginate_by = 100
-
-
-class NewCashFlowType(CreatePopupMixin, LoginRequiredMixin, generic.CreateView):
-    model = CashFlowType
-    form_class = NewCashFlowTypeForm
-    template_name = 'shop/cashflowtype_new.html'
-
-class CashFlowIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
-    model = CashFlow
-    template_name = 'shop/cashflow_index.html'
-    context_object_name = 'cashflows'
-    paginate_by = 100
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['cashflow_filter_form'] = CashFlowFilterForm()
-        return context
-
-
-class NewCashFlow(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
-    model = CashFlow
-    form_class = NewCashFlowForm
-    template_name = 'shop/cashflow_new.html'
-    success_message = 'Cashflow added successfully'
-
-
-def bank_cashflow(request, pk):
-
-    return redirect('shop:cashflow_index')
-
-
-class CashFlowFilterView(LoginRequiredMixin, PaginationMixin, generic.ListView):
-    model = CashFlow
-    template_name = 'shop/cashflow_index.html'
-    context_object_name = "cashflows"
-    paginate_by = 100
-
-    def get_context_data(self, **kwargs):
-        context = super(CashFlowFilterView, self).get_context_data(**kwargs)
-        context['cashflow_filter_form'] = CashFlowFilterForm()
-        return context
-
-    def get_queryset(self):
-        if self.request.method == 'GET':
-            form = CashFlowFilterForm(self.request.GET)
-
-            if form.is_valid():
-                form = form.cleaned_data
-
-                customer = form['customer']
-                job = form['job']
-                category = form['category']
-                start_date = form['start_date']
-                to_date = form['to_date']
-
-                # build queries
-                queries = []
-                msg = []
-                if job:
-                    queries.append(Q(job=job))
-                    msg.append(f'{job}')
-                if customer:
-                    queries.append(Q(job__customer=customer))
-                    msg.append(f'{customer}')
-                if category:
-                    queries.append(Q(category=category))
-                    msg.append(f'{category}')
-
-                if start_date:
-                    if not to_date:
-                        to_date = start_date + datetime.timedelta(days=30)
-                    queries.append(Q(created__range=[start_date, to_date]))
-                    msg.append(f'Paid between {start_date} and {to_date}')
-
-                # combine queries
-                try:
-                    query = reduce(operator.and_, queries)
-                    query_str = " AND ".join(msg)
-                except TypeError:
-                    query = []
-                    query_str = ""
-
-                # execute query
-                messages.success(
-                    self.request, f"Search results for {query_str}")
-                return CashFlow.objects.filter(query).order_by('job', 'category', 'banked')
-
-
-def accounting(request):
-    template = 'shop/accounting.html'
-    context = {}
-
-    context['total_job_value'] = Job.objects.aggregate(total=Sum('value'))[
-        'total']
-    context['total_payments'] = Job.objects.aggregate(
-        total=Sum('total_payment'))['total']
-    context['total_expenses'] = CashFlow.objects.filter(
-        category__name='expense').aggregate(total=Sum('amount'))['total']
-    context['total_discounts'] = Job.objects.aggregate(total=Sum('discount'))[
-        'total']
-    context['gross_profit'] = Job.objects.aggregate(
-        total=Sum('gross_profit'))['total']
-    context['total_amount_banked'] = CashFlow.objects.filter(
-        banked=True, category__name='payment').aggregate(total=Sum('amount'))['total']
-    context['net_profit'] = 'Deduct overheads'
-
-    return render(request, template, context)

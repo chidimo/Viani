@@ -8,7 +8,6 @@
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'shop:job_index' %}">Jobs</a></li>
             <li><a class="dropdown-item" href="{% url 'shop:customer_index' %}">Customers</a></li>
-            <li><a class="dropdown-item" href="{% url 'shop:accounting' %}">Accounting</a></li>
         </ul>
     </li>
 
@@ -17,6 +16,7 @@
         <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="{% url 'account:revenues' %}">Revenues</a></li>
             <li><a class="dropdown-item" href="{% url 'account:expenditures' %}">Expenditures</a></li>
+            <li><a class="dropdown-item" href="{% url 'account:accounting' %}">Summary</a></li>
         </ul>
     </li>
 
@@ -25,6 +25,9 @@
         <div class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'shop:job_new' %}">Job</a>
             <a class="dropdown-item" href="{% url 'shop:customer_new' %}">Customer</a>
+            <a class="dropdown-item" href="{% url 'account:new_expenditure' %}">Expenditure</a>
+            <div class="divider"></div>
+            <a class="dropdown-item" href="{% url 'account:new_expenditure_type' %}">Expenditure type</a>
         </div>
     </li>
 

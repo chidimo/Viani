@@ -44,7 +44,7 @@ class ExpenditureType(TimeStampedModel):
         return f'Etype: {self.name.title()}'
 
     def get_absolute_url(self):
-        return reverse('account:expenditure_types')
+        return reverse('account:expenditures')
 
 
 class Expenditure(TimeStampedModel):

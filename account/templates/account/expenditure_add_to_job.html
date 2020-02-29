@@ -1,17 +1,15 @@
 {% extends "viani_base.html" %}
-{% block title %}New job{% endblock %}
-
+{% block title %}Add cashflow to {{ job }}{% endblock %}
 
 {% block content %}
 
-
-<h4>New job</h4>
+<h1>Add cashflow to {{ job }}</h1>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Shop</a></li>
-        <li class="breadcrumb-item"><a href="/shop/jobs/index/">Jobs</a></li>
-        <li class="breadcrumb-item active">New job</li>
+        <li class="breadcrumb-item"><a href="/account/expenditures">Expenditure</a></li>
+        <li class="breadcrumb-item active">Add expense to {{ job }}</li>
     </ol>
 </nav>
 
