@@ -47,7 +47,7 @@ class ExpenditureType(TimeStampedModel):
 
 class Expenditure(TimeStampedModel):
     date = models.DateField(default=now)
-    item = models.CharField(max_length=50, default='some-item')
+    item = models.CharField(max_length=50, null=True)
     job = models.ForeignKey(
         Job, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(
