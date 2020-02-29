@@ -1,0 +1,77 @@
+{% extends "viani_base.html" %}
+{% block title %}Expenditures{% endblock title %}
+{% block content %}
+{% load v_rules %}
+{% load account_tags_and_filters %}
+
+<h3>Expenditures</h3>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Account</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Expenditures</li>
+    </ol>
+</nav>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-light">
+            <caption>Expenditures</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>Created</th>
+            <th>Date</th>
+            <th>Item</th>
+            <th>Personnel</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Action</th>
+        </tr>
+        {% if expenditures %}
+        <tbody>
+            {% for expenditure in expenditures %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ expenditure.created|date:"M d, Y" }}</td>
+                    <td>{{ expenditure.date }}</td>
+                    <td>{{ expenditure.item.title }}</td>
+                    <td>{{ expenditure.personnel }}</td>
+                    <td>{{ expenditure.amount }}</td>
+                    <td>{{ expenditure.category.name.title }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ expenditures|sum_expenditure_amounts_in_expenditure_queryset }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% test_permission 'view_running_exp_total' request as view_running_exp_total %}
+            {% if view_running_exp_total %}
+            <tr>
+                <td>Running total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ total_expenditure_value }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endif %}
+        </tbody>
+        {% else %}
+            <p>No expenditures found</p>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock content %}
+

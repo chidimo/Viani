@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from django.urls import path
+from . import views
 
-# Create your views here.
+app_name = 'account'
+
+urlpatterns = []
+
+urlpatterns += [
+    path('revenues/index/', views.RevenueIndex.as_view(), name='revenues'),
+    path('expenditures/index/', views.ExpenditureIndex.as_view(), name='expenditures'),
+]
+

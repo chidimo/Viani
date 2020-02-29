@@ -15,6 +15,14 @@
     </li>
 
     <li class="nav-item dropdown">
+        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'account:revenues' %}">Revenues</a></li>
+            <li><a class="dropdown-item" href="{% url 'account:expenditures' %}">Expenditures</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus"></i></a>
         <div class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'shop:job_new' %}">Job</a>

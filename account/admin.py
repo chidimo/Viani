@@ -14,7 +14,7 @@ class ExpenditureTypeAdmin(admin.ModelAdmin):
 
 
 class ExpenditureAdmin(admin.ModelAdmin):
-    list_display = ('created', 'date', 'item', 'personnel',
+    list_display = ('created', 'date', 'item', 'locked', 'personnel',
                     'amount', 'category', 'notes')
     list_editable = ('category', 'item', )
 

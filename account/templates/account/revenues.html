@@ -1,0 +1,69 @@
+{% extends "viani_base.html" %}
+{% block title %}Revenues{% endblock title %}
+{% load account_tags_and_filters %}
+{% block content %}
+{% load v_rules %}
+
+<h3>Revenues</h3>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Account</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Revenues</li>
+    </ol>
+</nav>
+
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <caption>Revenues</caption>
+        </thead>
+        <tr>
+            <th>S/N</th>
+            <th>Created</th>
+            <th>Date</th>
+            <th>Personnel</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+
+        <tbody>
+            {% for revenue in revenues %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ revenue.created|date:"M d, Y" }}</td>
+                    <td>{{ revenue.date }}</td>
+                    <td>{{ revenue.personnel }}</td>
+                    <td>{{ revenue.amount }}</td>
+                    <td></td>
+                </tr>
+            {% empty %}
+                <p>No Revenues added yet</p>
+            {% endfor %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ revenues|sum_revenues }}<br></td>
+                <td></td>
+            </tr>
+
+            {% test_permission 'view_running_rev_total' request as view_running_rev_total %}
+            {% if view_running_rev_total %}
+            <tr>
+                <td>Running total</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ total_revenue_value }}</td>
+                <td></td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}
+
