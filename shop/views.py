@@ -123,13 +123,13 @@ class EditJob(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     def get_success_url(self, **kwargs):
         return reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']})
 
-    def dispatch(self, request, *args, **kwargs):
-        user = self.request.user
-        rule_to_check = 'edit_job'
-        if vianirules.has_permission(rule_to_check, request):
-            return super().dispatch(request, *args, **kwargs)
-        messages.error(self.request, cm.OPERATION_FAILED)
-        return redirect(reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']}))
+    # def dispatch(self, request, *args, **kwargs):
+    #     user = self.request.user
+    #     rule_to_check = 'edit_job'
+    #     if vianirules.has_permission(rule_to_check, request):
+    #         return super().dispatch(request, *args, **kwargs)
+    #     messages.error(self.request, cm.OPERATION_FAILED)
+    #     return redirect(reverse('shop:job_detail', kwargs={'pk': self.kwargs['pk']}))
 
 
 def mark_accepted(request, pk):

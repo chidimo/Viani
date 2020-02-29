@@ -3,7 +3,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="pagination ml-auto mr-auto">
+        <div class="pagination ml-auto mr-auto bg-primary">
             {% if page_obj.has_previous %}
                 <a href="?{{ page_obj.previous_page_number.querystring }}" class="prev">&lsaquo;&lsaquo; {% trans "prev" %}</a>
             {% else %}

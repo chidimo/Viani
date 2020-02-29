@@ -2,8 +2,6 @@
 {% block title %}Customers{% endblock title %}
 {% block content %}
 
-<h4>Customers</h4>
-
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/">Shop</a></li>
@@ -21,6 +19,7 @@
                 <th>Address</th>
                 <th>Sex</th>
                 <th>Jobs</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -28,12 +27,13 @@
         <tbody>
             {% for customer in customers %}
                 <tr>
-                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ forloop.counter }}</a></td>
+                    <td>{{ forloop.counter }}</td>
                     <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.first_name.title }} {{ customer.last_name.title }}</a></td>
-                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.phone }}</a></td>
-                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.address.title }}</a></td>
-                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.sex.title }}</a></td>
-                    <td><a href="{% url 'shop:customer_details' customer.pk %}">{{ customer.job_set.count }}</a></td>
+                    <td>{{ customer.phone }}</td>
+                    <td>{{ customer.address.title }}</td>
+                    <td>{{ customer.sex.title }}</td>
+                    <td>{{ customer.job_set.count }}</td>
+                    <td><a href="{% url 'shop:edit_customer' customer.pk %}"><i class="fas fa-edit"></i></a></td>
                 </tr>
             {% endfor %}
         </tbody>

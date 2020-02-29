@@ -1,11 +1,7 @@
 {% extends "viani_base.html" %}
 {% block title %}{{ job }}{% endblock %}
-
 {% load shop_tags_and_filters %}
-
 {% block content %}
-
-<h1>{{ job }}</h1>
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -38,12 +34,15 @@
             <div class="figures">
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-4">
-                            {{ job.status|status_text }}
-                            {% if job.status == 4 %}<i class="fas fa-check-circle text-success"></i>{% endif %}
+                        <div class="job__status-date">
+                            <div class="">
+                                {{ job.status|status_text }}
+                                {% if job.status == 4 %}<i class="fas fa-check-circle text-success"></i>{% endif %}
+                            </div>
+                            <div class="">{{ job.start_date }}</div>
+                            <div class="">{{ job.completed }}</div>
+
                         </div>
-                        <div class="col-sm-4">{{ job.start_date }}</div>
-                        <div class="col-sm-4">{{ job.completed }}</div>
                     </div>
                 </div>
                 <hr>

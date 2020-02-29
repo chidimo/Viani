@@ -16,6 +16,7 @@ body {
 
 a {
     text-decoration: none;
+    color: #62C462;
 }
 
 hr {
@@ -45,7 +46,6 @@ header a {
 
 header a:hover {
     color: #FFFFFF;
-    font-weight: bold;
 }
 
 a.navbar_brand {
@@ -79,7 +79,7 @@ a.navbar_brand {
 }
 
 .form_container {
-    width: 80%;
+    width: 60%;
     margin: auto;
     padding: 15px;
     border-radius: 5px;
@@ -99,7 +99,7 @@ label {
 }
 
 button.btn-primary:hover {
-    opacity: 0.9;
+    opacity: 0.7;
     border-color: #336B87;
     background-color: #336B87;
 }
@@ -110,8 +110,9 @@ button.btn-primary:hover {
     justify-content: space-evenly;
 }
 
-.filter {
-    margin: 15px 0;
+.item-filter {
+    width: 60%;
+    margin: 1rem auto;
 }
 
 .filter span {
@@ -119,7 +120,7 @@ button.btn-primary:hover {
     margin-right: 5px;
 }
 
-.filter button {
+.item-filter button {
     width: 50%;
     margin: 5px auto;
     display: block;
@@ -152,7 +153,14 @@ button.btn-primary:hover {
 
 /* table styles */
 table.jobs_table > tbody > tr:last-child {
-    background: #FFFFFF;
+    /* background: #FFFFFF; */
+}
+
+.job__status-date {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 table {
@@ -167,6 +175,10 @@ table a:hover {
 
 table td {
     padding: 0;
+}
+
+table td a {
+    color: #FFFFFF;
 }
 
 th {
@@ -196,6 +208,12 @@ tr.summation_row td {
 
 tbody tr.job-completed {
     background: #62C462;
+    border: 1px solid green;
+}
+
+.breadcrumb {
+    width: 60%;
+    margin: 1rem auto;
 }
 
 /* login form */

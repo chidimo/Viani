@@ -1,13 +1,8 @@
 {% extends "viani_base.html" %}
 {% block title %}Jobs{% endblock title %}
-
 {% load shop_tags_and_filters %}
-
 {% block content %}
 
-{% if not filter_view%}
-    <h4>Completed: {{ completed_job_count }} of {{ total_job_count }} ({{ completion_rate }}%)</h4>
-{% endif %}
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -16,7 +11,7 @@
     </ol>
 </nav>
 
-<div class="filter">
+<div class="item-filter">
     <form action="{% url 'shop:job_filter' %}" method="get" enctype="multipart/form-data">
         <div class="filter_fields text-center">
             {% for field in job_filter_form %}
@@ -40,6 +35,7 @@
                 <th>Expense</th>
                 <th>Payment</th>
                 <th>Profit</th>
+                <th>Action</th>
             </tr>
         </thead>
 
@@ -61,6 +57,11 @@
                     <td>{{ job.expenditure_set.all|sum_amounts }}</td>
                     <td>{{ job.revenue_set.all|sum_amounts }}</td>
                     <td>{{ job|get_job_profit }}</td>
+                    <td>
+                        <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-edit"></i></a> |
+                        <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-plus text-primary"></i></a> |
+                        <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-minus text-danger"></i></a>
+                    </td>
                 </tr>
             {% endfor %}
             <tr class="summation_row bg-dark">
@@ -73,6 +74,7 @@
                 <td class="text-danger">{{ jobs|summ_total_expenses }}</td>
                 <td>{{ jobs|summ_total_payments }}</strong></td>
                 <td class="text-success">{{ jobs|summ_profits }}</td>
+                <td>{{ completed_job_count }} of {{ total_job_count }} ({{ completion_rate }}%)</td>
             </tr>
         </tbody>
         {% else %}
