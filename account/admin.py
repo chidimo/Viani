@@ -4,7 +4,7 @@ from .models import Revenue, ExpenditureType, Expenditure, MonthCheck
 
 
 class RevenueAdmin(admin.ModelAdmin):
-    list_display = ('created', 'date', 'personnel',
+    list_display = ('created', 'date', 'job', 'personnel',
                     'locked', 'locker', 'amount', 'notes')
     list_editable = ('locked', 'locker')
 
