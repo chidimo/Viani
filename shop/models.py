@@ -8,11 +8,14 @@ from django.core.validators import RegexValidator
 
 from .utils.models import TimeStampedModel
 
+
 class Company(TimeStampedModel):
     company = models.CharField(max_length=60, default="viani", editable=False)
-    address = models.CharField(max_length=200, default="holy cross road, new benin, benin city", editable=False)
+    address = models.CharField(
+        max_length=200, default="holy cross road, new benin, benin city", editable=False)
     phone = models.IntegerField(blank=True, null=True, editable=False)
-    registration = models.CharField(max_length=20, blank=True, null=True, editable=False)
+    registration = models.CharField(
+        max_length=20, blank=True, null=True, editable=False)
     registration_date = models.DateField(default=timezone.now, editable=False)
 
     class Meta:
@@ -25,12 +28,15 @@ class Customer(TimeStampedModel):
     sex_choices = ((ML, 'Male'), (FM, 'Female'))
 
     msg = "Please enter a valid phone number in the format '+234**********'"
-    validate_contact = RegexValidator(regex=r'^\+[0-9]{1,13}$', message=msg, code='Not set')
+    validate_contact = RegexValidator(
+        regex=r'^\+[0-9]{1,13}$', message=msg, code='Not set')
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    phone = models.CharField(max_length=15, null=True, blank=True, unique=True, validators=[validate_contact])
+    phone = models.CharField(
+        max_length=15, null=True, blank=True, unique=True, validators=[validate_contact])
     address = models.CharField(max_length=50, default="Unknown address")
-    sex = models.CharField(max_length=10, choices=sex_choices, default='female')
+    sex = models.CharField(
+        max_length=10, choices=sex_choices, default='female')
 
     class Meta:
         ordering = ('sex', 'first_name', 'last_name')
@@ -50,9 +56,12 @@ class Customer(TimeStampedModel):
 #     def get_absolute_url(self):
 #         return reverse('shop:dresstype_index')
 
+
 class Job(Company):
-    status_choices = ((1, 'Started'), (2, "Finished"), (3,  'Delivered'), (4, 'Accepted'))
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    status_choices = ((1, 'Started'), (2, "Finished"),
+                      (3,  'Delivered'), (4, 'Accepted'))
+    customer = models.ForeignKey(
+        Customer, on_delete=models.SET_NULL, null=True)
     value = models.DecimalField(max_digits=10, decimal_places=2)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     status = models.IntegerField(choices=status_choices, default=1)
@@ -62,9 +71,12 @@ class Job(Company):
     start_date = models.DateField(default=datetime.date.today)
     completed = models.DateField(default=datetime.date.today)
 
-    total_expense = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    total_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    gross_profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    total_expense = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+    total_payment = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
+    gross_profit = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         ordering = ('status', '-start_date', 'customer')
@@ -76,8 +88,10 @@ class Job(Company):
         return reverse('shop:job_detail', kwargs={'pk': self.id})
 
     def save(self, *args, **kwargs):
-        exp = self.cashflow_set.filter(category__name='expense').aggregate(sum_exp=Sum('amount'))['sum_exp']
-        pay = self.cashflow_set.filter(category__name='payment').aggregate(sum_pay=Sum('amount'))['sum_pay']
+        exp = self.cashflow_set.filter(category__name='expense').aggregate(
+            sum_exp=Sum('amount'))['sum_exp']
+        pay = self.cashflow_set.filter(category__name='payment').aggregate(
+            sum_pay=Sum('amount'))['sum_pay']
 
         if exp == None:
             exp = 0
@@ -88,6 +102,7 @@ class Job(Company):
         self.total_payment = pay
         self.gross_profit = pay - exp - self.discount
         return super().save(*args, **kwargs)
+
 
 class CashFlowType(TimeStampedModel):
     """expense, payment"""
@@ -100,8 +115,10 @@ class CashFlowType(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('shop:cashflowtype_index')
 
+
 class CashFlow(TimeStampedModel):
-    category = models.ForeignKey(CashFlowType, on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(
+        CashFlowType, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=50, blank=True, null=True)
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -122,6 +139,7 @@ class CashFlow(TimeStampedModel):
 #     item_name = models.CharField(max_length=50, blank=True, null=True)
 #     amount = models.DecimalField(max_digits=10, decimal_places=2)
 #     notes = models.CharField(max_length=500, blank=True)
+
 
 #     def __str__(self):
 #         return "Exp: {}-{}".format(self.item_name, self.amount)
