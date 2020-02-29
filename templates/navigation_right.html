@@ -42,10 +42,10 @@
                 <a class="dropdown-item" href="#">Add avatar</a>
             {% endif %}
 
-            <a class="dropdown-item" href="{% url 'personnel:password_change' %}">Change password</a>
             <a class="dropdown-item" href="{% url 'personnel:password_reset' %}">Reset password</a>
+            <a class="dropdown-item" href="{% url 'personnel:password_change' %}">Change password</a>
             {% if user.is_admin %}
-            <a class="dropdown-item text-primary" href="/admin/">Admin</a>
+            <a class="dropdown-item text-success" href="/admin/">Admin</a>
             {% endif %}
             <a class="dropdown-item" href="{% url 'personnel:logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </div>

@@ -15,11 +15,11 @@
 </nav>
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-light">
+    <table class="jobs_table">
+        <thead>
             <caption>Expenditures</caption>
         </thead>
-        <tr>
+        <tr class="bg-dark">
             <th>S/N</th>
             <th>Date</th>
             <th>Item</th>
@@ -61,7 +61,7 @@
             </tr>
             {% test_permission 'view_running_exp_total' request as view_running_exp_total %}
             {% if view_running_exp_total %}
-            <tr>
+            <tr class="bg-dark">
                 <td>Running total</td>
                 <td></td>
                 <td></td>

@@ -30,7 +30,7 @@
 <div class="table-responsive">
     <table class="jobs_table">
         <thead>
-            <tr>
+            <tr class="bg-dark">
                 <th>S/N</th>
                 <th>Title</th>
                 <th>Customer</th>
@@ -48,22 +48,22 @@
             {% for job in jobs %}
 
             {% if job.status == 4 %}
-                <tr class='completed'>
+                <tr class='job-completed'>
             {% else %}
                 <tr>
             {% endif %}
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ forloop.counter }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.description.title }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.customer }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.status|status_text }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.value }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.discount }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.expenditure_set.all|sum_amounts }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.revenue_set.all|sum_amounts }}</a></td>
-                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job|get_job_profit }}</a></td>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'shop:job_detail' job.pk %}">{{ job.description|title }}</a></td>
+                    <td>{{ job.customer }}</td>
+                    <td>{{ job.status|status_text }}</td>
+                    <td>{{ job.value }}</td>
+                    <td>{{ job.discount }}</td>
+                    <td>{{ job.expenditure_set.all|sum_amounts }}</td>
+                    <td>{{ job.revenue_set.all|sum_amounts }}</td>
+                    <td>{{ job|get_job_profit }}</td>
                 </tr>
             {% endfor %}
-            <tr class="summation_row">
+            <tr class="summation_row bg-dark">
                 <td></td>
                 <td></td>
                 <td></td>

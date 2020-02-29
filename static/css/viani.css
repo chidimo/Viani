@@ -7,12 +7,11 @@
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
-    padding: 0;
     margin: 0;
-    background: #FFFFFF;
-    color: #2A3131;
+    padding: 0;
     font-size: 14px;
+    color: #FFFFFF;
+    font-family: 'Open Sans', sans-serif;
 }
 
 a {
@@ -30,28 +29,22 @@ a:hover {
 
 .page_wrapper {
     display: flex;
+    min-height: 100vh;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 100vh;
 }
 
 header {
-    padding-top: 20px;
-    padding-bottom: 20px;
     min-height: 70px;
-    background: #FFFFFF;
-    box-shadow: 5px 5px 30px #2A3131;
-    border-bottom: 5px solid #2A3131;
 }
 
 header a {
-    color: #2A3131;
-    text-decoration: none;
     font-size: 18px;
+    text-decoration: none;
 }
 
 header a:hover {
-    color: #763626;
+    color: #FFFFFF;
     font-weight: bold;
 }
 
@@ -105,15 +98,10 @@ label {
     text-align: center;
 }
 
-.btn-primary {
-    background-color: #336B87;
-    border-color: #336B87;
-}
-
 button.btn-primary:hover {
-    background-color: #336B87;
-    border-color: #336B87;
     opacity: 0.9;
+    border-color: #336B87;
+    background-color: #336B87;
 }
 
 .filter_fields {
@@ -140,8 +128,8 @@ button.btn-primary:hover {
 /* job detail */
 
 .viani_card {
-    margin-top: 10px;
     padding: 10px;
+    margin-top: 10px;
     box-shadow: 5px 5px 30px #2A3131;
 }
 
@@ -168,18 +156,13 @@ table.jobs_table > tbody > tr:last-child {
 }
 
 table {
-    text-align: center;
     width: 99%;
     margin: auto;
+    text-align: center;
 }
 
 table a:hover {
     text-decoration: none;
-}
-
-thead tr {
-    background: #2A3131;
-    color: #ffffff;
 }
 
 table td {
@@ -187,30 +170,16 @@ table td {
 }
 
 th {
-    white-space: nowrap;
     padding: 7px;
+    white-space: nowrap;
 }
 
 tbody tr:nth-of-type(odd) {
-    background: #EEEEEE;
-}
-
-tbody tr:nth-of-type(odd) a {
-    color: #2A3131;
+    background: #336B87;
 }
 
 tbody tr:nth-of-type(even) {
-    background: #90AFC5;
-}
-
-tbody tr:nth-of-type(even) a {
-    color: #FFFFFF;
-}
-
-table tr td a {
-    display: block;
-    padding: 15px 0;
-    text-decoration: none;
+    background: #5BC0DE;
 }
 
 tbody tr:hover {
@@ -218,20 +187,15 @@ tbody tr:hover {
 }
 
 table tr td {
-    padding: 0;
+    padding: 5px 10px;
 }
 
 tr.summation_row td {
     font-weight: bold;
 }
 
-tbody tr.completed {
-    /* background: #17a2b8; */
-    font-weight: bold;
-}
-
-tbody tr.completed a {
-    color: green;
+tbody tr.job-completed {
+    background: #62C462;
 }
 
 /* login form */

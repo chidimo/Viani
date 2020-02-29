@@ -16,11 +16,11 @@
 
 
 <div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
+    <table class="jobs_table">
+        <thead>
             <caption>Revenues</caption>
         </thead>
-        <tr>
+        <tr class="bg-dark">
             <th>S/N</th>
             <th>Created</th>
             <th>Date</th>
@@ -56,7 +56,7 @@
 
             {% test_permission 'view_running_rev_total' request as view_running_rev_total %}
             {% if view_running_rev_total %}
-            <tr>
+            <tr class="bg-dark">
                 <td>Running total</td>
                 <td></td>
                 <td></td>

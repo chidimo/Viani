@@ -4,13 +4,3 @@
 [![Coverage Status](https://coveralls.io/repos/github/chidimo/Viani/badge.svg?branch=develop)](https://coveralls.io/github/chidimo/Viani?branch=develop)
 [![Maintainability](https://api.codeclimate.com/v1/badges/c5e73349601b432ab1a5/maintainability)](https://codeclimate.com/github/chidimo/Viani/maintainability)
 
-```python
-
-s = CashFlow.objects.filter(category__name='payment')
-pers = Personnel.objects.get(user__email='orjichidi95@gmail.com')
-
-for e in s:
-    Revenue.objects.create(date=e.created, job=e.job, amount=e.amount, locked=True, personnel=pers, notes=e.notes, locker='dinma')
-
-
-```
