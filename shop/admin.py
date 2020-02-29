@@ -6,8 +6,8 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ('first_name', 'last_name', 'phone', 'address', 'sex')
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('description', 'customer', 'value', 'discount', 'total_expense', 'total_payment', 'gross_profit', 'status', 'start_date', 'completed', 'notes')
-    list_editable = ('status', )
+    list_display = ('description', 'status', 'customer', 'value', 'discount', 'total_expense', 'total_payment', 'gross_profit', 'start_date', 'completed', 'notes')
+    list_editable = ('customer', 'value', 'discount', 'total_expense', 'total_payment', 'gross_profit', 'status', 'start_date', 'completed', 'notes' )
 
 class CashFlowTypeAdmin(admin.ModelAdmin):
     list_display = ('name', 'description')

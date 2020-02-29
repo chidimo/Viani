@@ -15,6 +15,7 @@ class Revenue(TimeStampedModel):
     personnel = models.ForeignKey(Personnel, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     locked = models.BooleanField(default=False)
+    locker = models.CharField(max_length=25)
     notes = models.CharField(max_length=250, blank=True)
 
     class Meta:
@@ -46,7 +47,7 @@ class ExpenditureType(TimeStampedModel):
 
 class Expenditure(TimeStampedModel):
     date = models.DateField(default=now)
-    item = models.CharField(max_length=20)
+    item = models.CharField(max_length=50)
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=True, blank=True)
     amount = models.DecimalField(
         max_digits=10, decimal_places=2, default=Decimal('0.00'))

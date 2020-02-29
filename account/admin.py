@@ -5,8 +5,8 @@ from .models import Revenue, ExpenditureType, Expenditure, MonthCheck
 
 class RevenueAdmin(admin.ModelAdmin):
     list_display = ('created', 'date', 'personnel',
-                    'locked', 'amount', 'notes')
-    list_editable = ('locked', )
+                    'locked', 'locker', 'amount', 'notes')
+    list_editable = ('locked', 'locker')
 
 
 class ExpenditureTypeAdmin(admin.ModelAdmin):
@@ -16,6 +16,7 @@ class ExpenditureTypeAdmin(admin.ModelAdmin):
 class ExpenditureAdmin(admin.ModelAdmin):
     list_display = ('created', 'date', 'personnel',
                     'amount', 'category', 'notes')
+    list_editable = ('category', )
 
 
 class MonthCheckAdmin(admin.ModelAdmin):
