@@ -150,22 +150,6 @@ class JobDetail(LoginRequiredMixin, generic.DetailView):
     template_name = 'shop/job_detail.html'
     context_object_name = 'job'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        net_profit = 0
-        j = Job.objects.get(pk=self.kwargs['pk'])
-        total_payment = j.revenue_set.aggregate(total=Sum('amount'))['total']
-        total_expenditure = j.expenditure_set.aggregate(total=Sum('amount'))[
-            'total']
-        context['total_payment'] = total_payment
-        context['total_expenditure'] = total_expenditure
-
-        net_profit += total_payment if total_payment else 0
-        net_profit -= total_expenditure if total_expenditure else 0
-
-        context['net_profit'] = net_profit
-        return context
-
 
 class UpdateJobStatus(LoginRequiredMixin, SuccessMessageMixin,  generic.UpdateView):
     model = Job

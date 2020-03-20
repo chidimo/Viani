@@ -47,15 +47,6 @@ class Customer(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('shop:customer_index')
 
-# class DressType(TimeStampedModel):
-#     name = models.CharField(max_length=30, unique=True)
-
-#     def __str__(self):
-#         return "DT: {}".format(self.name)
-
-#     def get_absolute_url(self):
-#         return reverse('shop:dresstype_index')
-
 
 class Job(Company):
     status_choices = ((1, 'Started'), (2, "Finished"),
@@ -71,13 +62,6 @@ class Job(Company):
     start_date = models.DateField(default=datetime.date.today)
     completed = models.DateField(default=datetime.date.today)
 
-    total_expense = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0)
-    total_payment = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0)
-    gross_profit = models.DecimalField(
-        max_digits=10, decimal_places=2, default=0)
-
     class Meta:
         ordering = ('status', '-start_date', 'customer')
 
@@ -87,21 +71,20 @@ class Job(Company):
     def get_absolute_url(self):
         return reverse('shop:job_detail', kwargs={'pk': self.id})
 
-    def save(self, *args, **kwargs):
-        exp = self.cashflow_set.filter(category__name='expense').aggregate(
-            sum_exp=Sum('amount'))['sum_exp']
-        pay = self.cashflow_set.filter(category__name='payment').aggregate(
-            sum_pay=Sum('amount'))['sum_pay']
+    @property
+    def total_payment(self):
+        return self.revenue_set.aggregate(total=Sum('amount'))['total']
 
-        if exp == None:
-            exp = 0
-        if pay == None:
-            pay = 0
+    @property
+    def total_expenditure(self):
+        return self.expenditure_set.aggregate(total=Sum('amount'))['total']
 
-        self.total_expense = exp
-        self.total_payment = pay
-        self.gross_profit = pay - exp - self.discount
-        return super().save(*args, **kwargs)
+    @property
+    def net_profit(self):
+        net_profit = 0
+        net_profit += self.total_payment if self.total_payment else 0
+        net_profit -= self.total_expenditure if self.total_expenditure else 0
+        return net_profit
 
 
 class CashFlowType(TimeStampedModel):
@@ -133,13 +116,3 @@ class CashFlow(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse('shop:cashflow_index')
-
-# class Expense(TimeStampedModel):
-#     """Expenses not directly incurred on a garment"""
-#     item_name = models.CharField(max_length=50, blank=True, null=True)
-#     amount = models.DecimalField(max_digits=10, decimal_places=2)
-#     notes = models.CharField(max_length=500, blank=True)
-
-
-#     def __str__(self):
-#         return "Exp: {}-{}".format(self.item_name, self.amount)
