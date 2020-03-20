@@ -33,7 +33,7 @@
             {% for expenditure in expenditures %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ expenditure.created }}</td>
+                    <td>{{ expenditure.created|date:"M d, Y" }}</td>
                     <td>{{ expenditure.date }}</td>
                     <td>
                         {% if expenditure.job %}
