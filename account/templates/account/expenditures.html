@@ -19,11 +19,12 @@
         </thead>
         <tr class="bg-dark">
             <th>S/N</th>
+            <th>Created</th>
             <th>Date</th>
+            <th>Job</th>
             <th>Item</th>
             <th>Personnel</th>
             <th>Amount</th>
-            <th>Job</th>
             <th>Category</th>
             <th>Action</th>
         </tr>
@@ -32,10 +33,8 @@
             {% for expenditure in expenditures %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
+                    <td>{{ expenditure.created }}</td>
                     <td>{{ expenditure.date }}</td>
-                    <td>{{ expenditure.item.title }}</td>
-                    <td>{{ expenditure.personnel }}</td>
-                    <td>{{ expenditure.amount }}</td>
                     <td>
                         {% if expenditure.job %}
                         <a href="{% url 'shop:job_detail' expenditure.job.pk %}">{{ expenditure.job }}</a>
@@ -43,6 +42,9 @@
                         <a href="#">{{ expenditure.job }}</a>
                         {% endif %}
                     </td>
+                    <td>{{ expenditure.item.title }}</td>
+                    <td>{{ expenditure.personnel }}</td>
+                    <td>{{ expenditure.amount }}</td>
                     <td>{{ expenditure.category.name.title }}</td>
                     <td></td>
                 </tr>
@@ -52,8 +54,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ expenditures|sum_expenditure_amounts_in_expenditure_queryset }}</td>
                 <td></td>
+                <td></td>
+                <td>{{ expenditures|sum_expenditure_amounts_in_expenditure_queryset }}</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -64,8 +67,9 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>{{ total_expenditure_value }}</td>
                 <td></td>
+                <td></td>
+                <td>{{ total_expenditure_value }}</td>
                 <td></td>
                 <td></td>
             </tr>
