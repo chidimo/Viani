@@ -47,6 +47,10 @@ class Customer(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('shop:customer_index')
 
+    @property
+    def job_count(self):
+        return self.job_set.count()
+
 
 class Job(Company):
     status_choices = ((1, 'Started'), (2, "Finished"),

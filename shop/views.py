@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django_addanother.views import CreatePopupMixin
 from pure_pagination.mixins import PaginationMixin
 
+from account.models import Revenue, Expenditure
+
 from .utils import context_messages as cm
 
 from .models import Customer, Job
@@ -28,6 +30,9 @@ class CustomerIndex(LoginRequiredMixin, PaginationMixin,  generic.ListView):
     template_name = 'shop/customer_index.html'
     context_object_name = 'customers'
     paginate_by = 100
+
+    def get_queryset(self):
+        return super().get_queryset()
 
 
 class NewCustomer(CreatePopupMixin, LoginRequiredMixin, SuccessMessageMixin, generic.CreateView):
@@ -76,7 +81,7 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
-    paginate_by = 100
+    paginate_by = 2
 
     def dispatch(self, request, *args, **kwargs):
         rule_to_check = 'view_jobs_index'
@@ -89,6 +94,7 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
         context = super().get_context_data(**kwargs)
         completed_job_count = Job.objects.filter(status=4).count()
         total_job_count = Job.objects.count()
+
         context['completed_job_count'] = completed_job_count
         context['total_job_count'] = total_job_count
         try:
@@ -98,6 +104,26 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
         context['completion_rate'] = round(completion_rate, 2)
         context['job_filter_form'] = JobFilterForm()
         context['filter_view'] = False
+
+        overall_value = Job.objects.aggregate(total=Sum('value'))['total']
+        context['overall_value'] = overall_value
+
+        overall_discount = Job.objects.aggregate(
+            total=Sum('discount'))['total']
+        context['overall_discount'] = overall_discount
+
+        overall_payment = Revenue.objects.aggregate(
+            total=Sum('amount'))['total']
+        context['overall_payment'] = overall_payment
+
+        overall_job_expenditure = Expenditure.objects.filter(category__name__in=[
+                                                             'materials', 'external job']).aggregate(total=Sum('amount'))['total']
+        context['overall_job_expenditure'] = overall_job_expenditure
+
+        overall_profit = 0
+        overall_profit += overall_payment if overall_payment else 0
+        overall_profit -= overall_job_expenditure if overall_job_expenditure else 0
+        context['overall_profit'] = overall_profit
         return context
 
 

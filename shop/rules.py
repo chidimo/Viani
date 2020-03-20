@@ -6,4 +6,6 @@ SHOP_RULES = {
 
     'create_job': 'create a new job',
     'mark_accepted': 'mark a job as accepted',
+
+    'view_overall_sum': 'View overall sum row'
 }

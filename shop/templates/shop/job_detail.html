@@ -64,8 +64,8 @@
             </div>
             <hr>
             <div class="details">
-                <p>{{ job.customer.phone }}</p>
-                <p><a href="{% url 'shop:customer_details' job.customer.pk %}">More...</a></p>
+                <p>{% if job.customer.phone %}{{ job.customer.phone }}{% else %}Phone{% endif %}</p>
+                <p><a href="{% url 'shop:customer_details' job.customer.pk %}">Go to customer details</a></p>
             </div>
         </div>
         <div class="card viani_card">

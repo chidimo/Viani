@@ -27,7 +27,7 @@
             <hr>
             <div class="details">
                 <p>{{ customer.sex.title }}</p>
-                <p>{{ customer.phone }}</p>
+                <p>{% if customer.phone %}{{ customer.phone }}{% else %}Phone{% endif %}</p>
                 <p>{{ customer.address }}</p>
             </div>
         </div>

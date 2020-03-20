@@ -1,6 +1,7 @@
 {% extends "viani_base.html" %}
 {% block title %}Jobs{% endblock title %}
 {% load shop_tags_and_filters %}
+{% load v_rules %}
 {% block content %}
 
 
@@ -65,7 +66,7 @@
                 </tr>
             {% endfor %}
             <tr class="summation_row bg-dark">
-                <td></td>
+                <td>Page sum</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -74,8 +75,25 @@
                 <td class="text-danger">{{ jobs|summ_total_expenses }}</td>
                 <td>{{ jobs|summ_total_payments }}</strong></td>
                 <td class="text-success">{{ jobs|summ_profits }}</td>
+                <td></td>
+            </tr>
+
+            {% test_permission 'view_overall_sum' request as view_overall_sum %}
+            {% if view_overall_sum %}
+            <tr class="summation_row bg-dark">
+                <td>Overall job sum</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{{ overall_value }}</td>
+                <td>{{ overall_discount }}</td>
+                <td class="text-danger">{{ overall_job_expenditure }}</td>
+                <td>{{ overall_payment }}</strong></td>
+                <td class="text-success">{{ overall_profit }}</td>
                 <td>{{ completed_job_count }} of {{ total_job_count }} ({{ completion_rate }}%)</td>
             </tr>
+            {% endif %}
+
         </tbody>
         {% else %}
             <p>No jobs to show</p>
