@@ -57,7 +57,7 @@
                     <td>{{ job.expenditure_set.all|sum_amounts }}</td>
                     <td>{{ job.revenue_set.all|sum_amounts }}</td>
                     <td>{{ job|get_job_profit }}</td>
-                    <td>
+                    <td style="padding: 0;">
                         <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-edit"></i></a> |
                         <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-plus text-primary"></i></a> |
                         <a href="{% url 'shop:job_edit' job.pk %}"><i class="fas fa-minus text-danger"></i></a>
