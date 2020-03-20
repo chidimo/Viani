@@ -2,6 +2,7 @@ from django import template
 from django.db.models import Sum
 
 from constants.month_choices import month_choices
+from account.models import Expenditure
 
 register = template.Library()
 
@@ -38,3 +39,8 @@ def get_key_from_dict(dict_object, key):
 def sum_revenues(revenue_qset):
     """Return sum of amounts in revenue queryset"""
     return revenue_qset.aggregate(total=Sum('amount'))['total']
+
+@register.filter()
+def get_etype_sum(category):
+    """Return sum of amounts in revenue queryset"""
+    return Expenditure.objects.filter(category__name=category).aggregate(total=Sum('amount'))['total']

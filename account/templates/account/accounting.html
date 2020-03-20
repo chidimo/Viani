@@ -1,30 +1,38 @@
 {% extends "viani_base.html" %}
 {% block title %}Accounting{% endblock %}
+{% load account_tags_and_filters %}
 
 {% block content %}
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Shop</a></li>
-        <li class="breadcrumb-item active">Accounting</li>
-    </ol>
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="/">Shop</a></li>
+    <li class="breadcrumb-item active">Accounting</li>
+  </ol>
 </nav>
 
 <div class="row">
-    <div class="col-sm-6">
-        <h2>Accounts summary</h2>
-        <div class="dropdown-divider"></div>
-        <h3>Job value: {{ total_job_value }}</h3>
-        <h3 class="text-primary">Income: {{ total_payments }}</h3>
-        <h3 class="text-danger">Expenses: {{ total_expenses }}</h3>
-        <h3>Discounts: <span class="">{{ total_discounts }}</h3>
-        <h3 class="text-success">Net profit: {{ net_profit }}</h3>
+  <div class="col-sm-6">
+    <h2>Accounts summary</h2>
+    <div class="dropdown-divider"></div>
+    <h3>Job value: {{ total_job_value }}</h3>
+    <h3 class="text-info">Income: {{ total_payments }}</h3>
+    <h3 class="text-dark">Expenses: {{ total_expenses }}</h3>
+
+    <div>
+      {% for etype in expenditure_types %}
+      <h4>{{ forloop.counter }}. {{ etype.name }}: {{ etype.name|get_etype_sum }}</h4>
+      {% endfor %}
     </div>
 
-    <div class="col-sm-6">
-        <h2>Account statements</h2>
-        <div class="dropdown-divider"></div>
-    </div>
+    <h3>Discounts: <span class="">{{ total_discounts }}</h3>
+    <h3 class="text-success">Net profit: {{ net_profit }}</h3>
+  </div>
+
+  <div class="col-sm-6">
+    <h2>Account statements</h2>
+    <div class="dropdown-divider"></div>
+  </div>
 </div>
 
 

@@ -157,4 +157,5 @@ def accounting(request):
     context['total_job_value'] = total_job_value
     context['total_discounts'] = total_discounts
 
+    context['expenditure_types'] = ExpenditureType.objects.all()
     return render(request, template, context)
