@@ -81,7 +81,7 @@ class JobIndex(LoginRequiredMixin, PaginationMixin, generic.ListView):
     model = Job
     template_name = 'shop/job_index.html'
     context_object_name = 'jobs'
-    paginate_by = 2
+    paginate_by = 100
 
     def dispatch(self, request, *args, **kwargs):
         rule_to_check = 'view_jobs_index'
